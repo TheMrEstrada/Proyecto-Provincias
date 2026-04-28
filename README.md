@@ -13,3 +13,5 @@ Repositorio de datos y código. Proyecto de consultoría formulación de Planes 
 14-04-26 Actualización de "Categorias_datos_y_nuevas_fuentes.xlsx" finalizando adición de nuevas fuentes recomendadas en "08-04-26_Informe_estado_de_datos_provincias.docx". En 00_Documentos | Informes y avances
 
 23-04-26 Actualización de "Categorias_datos_y_nuevas_fuentes.xlsx", adición de fuentes idantificadas para datos de seguridad. En 00_Documentos | Informes y avances
+
+28-04-26 Nueva rama "actualización": Contiene los primeros archivos actualizados de la base de datos. La rama "main" se mantiene como la información de base.
