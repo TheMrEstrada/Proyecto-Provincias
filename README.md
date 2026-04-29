@@ -5,6 +5,8 @@ En 01_Data | 00_Inputs pueden encontrar las bases de datos de información de fu
 
 Los investigadores pueden consultar las bases individuales originales, vamos a proveer proximamente la compuesta como excel para mayor facilidad pero en este momento se requiere software de análisis de datos (Stata) para usarla.
 
+Para descargar cualquier archivo es necesario darle clic y luego dar clic en el botón de a derecha que dice "Raw".
+
 
 # Historial de Cambios
 
