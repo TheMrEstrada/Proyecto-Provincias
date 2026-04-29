@@ -3,6 +3,8 @@ Repositorio de datos y código. Proyecto de consultoría formulación de Planes 
 
 En 01_Data | 00_Inputs pueden encontrar las bases de datos de información de fuente secudnaria que se usan para componer la base de datos de Antioquia para Valor Público. Ahí mismo en Inventario_Variables_v_2 pueden consultar el diccionario de datos de la base compuesta. Una salvedad sobre los datos, estos vienen en su mayoría de otro proyecto anterior y nosotros retomamos ese trabajo, algunos de los datos originales de fuente secundaria fueron intervenidos antes de subirlos (compusieron archivos con datos relevantes en vez de tomar cada uno de los originales) esto es así por intento de reducir la complejidad que tienen algunos de los formatos de los archivos originales que impiden realizar análisis de datos de manera eficiente.
 
+Los investigadores pueden consultar las bases individuales originales, vamos a proveer proximamente la compuesta como excel para mayor facilidad pero en este momento se requiere software de análisis de datos (Stata) para usarla.
+
 
 # Historial de Cambios
 
