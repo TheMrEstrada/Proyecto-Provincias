@@ -9,17 +9,19 @@
 * ---- Configuración de directorios ----
 * NOTA: Ajustar según usuario local
 
-if "`c(username)'" == "user" {
+*if "`c(username)'" == "user" {
     
-	global path "C:/Users/user/OneDrive/pulso_antioquia"
+	global path "D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias"
 	global rawdata "$path/01_Data/00_Inputs"
 	global scripts "$path/02_Code"
 	global data "$path/01_Data/01_Derived"
 	global output "$path/03_Outputs"
-} 
+*} 
 
 cd "$data"
 ls
+
+
 
 * ---- Importación de archivos Excel a formato .dta ----
 * Cada archivo contiene indicadores a nivel municipal (sheet "Data")
@@ -150,6 +152,82 @@ replace TIS_mujeres = "NA" if TIS_mujeres == ""
 * Contiene todos los indicadores municipales listos para análisis PCA
 
 save "$data/01_final_data.dta", replace
+
+
+
+
+
+/********************************************************************
+* Consolidación con provincias
+********************************************************************/
+
+cd "$rawdata"
+
+*--------------------------------------------------
+* 1. Importar listado de municipios por provincia
+*--------------------------------------------------
+import excel "Listado municipios provincias (ver. 2).xlsx", ///
+    firstrow clear
+
+* Rellenar provincia hacia abajo
+replace Provincia = Provincia[_n-1] if missing(Provincia)
+
+*--------------------------------------------------
+* 2. Crear identificador de provincia
+*--------------------------------------------------
+gen id_provincia = .
+
+replace id_provincia = 1 if Provincia == "Agroindustrial del Occidente"
+replace id_provincia = 2 if Provincia == "Bio-Energética del Norte de Antioquia"
+replace id_provincia = 3 if Provincia == "Del Río Grande"
+replace id_provincia = 4 if Provincia == "Turística y Agroecológica del Occidente"
+
+/*label define provincia_lbl ///
+    1 "Agroindustrial del Occidente" ///
+    2 "Bio-Energética del Norte de Antioquia" ///
+    3 "Del Río Grande" ///
+    4 "Turística y Agroecológica del Occidente"
+
+label values id_provincia provincia_lbl
+*/
+*--------------------------------------------------
+* 3. Limpiar nombres de municipios para merge
+*--------------------------------------------------
+gen nvl_label = Municipios
+
+replace nvl_label = ustrnormalize(nvl_label, "nfd")
+replace nvl_label = ustrregexra(nvl_label, "\p{Mark}", "")
+replace nvl_label = upper(nvl_label)
+replace nvl_label = strtrim(nvl_label)
+
+* Ajustes manuales
+replace nvl_label = "DONMATIAS" if nvl_label == "DON MATIAS"
+
+rename Provincia provincia
+drop Municipios
+
+*--------------------------------------------------
+* 4. Pegar códigos municipales
+*--------------------------------------------------
+merge 1:1 nvl_label using "Códigos_municipios_clean.dta"
+
+keep if _merge == 3 //match == 34
+drop _merge
+destring ind_mpio, replace
+
+save "códigos_provincias.dta", replace
+
+/********************************************************************
+* Merge con datos originales de Antioquias
+********************************************************************/
+
+merge 1:1 ind_mpio using "$data/01_final_data.dta"
+
+keep if _merge == 3
+drop _merge
+
+save "$data/01_final_data_provincias.dta", replace
+
 
 
 
