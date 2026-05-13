@@ -21,3 +21,5 @@ Para descargar cualquier archivo es necesario darle clic y luego dar clic en el 
 23-04-26 Actualización de "Categorias_datos_y_nuevas_fuentes.xlsx", adición de fuentes idantificadas para datos de seguridad. En 00_Documentos | Informes y avances
 
 28-04-26 Nueva rama "actualización": Contiene los primeros archivos actualizados de la base de datos. La rama "main" se mantiene como la información de base.
+
+13-05-26 Se añaden actualizaciones de las bases de datos existentes y se realiza homogeinización de los scripts. Se añaden las primeras tablas descriptivas de provincias y nuevos datos (POTA)
