@@ -166,34 +166,71 @@ cd "$rawdata"
 *--------------------------------------------------
 * 1. Importar listado de municipios por provincia
 *--------------------------------------------------
-import excel "Listado municipios provincias (ver. 2).xlsx", ///
+import excel "MUNICIPIOS_SUBREG_PROV.xlsx", ///
     firstrow clear
 
-* Rellenar provincia hacia abajo
-replace Provincia = Provincia[_n-1] if missing(Provincia)
+* Quitar los municipios que no tienen provicias
+drop if Esquemaasociativo  ==""
+rename Esquemaasociativo provincia
+tab provincia 
 
-*--------------------------------------------------
+*--------------------------------------------------*
 * 2. Crear identificador de provincia
-*--------------------------------------------------
+*--------------------------------------------------*
+
 gen id_provincia = .
 
-replace id_provincia = 1 if Provincia == "Agroindustrial del Occidente"
-replace id_provincia = 2 if Provincia == "Bio-Energética del Norte de Antioquia"
-replace id_provincia = 3 if Provincia == "Del Río Grande"
-replace id_provincia = 4 if Provincia == "Turística y Agroecológica del Occidente"
+replace id_provincia = 1 if provincia == "PROVINCIA AGROINDUSTRIAL DEL OCCIDENTE"
 
-/*label define provincia_lbl ///
+replace id_provincia = 2 if provincia == ///
+    "PROVINCIA BIOENERGETICA DEL NORTE DE ANTIOQUIA"
+
+replace id_provincia = 3 if provincia == ///
+    "PROVINCIA DEL RIO GRANDE"
+
+replace id_provincia = 4 if provincia == ///
+    "PROVINCIA TURISTICA Y AGROECOLOGICA"
+
+replace id_provincia = 5 if provincia == ///
+    "POVINCIA DEL AGUA, BOSQUES Y TURISMO"
+
+replace id_provincia = 6 if provincia == ///
+    "PROVINCIA CARTAMA"
+
+replace id_provincia = 7 if provincia == ///
+    "PROVINCIA DE LA PAZ"
+
+replace id_provincia = 8 if provincia == ///
+    "PROVINCIA DE SAN JUAN"
+
+replace id_provincia = 9 if provincia == ///
+    "PROVINCIA MINERO AGROECOLOGICA"
+
+replace id_provincia = 10 if provincia == ///
+    "PROVINCIA PENDERISCO Y SINIFANA"
+
+replace id_provincia = 11 if provincia == ///
+    "AREA METROPOLITANA"
+
+label define provincia_lbl ///
     1 "Agroindustrial del Occidente" ///
-    2 "Bio-Energética del Norte de Antioquia" ///
+    2 "Bioenergética del Norte de Antioquia" ///
     3 "Del Río Grande" ///
-    4 "Turística y Agroecológica del Occidente"
+    4 "Turística y Agroecológica" ///
+    5 "Agua, Bosques y Turismo" ///
+    6 "Cartama" ///
+    7 "De la Paz" ///
+    8 "San Juan" ///
+    9 "Minero Agroecológica" ///
+    10 "Penderisco y Sinifaná" ///
+    11 "Área Metropolitana"
 
 label values id_provincia provincia_lbl
-*/
+
 *--------------------------------------------------
 * 3. Limpiar nombres de municipios para merge
 *--------------------------------------------------
-gen nvl_label = Municipios
+gen nvl_label = MPIO
 
 replace nvl_label = ustrnormalize(nvl_label, "nfd")
 replace nvl_label = ustrregexra(nvl_label, "\p{Mark}", "")
@@ -201,17 +238,18 @@ replace nvl_label = upper(nvl_label)
 replace nvl_label = strtrim(nvl_label)
 
 * Ajustes manuales
-replace nvl_label = "DONMATIAS" if nvl_label == "DON MATIAS"
+replace nvl_label = "CAROLINA DEL PRINCIPE" if nvl_label == "CAROLINA"
+replace nvl_label = "SAN VICENTE FERRER" if nvl_label == "SAN VICENTE"
 
-rename Provincia provincia
-drop Municipios
+
+drop MPIO
 
 *--------------------------------------------------
 * 4. Pegar códigos municipales
 *--------------------------------------------------
 merge 1:1 nvl_label using "Códigos_municipios_clean.dta"
 
-keep if _merge == 3 //match == 34
+keep if _merge == 3 //match == 88
 drop _merge
 destring ind_mpio, replace
 
