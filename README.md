@@ -23,3 +23,5 @@ Para descargar cualquier archivo es necesario darle clic y luego dar clic en el 
 28-04-26 Nueva rama "actualización": Contiene los primeros archivos actualizados de la base de datos. La rama "main" se mantiene como la información de base.
 
 13-05-26 Se añaden actualizaciones de las bases de datos existentes y se realiza homogeinización de los scripts. Se añaden las primeras tablas descriptivas de provincias y nuevos datos (POTA)
+
+27-05-26 Se añaden tablas sobre temas de seguridad
