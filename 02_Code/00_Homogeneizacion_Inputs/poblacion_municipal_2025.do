@@ -15,14 +15,24 @@ set more off
 * Población total
 *------------------------------------
 
-import excel "$rawdata/POBLACION MUNICIPAL.xlsx", firstrow clear sheet("Total_Municipios")
-keep if AÑO==2025
-keep DPMP MPIO AÑO ÁREAGEOGRÁFICA TotalGeneral
+import excel "$rawdata/PPED-AreaSexoEdadMun-2018-2042_VP.xlsx", firstrow clear sheet("PobMunicipalxÁreaSexoEdad") cellrange(A9)
 
-rename DPMP ind_mpio
-destring ind_mpio, replace
+rename A cod_dpto
+rename B departamento
+rename C ind_mpio //2020-2025
+rename D nlv_label
+rename E año
+rename F area_geo
 
 save "$data/poblacion_total.dta", replace
+
+*Solo 2025
+keep if año==2025
+keep cod_dpto departamento ind_mpio nlv_label año area_geo Total Hombres Mujeres
+
+destring ind_mpio, replace
+
+save "$data/poblacion_total_2025.dta", replace
 
 
 

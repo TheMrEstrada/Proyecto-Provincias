@@ -27,11 +27,11 @@ clear all
 import excel "$data/seguridad_policia.xlsx", sheet("hurtos_personas_2025") clear firstrow
 
 *merge población total
-merge 1:m ind_mpio using "$data/poblacion_total.dta"
-keep if ÁREAGEOGRÁFICA =="Total"
+merge 1:m ind_mpio using "$data/poblacion_total_2025.dta"
+keep if area_geo =="Total"
 drop _merge
 
-rename TotalGeneral total_poblacion
+rename Total total_poblacion
 
 *Tasa por cada 100 mil habitantes
 gen tasa_hurtos_100k = (total_2025 / total_poblacion) * 100000
@@ -106,7 +106,6 @@ preserve
 restore
 
 
-
 *------------------------------------
 * #Número de homicidios 2025
 *------------------------------------
@@ -114,11 +113,11 @@ restore
 import excel "$data/seguridad_policia.xlsx", sheet("homicidios_2025") clear firstrow
 
 *merge población total
-merge 1:m ind_mpio using "$data/poblacion_total.dta"
-keep if ÁREAGEOGRÁFICA == "Total"
+merge 1:m ind_mpio using "$data/poblacion_total_2025.dta"
+keep if area_geo =="Total"
 drop _merge
 
-rename TotalGeneral total_poblacion
+rename Total total_poblacion
 
 *Tasa por cada 100 mil habitantes
 gen tasa_homicidios_100k = (total_2025 / total_poblacion) * 100000
@@ -201,11 +200,11 @@ restore
 import excel "$data/seguridad_policia.xlsx", sheet("violencia_intrafamiliar_2025") clear firstrow
 
 *merge población total
-merge 1:m ind_mpio using "$data/poblacion_total.dta"
-keep if ÁREAGEOGRÁFICA == "Total"
+merge 1:m ind_mpio using "$data/poblacion_total_2025.dta"
+keep if area_geo =="Total"
 drop _merge
 
-rename TotalGeneral total_poblacion
+rename Total total_poblacion
 
 *Tasa por cada 100 mil habitantes
 gen tasa_violencia_intra_100k = (total_2025 / total_poblacion) * 100000
@@ -288,11 +287,11 @@ restore
 import excel "$data/seguridad_policia.xlsx", sheet("delitos_sexuales_2025") clear firstrow
 
 *merge población total
-merge 1:m ind_mpio using "$data/poblacion_total.dta"
-keep if ÁREAGEOGRÁFICA == "Total"
+merge 1:m ind_mpio using "$data/poblacion_total_2025.dta"
+keep if area_geo =="Total"
 drop _merge
 
-rename TotalGeneral total_poblacion
+rename Total total_poblacion
 
 *Tasa por cada 100 mil habitantes
 gen tasa_delitos_sexuales_100k = (total_2025 / total_poblacion) * 100000
