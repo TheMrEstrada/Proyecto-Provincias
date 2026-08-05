@@ -142,88 +142,111 @@ restore
 
 /********************************************************************
 * Servicios Públicos
+* Cobertura Energía
 ********************************************************************/
 
 use "$data/ECV_nbi_pobreza.dta", clear
 
-*Merge con códigos/provincias
-merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
+* Subregión para TODOS los municipios
+merge m:1 ind_mpio using "$rawdata/Códigos_municipios_clean.dta"
+drop esquema_asociativo
+drop _merge
 
+keep ind_mpio nvl_label subregion ///
+     tot_pob_energia urb_pob_energia rur_pob_energia
+
+tempfile full subreg depto base promedio
+save `full'
+
+* Promedio subregión - base completa
+use `full', clear
+
+collapse ///
+    (mean) tot_pob_energia urb_pob_energia rur_pob_energia ///
+    (count) n_municipios = ind_mpio, ///
+    by(subregion)
+
+gen nvl_label = "PROMEDIO " + upper(subregion)
+gen tipo_fila = "Promedio subregión"
+gen ind_mpio = .
+gen provincia = "SIN PROVINCIA"
+gen id_provincia = .
+
+save `subreg'
+
+* Promedio departamental - base completa
+use `full', clear
+
+collapse ///
+    (mean) tot_pob_energia urb_pob_energia rur_pob_energia ///
+    (count) n_municipios = ind_mpio
+
+gen nvl_label = "PROMEDIO DEPARTAMENTAL"
+gen tipo_fila = "Promedio departamento"
+gen ind_mpio = .
+gen subregion = "TOTAL DEPARTAMENTO"
+gen provincia = "TOTAL DEPARTAMENTO"
+gen id_provincia = .
+
+save `depto'
+
+* Municipios con provincia
+use `full', clear
+
+merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
 keep if _merge == 3
 drop _merge
 
-*--------------------------------------------------
-* 2. Cobertura Energía (ECV)
-*--------------------------------------------------
+gen tipo_fila = "Municipio"
 
-preserve
+save `base'
 
-    keep ind_mpio nvl_label subregion id_provincia provincia ///
-         tot_pob_energia ///
-         urb_pob_energia ///
-         rur_pob_energia
+* Promedio provincial - solo municipios de provincia
+use `base', clear
 
-    gen tipo_fila = "Municipio"
+collapse ///
+    (mean) tot_pob_energia urb_pob_energia rur_pob_energia ///
+    (count) n_municipios = ind_mpio, ///
+    by(id_provincia provincia)
 
-    tempfile base promedio
-    save `base'
+gen nvl_label = "PROMEDIO " + upper(provincia)
+gen tipo_fila = "Promedio provincia"
+gen ind_mpio = .
+gen subregion = "TOTAL PROVINCIA"
 
-    *----------------------------------*
-    * Promedio provincial
-    *----------------------------------*
-    use `base', clear
+save `promedio'
 
-    collapse ///
-        (mean) ///
-        tot_pob_energia ///
-        urb_pob_energia ///
-        rur_pob_energia ///
-        (count) n_municipios = ind_mpio, ///
-        by(id_provincia provincia)
+* Unir todo
+use `base', clear
+append using `promedio'
+append using `subreg'
+append using `depto'
 
-    gen nvl_label = "PROMEDIO " + upper(provincia)
-    gen tipo_fila = "Promedio provincia"
-    gen ind_mpio = .
-    gen subregion = "TOTAL PROVINCIA"
+gen orden_fila = 1 if tipo_fila == "Municipio"
+replace orden_fila = 2 if tipo_fila == "Promedio provincia"
+replace orden_fila = 3 if tipo_fila == "Promedio subregión"
+replace orden_fila = 4 if tipo_fila == "Promedio departamento"
 
-    save `promedio'
+sort subregion id_provincia orden_fila nvl_label
 
-    *----------------------------------*
-    * Unir todo
-    *----------------------------------*
-    use `base', clear
-    append using `promedio'
+label variable ind_mpio        "Código DANE"
+label variable nvl_label       "Municipio"
+label variable subregion       "Subregión"
+label variable provincia       "Provincia"
+label variable tipo_fila       "Tipo de fila"
 
-    gen orden_fila = 1 if tipo_fila == "Municipio"
-    replace orden_fila = 2 if tipo_fila == "Promedio provincia"
+label variable tot_pob_energia "Cobertura energía total"
+label variable urb_pob_energia "Cobertura energía urbana"
+label variable rur_pob_energia "Cobertura energía rural"
 
-    sort id_provincia orden_fila nvl_label
+format tot_pob_energia urb_pob_energia rur_pob_energia %6.1f
 
-    *----------------------------------*
-    * Labels
-    *----------------------------------*
-    label variable ind_mpio        "Código DANE"
-    label variable nvl_label       "Municipio"
-    label variable subregion       "Subregión"
-    label variable provincia       "Provincia"
-    label variable tipo_fila       "Tipo de fila"
-
-    label variable tot_pob_energia "Cobertura energía total"
-    label variable urb_pob_energia "Cobertura energía urbana"
-    label variable rur_pob_energia "Cobertura energía rural"
-
-    format tot_pob_energia urb_pob_energia rur_pob_energia %6.1f
-
-    export excel ///
-        ind_mpio nvl_label subregion provincia tipo_fila ///
-        tot_pob_energia ///
-        urb_pob_energia ///
-        rur_pob_energia ///
-        using "$output/tablas_3.3_5.4.xlsx", ///
-        sheet("energia") ///
-        firstrow(varlabels) sheetreplace
-
-restore
+export excel ///
+    ind_mpio nvl_label subregion provincia tipo_fila ///
+    tot_pob_energia urb_pob_energia rur_pob_energia ///
+    using "$output/tablas_3.3_5.4.xlsx", ///
+    sheet("energia") ///
+    firstrow(varlabels) sheetreplace
 
 *--------------------------------------------------
 * 3. Cobertura Alcantarillado (ECV)

@@ -21,19 +21,12 @@ clear all
 * Tabla de Proyecciones de población 2025
 ********************************************************************/
 
-*--------------------------------------------------
-* 1. Importar población municipal desde Excel
-*--------------------------------------------------
-import excel "$rawdata/POBLACION MUNICIPAL.xlsx", firstrow clear
-keep if AÑO==2025
-keep DPMP MPIO AÑO ÁREAGEOGRÁFICA TotalGeneral
+use "$data/poblacion_total_2025.dta", clear
 
-rename DPMP ind_mpio
-destring ind_mpio, replace
+* Por si ind_mpio viene como string
+capture destring ind_mpio, replace
 
-*--------------------------------------------------
-* 3. Merge con códigos/provincias
-*--------------------------------------------------
+* Merge con provincias
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
 
 keep if _merge == 3
@@ -45,95 +38,280 @@ drop _merge
 
 preserve
 
-    rename TotalGeneral habitantes
-    rename ÁREAGEOGRÁFICA area
-    rename MPIO municipio
+    keep ind_mpio nvl_label subregion id_provincia provincia ///
+         año area_geo Total Hombres Mujeres
 
-    bysort provincia area: egen total_prov_area = total(habitantes)
+    rename nvl_label municipio
+    rename area_geo area
+    rename Total habitantes
+
+    bysort id_provincia provincia area: egen total_prov_area = total(habitantes)
 
     gen participacion_pct = (habitantes / total_prov_area) * 100
-    format participacion_pct %6.1f
 
     gsort provincia area -habitantes
 
-    keep subregion provincia area municipio habitantes participacion_pct ind_mpio 
-    order municipio ind_mpio subregion provincia area habitantes participacion_pct
+    keep ind_mpio municipio subregion provincia area habitantes ///
+         Hombres Mujeres participacion_pct
 
-    label variable subregion "Subregión"
-    *label variable esquema_asociativo "Esquema asociativo"
-    label variable provincia "Provincia"
-    label variable area "Área"
-    label variable municipio "Municipio"
-    label variable habitantes "Habitantes"
-    label variable participacion_pct "%"
-	label variable ind_mpio "Código DANE"
+    order municipio ind_mpio subregion provincia area ///
+          habitantes Hombres Mujeres participacion_pct
+
+    label variable ind_mpio           "Código DANE"
+    label variable municipio          "Municipio"
+    label variable subregion          "Subregión"
+    label variable provincia          "Provincia"
+    label variable area               "Área"
+    label variable habitantes         "Habitantes"
+    label variable Hombres            "Hombres"
+    label variable Mujeres            "Mujeres"
+    label variable participacion_pct  "%"
+
+    format habitantes Hombres Mujeres %12.0fc
+    format participacion_pct %6.1f
 
     export excel using "$output/tablas_provincias.xlsx", ///
-        sheet("población_area") firstrow(varlabels) sheetreplace
+        sheet("poblacion_area") firstrow(varlabels) sheetreplace
 
 restore
-
 
 *************************************************************
 * TABLA: Población total, cabecera y rural por municipio
+* Totales/promedios subregión y departamento antes del merge
 *************************************************************
 
-preserve
+use "$data/poblacion_total_2025.dta", clear
+keep if departamento =="Antioquia"
 
-    rename TotalGeneral habitantes
-    rename ÁREAGEOGRÁFICA area
-    rename MPIO municipio
+capture destring ind_mpio, replace
 
-    gen area_cat = ""
-    replace area_cat = "total"     if area == "Total"
-    replace area_cat = "cabecera"  if area == "Cabecera Municipal"
-    replace area_cat = "rural"     if area == "Centros Poblados y Rural Disperso"
+rename Total habitantes
+rename area_geo area
+rename nvl_label municipio
 
-    keep subregion provincia municipio ind_mpio area_cat habitantes
+gen area_cat = ""
+replace area_cat = "total"     if area == "Total"
+replace area_cat = "cabecera"  if area == "Cabecera Municipal"
+replace area_cat = "rural"     if area == "Centros Poblados y Rural Disperso"
 
-    reshape wide habitantes, ///
-        i(subregion provincia municipio ind_mpio) ///
-        j(area_cat) string
+keep ind_mpio municipio area_cat habitantes
 
-    rename habitantestotal habitantes_total
-    rename habitantescabecera habitantes_cabecera
-    rename habitantesrural habitantes_rural
+reshape wide habitantes, ///
+    i(ind_mpio municipio) ///
+    j(area_cat) string
 
-    * Totales provinciales por componente
-    bysort provincia: egen total_provincia    = total(habitantes_total)
-    bysort provincia: egen cabecera_provincia = total(habitantes_cabecera)
-    bysort provincia: egen rural_provincia    = total(habitantes_rural)
+rename habitantestotal habitantes_total
+rename habitantescabecera habitantes_cabecera
+rename habitantesrural habitantes_rural
 
-    * Participación municipal en el total provincial
-    gen part_total_prov = (habitantes_total / total_provincia) * 100
-    gen part_cab_prov   = (habitantes_cabecera / cabecera_provincia) * 100
-    gen part_rural_prov = (habitantes_rural / rural_provincia) * 100
+* Subregión para TODOS los municipios
+merge m:1 ind_mpio using "$rawdata/Códigos_municipios_clean.dta"
+drop esquema_asociativo
+drop _merge
 
-    * Porcentaje urbano/rural dentro del municipio
-    gen pct_cabecera = (habitantes_cabecera / habitantes_total) * 100
-    gen pct_rural    = (habitantes_rural / habitantes_total) * 100
+keep ind_mpio municipio subregion ///
+     habitantes_total habitantes_cabecera habitantes_rural
 
-    format pct_cabecera pct_rural part_total_prov part_cab_prov part_rural_prov %6.1f
+* Porcentaje urbano/rural dentro del municipio
+gen pct_cabecera = (habitantes_cabecera / habitantes_total) * 100
+gen pct_rural    = (habitantes_rural / habitantes_total) * 100
 
-    order municipio ind_mpio provincia subregion habitantes_total part_total_prov ///
-          habitantes_cabecera pct_cabecera part_cab_prov ///
-          habitantes_rural pct_rural part_rural_prov
-            
+tempfile full base prov_total prov_prom subreg_total subreg_prom depto_total depto_prom
+save `full'
 
-    label variable habitantes_total "Habitantes"
-    label variable part_total_prov "Participación en el total provincial"
-    label variable habitantes_cabecera "Población urbana"
-    label variable pct_cabecera "Porcentaje de población urbana"
-    label variable part_cab_prov "Participación en el total provincial"
-    label variable habitantes_rural "Población rural"
-    label variable pct_rural "Porcentaje de población rural"
-    label variable part_rural_prov "Participación en el total provincial"
-	label variable ind_mpio "Código DANE"
+*--------------------------------------------------*
+* Totales subregión - base completa
+*--------------------------------------------------*
+use `full', clear
 
-    export excel using "$output/tablas_provincias.xlsx", ///
-        sheet("población_wide") firstrow(varlabels) sheetreplace
+collapse ///
+    (sum) habitantes_total habitantes_cabecera habitantes_rural ///
+    (count) n_municipios = ind_mpio, ///
+    by(subregion)
 
-restore
+gen pct_cabecera = (habitantes_cabecera / habitantes_total) * 100
+gen pct_rural    = (habitantes_rural / habitantes_total) * 100
+
+gen municipio = "TOTAL " + upper(subregion)
+gen tipo_fila = "Total subregión"
+gen ind_mpio = .
+gen provincia = "SIN PROVINCIA"
+gen id_provincia = .
+
+save `subreg_total'
+
+*--------------------------------------------------*
+* Promedios subregión - base completa
+*--------------------------------------------------*
+use `full', clear
+
+collapse ///
+    (mean) habitantes_total habitantes_cabecera habitantes_rural ///
+           pct_cabecera pct_rural ///
+    (count) n_municipios = ind_mpio, ///
+    by(subregion)
+
+gen municipio = "PROMEDIO " + upper(subregion)
+gen tipo_fila = "Promedio subregión"
+gen ind_mpio = .
+gen provincia = "SIN PROVINCIA"
+gen id_provincia = .
+
+save `subreg_prom'
+
+*--------------------------------------------------*
+* Total departamental - base completa
+*--------------------------------------------------*
+use `full', clear
+
+collapse ///
+    (sum) habitantes_total habitantes_cabecera habitantes_rural ///
+    (count) n_municipios = ind_mpio
+
+gen pct_cabecera = (habitantes_cabecera / habitantes_total) * 100
+gen pct_rural    = (habitantes_rural / habitantes_total) * 100
+
+gen municipio = "TOTAL DEPARTAMENTAL"
+gen tipo_fila = "Total departamento"
+gen ind_mpio = .
+gen subregion = "TOTAL DEPARTAMENTO"
+gen provincia = "TOTAL DEPARTAMENTO"
+gen id_provincia = .
+
+save `depto_total'
+
+*--------------------------------------------------*
+* Promedio departamental - base completa
+*--------------------------------------------------*
+use `full', clear
+
+collapse ///
+    (mean) habitantes_total habitantes_cabecera habitantes_rural ///
+           pct_cabecera pct_rural ///
+    (count) n_municipios = ind_mpio
+
+gen municipio = "PROMEDIO DEPARTAMENTAL"
+gen tipo_fila = "Promedio departamento"
+gen ind_mpio = .
+gen subregion = "TOTAL DEPARTAMENTO"
+gen provincia = "TOTAL DEPARTAMENTO"
+gen id_provincia = .
+
+save `depto_prom'
+
+*--------------------------------------------------*
+* Municipios con provincia
+*--------------------------------------------------*
+use `full', clear
+
+merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
+keep if _merge == 3
+drop _merge
+
+gen tipo_fila = "Municipio"
+
+* Participación municipal en el total provincial
+bysort provincia: egen total_provincia    = total(habitantes_total)
+bysort provincia: egen cabecera_provincia = total(habitantes_cabecera)
+bysort provincia: egen rural_provincia    = total(habitantes_rural)
+
+gen part_total_prov = (habitantes_total / total_provincia) * 100
+gen part_cab_prov   = (habitantes_cabecera / cabecera_provincia) * 100
+gen part_rural_prov = (habitantes_rural / rural_provincia) * 100
+
+drop total_provincia cabecera_provincia rural_provincia
+
+save `base'
+
+*--------------------------------------------------*
+* Total provincia
+*--------------------------------------------------*
+use `base', clear
+
+collapse ///
+    (sum) habitantes_total habitantes_cabecera habitantes_rural ///
+    (count) n_municipios = ind_mpio, ///
+    by(id_provincia provincia)
+
+gen pct_cabecera = (habitantes_cabecera / habitantes_total) * 100
+gen pct_rural    = (habitantes_rural / habitantes_total) * 100
+
+gen part_total_prov = 100
+gen part_cab_prov   = 100
+gen part_rural_prov = 100
+
+gen municipio = "TOTAL " + upper(provincia)
+gen tipo_fila = "Total provincia"
+gen ind_mpio = .
+gen subregion = "TOTAL PROVINCIA"
+
+save `prov_total'
+
+*--------------------------------------------------*
+* Promedio provincia
+*--------------------------------------------------*
+use `base', clear
+
+collapse ///
+    (mean) habitantes_total habitantes_cabecera habitantes_rural ///
+           pct_cabecera pct_rural ///
+           part_total_prov part_cab_prov part_rural_prov ///
+    (count) n_municipios = ind_mpio, ///
+    by(id_provincia provincia)
+
+gen municipio = "PROMEDIO " + upper(provincia)
+gen tipo_fila = "Promedio provincia"
+gen ind_mpio = .
+gen subregion = "TOTAL PROVINCIA"
+
+save `prov_prom'
+
+*--------------------------------------------------*
+* Unir todo
+*--------------------------------------------------*
+use `base', clear
+append using `prov_total'
+append using `prov_prom'
+append using `subreg_total'
+append using `subreg_prom'
+append using `depto_total'
+append using `depto_prom'
+
+gen orden_fila = 1 if tipo_fila == "Municipio"
+replace orden_fila = 2 if tipo_fila == "Total provincia"
+replace orden_fila = 3 if tipo_fila == "Promedio provincia"
+replace orden_fila = 4 if tipo_fila == "Total subregión"
+replace orden_fila = 5 if tipo_fila == "Promedio subregión"
+replace orden_fila = 6 if tipo_fila == "Total departamento"
+replace orden_fila = 7 if tipo_fila == "Promedio departamento"
+
+sort subregion id_provincia orden_fila municipio
+
+format habitantes_total habitantes_cabecera habitantes_rural %12.0fc
+format pct_cabecera pct_rural part_total_prov part_cab_prov part_rural_prov %6.1f
+
+label variable municipio             "Municipio"
+label variable ind_mpio              "Código DANE"
+label variable provincia             "Provincia"
+label variable subregion             "Subregión"
+label variable tipo_fila             "Tipo de fila"
+
+label variable habitantes_total      "Habitantes"
+label variable part_total_prov       "Participación en el total provincial"
+label variable habitantes_cabecera   "Población urbana"
+label variable pct_cabecera          "Porcentaje de población urbana"
+label variable part_cab_prov         "Participación urbana en el total provincial"
+label variable habitantes_rural      "Población rural"
+label variable pct_rural             "Porcentaje de población rural"
+label variable part_rural_prov       "Participación rural en el total provincial"
+
+export excel ///
+    ind_mpio municipio subregion provincia tipo_fila ///
+    habitantes_total part_total_prov ///
+    habitantes_cabecera pct_cabecera part_cab_prov ///
+    habitantes_rural pct_rural part_rural_prov ///
+    using "$output/tablas_provincias.xlsx", ///
+    sheet("poblacion_wide") firstrow(varlabels) sheetreplace
 
 /********************************************************************
 * DEMOGRAFÍA
@@ -219,172 +397,334 @@ restore
 
 /********************************************************************
 * DEMOGRAFÍA
-* Población por edades
+* Tabla población por grupos de edad
 ********************************************************************/
 
-*--------------------------------------------------
-* 1. Importar población municipal desde Excel
-*--------------------------------------------------
-import excel "$rawdata/POBLACION MUNICIPAL.xlsx", firstrow clear sheet("Rangos_Quintenios")
-keep if AÑO==2025
-keep if ÁREAGEOGRÁFICA =="Total"
-keep DPMP MPIO AÑO ÁREAGEOGRÁFICA TOTAL04 TOTAL59 TOTAL1014 TOTAL1519 TOTAL2024 TOTAL2529 TOTAL3034 TOTAL3539 TOTAL4044 TOTAL4549 TOTAL5054 TOTAL5559 TOTAL6064 TOTAL6569 TOTAL7074 TOTAL7579 TOTAL8084 TOTAL85ymás
+use "$data/poblacion_total_2025.dta", clear
 
-rename DPMP ind_mpio
-destring ind_mpio, replace
+* Quedarse solo con población total municipal
+keep if area_geo == "Total"
+keep if departamento =="Antioquia"
 
-*--------------------------------------------------
-* 2. Merge con códigos/provincias
-*--------------------------------------------------
+capture destring ind_mpio, replace
+
+* Crear grupos de edad
+egen P_0_9 = rowtotal(Total0años Total1año Total2años Total3años Total4años ///
+                      Total5años Total6años Total7años Total8años Total9años)
+
+egen P_10_19 = rowtotal(Total10años Total11años Total12años Total13años Total14años ///
+                        Total15años Total16años Total17años Total18años Total19años)
+
+egen P_20_29 = rowtotal(Total20años Total21años Total22años Total23años Total24años ///
+                        Total25años Total26años Total27años Total28años Total29años)
+
+egen P_30_39 = rowtotal(Total30años Total31años Total32años Total33años Total34años ///
+                        Total35años Total36años Total37años Total38años Total39años)
+
+egen P_40_49 = rowtotal(Total40años Total41años Total42años Total43años Total44años ///
+                        Total45años Total46años Total47años Total48años Total49años)
+
+egen P_50_59 = rowtotal(Total50años Total51años Total52años Total53años Total54años ///
+                        Total55años Total56años Total57años Total58años Total59años)
+
+egen P_60_69 = rowtotal(Total60años Total61años Total62años Total63años Total64años ///
+                        Total65años Total66años Total67años Total68años Total69años)
+
+egen P_70_79 = rowtotal(Total70años Total71años Total72años Total73años Total74años ///
+                        Total75años Total76años Total77años Total78años Total79años)
+
+egen P_80_mas = rowtotal(Total80años Total81años Total82años Total83años Total84años ///
+                         Total85años Total86años Total87años Total88años Total89años ///
+                         Total90años Total91años Total92años Total93años Total94años ///
+                         Total95años Total96años Total97años Total98años Total99años ///
+                         Total100añosymás)
+
+* Subregión para TODOS los municipios
+merge m:1 ind_mpio using "$rawdata/Códigos_municipios_clean.dta"
+drop esquema_asociativo
+drop _merge
+
+keep ind_mpio nvl_label subregion ///
+     P_0_9 P_10_19 P_20_29 P_30_39 P_40_49 ///
+     P_50_59 P_60_69 P_70_79 P_80_mas
+
+rename nvl_label municipio
+
+tempfile full subreg_total subreg_prom depto_total depto_prom base prov_total prov_prom
+
+save `full'
+
+* Totales subregión - base completa
+use `full', clear
+
+collapse ///
+    (sum) P_0_9 P_10_19 P_20_29 P_30_39 P_40_49 ///
+          P_50_59 P_60_69 P_70_79 P_80_mas ///
+    (count) n_municipios = ind_mpio, ///
+    by(subregion)
+
+gen municipio = "TOTAL " + upper(subregion)
+gen tipo_fila = "Total subregión"
+gen ind_mpio = .
+gen provincia = "SIN PROVINCIA"
+gen id_provincia = .
+
+save `subreg_total'
+
+* Promedios subregión - base completa
+use `full', clear
+
+collapse ///
+    (mean) P_0_9 P_10_19 P_20_29 P_30_39 P_40_49 ///
+           P_50_59 P_60_69 P_70_79 P_80_mas ///
+    (count) n_municipios = ind_mpio, ///
+    by(subregion)
+
+gen municipio = "PROMEDIO " + upper(subregion)
+gen tipo_fila = "Promedio subregión"
+gen ind_mpio = .
+gen provincia = "SIN PROVINCIA"
+gen id_provincia = .
+
+save `subreg_prom'
+
+* Total departamental - base completa
+use `full', clear
+
+collapse ///
+    (sum) P_0_9 P_10_19 P_20_29 P_30_39 P_40_49 ///
+          P_50_59 P_60_69 P_70_79 P_80_mas ///
+    (count) n_municipios = ind_mpio
+
+gen municipio = "TOTAL DEPARTAMENTAL"
+gen tipo_fila = "Total departamento"
+gen ind_mpio = .
+gen subregion = "TOTAL DEPARTAMENTO"
+gen provincia = "TOTAL DEPARTAMENTO"
+gen id_provincia = .
+
+save `depto_total'
+
+* Promedio departamental - base completa
+use `full', clear
+
+collapse ///
+    (mean) P_0_9 P_10_19 P_20_29 P_30_39 P_40_49 ///
+           P_50_59 P_60_69 P_70_79 P_80_mas ///
+    (count) n_municipios = ind_mpio
+
+gen municipio = "PROMEDIO DEPARTAMENTAL"
+gen tipo_fila = "Promedio departamento"
+gen ind_mpio = .
+gen subregion = "TOTAL DEPARTAMENTO"
+gen provincia = "TOTAL DEPARTAMENTO"
+gen id_provincia = .
+
+save `depto_prom'
+
+* Municipios con provincia
+use `full', clear
+
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
-
 keep if _merge == 3
 drop _merge
 
+gen tipo_fila = "Municipio"
 
-*--------------------------------------------------
-* 3. Comprobar población total calculada
-*--------------------------------------------------
-egen pob_total_calc = rowtotal( ///
-    TOTAL04 TOTAL59 TOTAL1014 TOTAL1519 TOTAL2024 TOTAL2529 ///
-    TOTAL3034 TOTAL3539 TOTAL4044 TOTAL4549 TOTAL5054 TOTAL5559 ///
-    TOTAL6064 TOTAL6569 TOTAL7074 TOTAL7579 TOTAL8084 TOTAL85ymás )
+save `base'
 
-summ pob_total_calc
+* Total provincia
+use `base', clear
 
-*--------------------------------------------------
-* 4. Construir rangos de edad
-*--------------------------------------------------
-gen edad_0_9    = TOTAL04   + TOTAL59
-gen edad_10_19  = TOTAL1014 + TOTAL1519
-gen edad_20_29  = TOTAL2024 + TOTAL2529
-gen edad_30_39  = TOTAL3034 + TOTAL3539
-gen edad_40_49  = TOTAL4044 + TOTAL4549
-gen edad_50_59  = TOTAL5054 + TOTAL5559
-gen edad_60_69  = TOTAL6064 + TOTAL6569
-gen edad_70_79  = TOTAL7074 + TOTAL7579
-gen edad_80_mas = TOTAL8084 + TOTAL85ymás
+collapse ///
+    (sum) P_0_9 P_10_19 P_20_29 P_30_39 P_40_49 ///
+          P_50_59 P_60_69 P_70_79 P_80_mas ///
+    (count) n_municipios = ind_mpio, ///
+    by(id_provincia provincia)
 
-foreach v in edad_0_9 edad_10_19 edad_20_29 edad_30_39 ///
-             edad_40_49 edad_50_59 edad_60_69 edad_70_79 edad_80_mas {
-    
-    gen p_`v' = (`v' / pob_total_calc) * 100
-}
+gen municipio = "TOTAL " + upper(provincia)
+gen tipo_fila = "Total provincia"
+gen ind_mpio = .
+gen subregion = "TOTAL PROVINCIA"
 
-*--------------------------------------------------
-* 5. Labels
-*--------------------------------------------------
-label variable MPIO            "Municipios"
-label variable provincia       "Provincia"
-label variable p_edad_0_9      "0 a 9"
-label variable p_edad_10_19    "10 a 19"
-label variable p_edad_20_29    "20 a 29"
-label variable p_edad_30_39    "30 a 39"
-label variable p_edad_40_49    "40 a 49"
-label variable p_edad_50_59    "50 a 59"
-label variable p_edad_60_69    "60 a 69"
-label variable p_edad_70_79    "70 a 79"
-label variable p_edad_80_mas   "80 o más"
+save `prov_total'
 
-*--------------------------------------------------
-* 8. Tabla estructura de edad: municipios + resumen provincia
-*--------------------------------------------------
-preserve
+* Promedio provincia
+use `base', clear
 
-    keep ind_mpio subregion id_provincia provincia MPIO ///
-     edad_0_9 edad_10_19 edad_20_29 edad_30_39 ///
-     edad_40_49 edad_50_59 edad_60_69 edad_70_79 ///
-     edad_80_mas
+collapse ///
+    (mean) P_0_9 P_10_19 P_20_29 P_30_39 P_40_49 ///
+           P_50_59 P_60_69 P_70_79 P_80_mas ///
+    (count) n_municipios = ind_mpio, ///
+    by(id_provincia provincia)
 
-    * Base municipal
-    gen tipo_fila = "Municipio"
+gen municipio = "PROMEDIO " + upper(provincia)
+gen tipo_fila = "Promedio provincia"
+gen ind_mpio = .
+gen subregion = "TOTAL PROVINCIA"
 
-    tempfile base total promedio subregiones
-    save `base'
+save `prov_prom'
 
-    * Base única de subregión por provincia
-    use `base', clear
-    keep id_provincia subregion
-    duplicates drop id_provincia, force
-    save `subregiones'
+* Unir todo
+use `base', clear
+append using `prov_total'
+append using `prov_prom'
+append using `subreg_total'
+append using `subreg_prom'
+append using `depto_total'
+append using `depto_prom'
 
-    *------------------------------
-    * Total por provincia
-    *------------------------------
-    use `base', clear
+gen orden_fila = 1 if tipo_fila == "Municipio"
+replace orden_fila = 2 if tipo_fila == "Total provincia"
+replace orden_fila = 3 if tipo_fila == "Promedio provincia"
+replace orden_fila = 4 if tipo_fila == "Total subregión"
+replace orden_fila = 5 if tipo_fila == "Promedio subregión"
+replace orden_fila = 6 if tipo_fila == "Total departamento"
+replace orden_fila = 7 if tipo_fila == "Promedio departamento"
 
-    collapse ///
-        (sum) edad_0_9 edad_10_19 edad_20_29 edad_30_39 ///
-              edad_40_49 edad_50_59 edad_60_69 edad_70_79 ///
-              edad_80_mas, ///
-        by(id_provincia provincia)
+sort subregion id_provincia orden_fila municipio
 
-    gen MPIO = "TOTAL " + upper(provincia)
-    gen tipo_fila = "Total provincia"
+label variable ind_mpio    "Código DANE"
+label variable subregion   "Subregión"
+label variable municipio   "Municipio"
+label variable provincia   "Provincia"
+label variable tipo_fila   "Tipo de fila"
 
-    merge 1:1 id_provincia using `subregiones', nogen
+label variable P_0_9       "0 a 9"
+label variable P_10_19     "10 a 19"
+label variable P_20_29     "20 a 29"
+label variable P_30_39     "30 a 39"
+label variable P_40_49     "40 a 49"
+label variable P_50_59     "50 a 59"
+label variable P_60_69     "60 a 69"
+label variable P_70_79     "70 a 79"
+label variable P_80_mas    "80 o más"
 
-    save `total'
+format P_* %12.0fc
 
-    *------------------------------
-    * Promedio municipal por provincia
-    *------------------------------
-    use `base', clear
-
-    collapse ///
-        (mean) edad_0_9 edad_10_19 edad_20_29 edad_30_39 ///
-               edad_40_49 edad_50_59 edad_60_69 edad_70_79 ///
-               edad_80_mas, ///
-        by(id_provincia provincia)
-
-    gen MPIO = "PROMEDIO " + upper(provincia)
-    gen tipo_fila = "Promedio municipal"
-
-    merge 1:1 id_provincia using `subregiones', nogen
-
-    save `promedio'
-
-    *------------------------------
-    * Unir todo
-    *------------------------------
-    use `base', clear
-    append using `total'
-    append using `promedio'
-
-    gen orden_fila = 1 if tipo_fila == "Municipio"
-    replace orden_fila = 2 if tipo_fila == "Total provincia"
-    replace orden_fila = 3 if tipo_fila == "Promedio municipal"
-
-    sort subregion id_provincia orden_fila MPIO
-
-    *------------------------------
-    * Labels
-    *------------------------------
-	
-	label variable ind_mpio     "Código DANE"
-    label variable subregion     "Subregión"
-    label variable MPIO          "Municipios"
-    label variable provincia     "Provincia"
-    label variable tipo_fila     "Tipo de fila"
-    label variable edad_0_9      "0 a 9"
-    label variable edad_10_19    "10 a 19"
-    label variable edad_20_29    "20 a 29"
-    label variable edad_30_39    "30 a 39"
-    label variable edad_40_49    "40 a 49"
-    label variable edad_50_59    "50 a 59"
-    label variable edad_60_69    "60 a 69"
-    label variable edad_70_79    "70 a 79"
-    label variable edad_80_mas   "80 o más"
-
-    export excel ///
-    ind_mpio subregion MPIO provincia tipo_fila ///
-    edad_0_9 edad_10_19 edad_20_29 edad_30_39 ///
-    edad_40_49 edad_50_59 edad_60_69 edad_70_79 ///
-    edad_80_mas ///
+export excel ///
+    ind_mpio subregion municipio provincia tipo_fila ///
+    P_0_9 P_10_19 P_20_29 P_30_39 P_40_49 ///
+    P_50_59 P_60_69 P_70_79 P_80_mas ///
     using "$output/tablas_provincias.xlsx", ///
     sheet("prom_estructura_edad") firstrow(varlabels) sheetreplace
 
-restore
+
+/********************************************************************
+* DEMOGRAFÍA
+* Tabla de Natalidad, Mortalidad, Envejecimiento
+********************************************************************/
+
+* Base salud
+use "$data/20260504_SEGURIDAD_SALUD_DEFICT_VIVIENDA", clear
+
+keep ind_mpio tasa_natalidad tasa_mortalidad crec_vegetativo
+
+* Merge con población municipal total 2025 para traer I_enve_T
+merge 1:1 ind_mpio using "$data/poblacion_municipal_total_2025.dta", ///
+    keepusing(nvl_label I_enve_T)
+drop _merge
+
+* Merge con códigos municipales limpios para subregión completa
+merge m:1 ind_mpio using "$rawdata/Códigos_municipios_clean.dta"
+drop esquema_asociativo
+drop _merge
+
+keep ind_mpio nvl_label subregion ///
+     tasa_natalidad tasa_mortalidad crec_vegetativo I_enve_T
+
+tempfile full subreg depto base promedio
+
+save `full'
+
+* Promedio subregión - base completa
+use `full', clear
+
+collapse ///
+    (mean) tasa_natalidad tasa_mortalidad crec_vegetativo I_enve_T ///
+    (count) n_municipios = ind_mpio, ///
+    by(subregion)
+
+gen nvl_label = "PROMEDIO " + upper(subregion)
+gen tipo_fila = "Promedio subregión"
+gen ind_mpio = .
+gen provincia = "SIN PROVINCIA"
+gen id_provincia = .
+
+save `subreg'
+
+* Promedio departamental - base completa
+use `full', clear
+
+collapse ///
+    (mean) tasa_natalidad tasa_mortalidad crec_vegetativo I_enve_T ///
+    (count) n_municipios = ind_mpio
+
+gen nvl_label = "PROMEDIO DEPARTAMENTAL"
+gen tipo_fila = "Promedio departamento"
+gen ind_mpio = .
+gen subregion = "TOTAL DEPARTAMENTO"
+gen provincia = "TOTAL DEPARTAMENTO"
+gen id_provincia = .
+
+save `depto'
+
+* Municipios con provincia
+use `full', clear
+
+merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
+keep if _merge == 3
+drop _merge
+
+gen tipo_fila = "Municipio"
+
+save `base'
+
+* Promedio provincial - solo municipios de provincia
+use `base', clear
+
+collapse ///
+    (mean) tasa_natalidad tasa_mortalidad crec_vegetativo I_enve_T ///
+    (count) n_municipios = ind_mpio, ///
+    by(id_provincia provincia)
+
+gen nvl_label = "PROMEDIO " + upper(provincia)
+gen tipo_fila = "Promedio provincia"
+gen ind_mpio = .
+gen subregion = "TOTAL PROVINCIA"
+
+save `promedio'
+
+* Unir todo
+use `base', clear
+append using `promedio'
+append using `subreg'
+append using `depto'
+
+gen orden_fila = 1 if tipo_fila == "Municipio"
+replace orden_fila = 2 if tipo_fila == "Promedio provincia"
+replace orden_fila = 3 if tipo_fila == "Promedio subregión"
+replace orden_fila = 4 if tipo_fila == "Promedio departamento"
+
+sort subregion id_provincia orden_fila nvl_label
+
+label variable ind_mpio           "Código DANE"
+label variable nvl_label          "Municipio"
+label variable subregion          "Subregión"
+label variable provincia          "Provincia"
+label variable tipo_fila          "Tipo de fila"
+label variable tasa_natalidad     "Tasa de Natalidad"
+label variable tasa_mortalidad    "Tasa de Mortalidad"
+label variable crec_vegetativo    "Crecimiento Vegetativo"
+label variable I_enve_T           "Índice de Envejecimiento"
+
+format tasa_natalidad tasa_mortalidad crec_vegetativo I_enve_T %6.1f
+
+export excel ///
+    ind_mpio nvl_label subregion provincia tipo_fila ///
+    tasa_natalidad tasa_mortalidad crec_vegetativo I_enve_T ///
+    using "$output/tablas_provincias.xlsx", ///
+    sheet("prom_natalidad_mortalidad") firstrow(varlabels) sheetreplace
 
 
 /********************************************************************
@@ -530,337 +870,6 @@ preserve
         idf ///
         using "$output/tablas_provincias.xlsx", ///
         sheet("idf") firstrow(varlabels) sheetreplace
-
-restore
-
-
-
-
-
-****************************
-*EMPLEO, POBREZA
-*****
-*--------------------------------------------------
-* NBI, Línea de pobreza
-*--------------------------------------------------
-
-use "$data/ECV_nbi_pobreza.dta", clear
-
-*--------------------------------------------------
-* 2. Merge con códigos/provincias
-*--------------------------------------------------
-merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
-
-keep if _merge == 3
-drop _merge
-
-*tabla
-preserve
-
-    keep ind_mpio NomMunicipio subregion id_provincia provincia ///
-         tot_pob_nbi urb_pob_nbi rur_pob_nbi ///
-         tot_pob_mon ///
-         tot_pob_mon_hombres ///
-         tot_pob_mon_mujeres
-
-    rename NomMunicipio municipio
-
-    *----------------------------------*
-    * Base municipal
-    *----------------------------------*
-    gen tipo_fila = "Municipio"
-
-    tempfile base promedio subregiones
-    save `base'
-
-    * Base única de subregión
-    use `base', clear
-    keep id_provincia subregion
-    duplicates drop id_provincia, force
-    save `subregiones'
-
-    *----------------------------------*
-    * Promedio provincial
-    *----------------------------------*
-    use `base', clear
-
-    collapse ///
-        (mean) ///
-        tot_pob_nbi urb_pob_nbi rur_pob_nbi ///
-        tot_pob_mon ///
-        tot_pob_mon_hombres ///
-        tot_pob_mon_mujeres ///
-        (count) n_municipios = ind_mpio, ///
-        by(id_provincia provincia)
-
-    gen municipio = "PROMEDIO " + upper(provincia)
-    gen tipo_fila = "Promedio provincia"
-
-    merge 1:1 id_provincia using `subregiones', nogen
-
-    save `promedio'
-
-    *----------------------------------*
-    * Unir todo
-    *----------------------------------*
-    use `base', clear
-    append using `promedio'
-
-    gen orden_fila = 1 if tipo_fila == "Municipio"
-    replace orden_fila = 2 if tipo_fila == "Promedio provincia"
-
-    sort subregion id_provincia orden_fila municipio
-
-    *----------------------------------*
-    * Labels
-    *----------------------------------*
-    label variable ind_mpio               "Código DANE"
-    label variable municipio              "Municipio"
-    label variable subregion              "Subregión"
-    label variable provincia              "Provincia"
-    label variable tipo_fila              "Tipo de fila"
-
-    label variable tot_pob_nbi            "Pobreza NBI total"
-    label variable urb_pob_nbi            "Pobreza NBI urbana"
-    label variable rur_pob_nbi            "Pobreza NBI rural"
-
-    label variable tot_pob_mon            "Bajo Línea de Pobreza total"
-    label variable tot_pob_mon_hombres    "Bajo Línea de Pobreza hombres"
-    label variable tot_pob_mon_mujeres    "Bajo Línea de Pobreza mujeres"
-
-    format tot_* urb_* rur_* %6.1f
-
-    *----------------------------------*
-    * Exportar
-    *----------------------------------*
-    export excel ///
-        ind_mpio municipio subregion provincia tipo_fila ///
-        tot_pob_nbi urb_pob_nbi rur_pob_nbi ///
-        tot_pob_mon ///
-        tot_pob_mon_hombres ///
-        tot_pob_mon_mujeres ///
-        using "$output/tablas_provincias.xlsx", ///
-        sheet("ecv_pobreza") firstrow(varlabels) sheetreplace
-
-restore
-
-
-
-
-
-*----------------------------------*
-* Gini laboral - hogares
-*----------------------------------*
-preserve
-
-    keep ind_mpio NomMunicipio subregion id_provincia provincia ///
-         tot_gini_hog urb_gini_hog rur_gini_hog ///
-         tot_gini_lab urb_gini_lab rur_gini_lab
-
-    rename NomMunicipio municipio
-
-    gen tipo_fila = "Municipio"
-
-    tempfile base promedio subregiones
-    save `base'
-
-    use `base', clear
-    keep id_provincia subregion
-    duplicates drop id_provincia, force
-    save `subregiones'
-
-    use `base', clear
-
-    collapse ///
-        (mean) ///
-        tot_gini_hog urb_gini_hog rur_gini_hog ///
-        tot_gini_lab urb_gini_lab rur_gini_lab ///
-        (count) n_municipios = ind_mpio, ///
-        by(id_provincia provincia)
-
-    gen municipio = "PROMEDIO " + upper(provincia)
-    gen tipo_fila = "Promedio provincia"
-
-    merge 1:1 id_provincia using `subregiones', nogen
-
-    save `promedio'
-
-    use `base', clear
-    append using `promedio'
-
-    gen orden_fila = 1 if tipo_fila == "Municipio"
-    replace orden_fila = 2 if tipo_fila == "Promedio provincia"
-
-    sort subregion id_provincia orden_fila municipio
-
-    label variable ind_mpio      "Código DANE"
-    label variable municipio     "Municipio"
-    label variable subregion     "Subregión"
-    label variable provincia     "Provincia"
-    label variable tipo_fila     "Tipo de fila"
-
-    label variable tot_gini_hog  "Gini ingresos de los hogares total"
-    label variable urb_gini_hog  "Gini ingresos de los hogares urbano"
-    label variable rur_gini_hog  "Gini ingresos de los hogares rural"
-
-    label variable tot_gini_lab  "Gini ingresos laborales total"
-    label variable urb_gini_lab  "Gini ingresos laborales urbano"
-    label variable rur_gini_lab  "Gini ingresos laborales rural"
-
-    format tot_gini_* urb_gini_* rur_gini_* %6.3f
-
-    export excel ///
-        ind_mpio municipio subregion provincia tipo_fila ///
-        tot_gini_hog urb_gini_hog rur_gini_hog ///
-        tot_gini_lab urb_gini_lab rur_gini_lab ///
-        using "$output/tablas_provincias.xlsx", ///
-        sheet("ecv_gini") firstrow(varlabels) sheetreplace
-
-restore
-
-
-*----------------------------------*
-* IPM - hogares/personas
-*----------------------------------*
-
-preserve
-
-    keep ind_mpio NomMunicipio subregion id_provincia provincia ///
-         tot_pob_ipm urb_pob_ipm rur_pob_ipm ///
-         tot_pob_ipm_hogares urb_pob_ipm_hogares rur_pob_ipm_hogares
-
-    rename NomMunicipio municipio
-
-    gen tipo_fila = "Municipio"
-
-    tempfile base promedio subregiones
-    save `base'
-
-    use `base', clear
-    keep id_provincia subregion
-    duplicates drop id_provincia, force
-    save `subregiones'
-
-    use `base', clear
-
-    collapse ///
-        (mean) ///
-        tot_pob_ipm urb_pob_ipm rur_pob_ipm ///
-        tot_pob_ipm_hogares urb_pob_ipm_hogares rur_pob_ipm_hogares ///
-        (count) n_municipios = ind_mpio, ///
-        by(id_provincia provincia)
-
-    gen municipio = "PROMEDIO " + upper(provincia)
-    gen tipo_fila = "Promedio provincia"
-
-    merge 1:1 id_provincia using `subregiones', nogen
-
-    save `promedio'
-
-    use `base', clear
-    append using `promedio'
-
-    gen orden_fila = 1 if tipo_fila == "Municipio"
-    replace orden_fila = 2 if tipo_fila == "Promedio provincia"
-
-    sort subregion id_provincia orden_fila municipio
-
-    label variable ind_mpio              "Código DANE"
-    label variable municipio             "Municipio"
-    label variable subregion             "Subregión"
-    label variable provincia             "Provincia"
-    label variable tipo_fila             "Tipo de fila"
-
-    label variable tot_pob_ipm           "Personas pobres IPM total"
-    label variable urb_pob_ipm           "Personas pobres IPM urbana"
-    label variable rur_pob_ipm           "Personas pobres IPM rural"
-
-    label variable tot_pob_ipm_hogares   "Hogares pobres IPM total"
-    label variable urb_pob_ipm_hogares   "Hogares pobres IPM urbana"
-    label variable rur_pob_ipm_hogares   "Hogares pobres IPM rural"
-
-    format tot_pob_ipm urb_pob_ipm rur_pob_ipm ///
-           tot_pob_ipm_hogares urb_pob_ipm_hogares rur_pob_ipm_hogares %6.1f
-
-    export excel ///
-        ind_mpio municipio subregion provincia tipo_fila ///
-        tot_pob_ipm urb_pob_ipm rur_pob_ipm ///
-        tot_pob_ipm_hogares urb_pob_ipm_hogares rur_pob_ipm_hogares ///
-        using "$output/tablas_provincias.xlsx", ///
-        sheet("ecv_ipm") firstrow(varlabels) sheetreplace
-
-restore
-
-
-*-------------------------
-* TO e Informalidad
-*-------------------------
-
-preserve
-
-    keep ind_mpio NomMunicipio subregion id_provincia provincia ///
-         tot_to urb_to rur_to ///
-         tot_emp_informal urb_emp_informal rur_emp_informal
-
-    rename NomMunicipio municipio
-
-    gen tipo_fila = "Municipio"
-
-    tempfile base promedio subregiones
-    save `base'
-
-    use `base', clear
-    keep id_provincia subregion
-    duplicates drop id_provincia, force
-    save `subregiones'
-
-    use `base', clear
-
-    collapse ///
-        (mean) ///
-        tot_to urb_to rur_to ///
-        tot_emp_informal urb_emp_informal rur_emp_informal ///
-        (count) n_municipios = ind_mpio, ///
-        by(id_provincia provincia)
-
-    gen municipio = "PROMEDIO " + upper(provincia)
-    gen tipo_fila = "Promedio provincia"
-
-    merge 1:1 id_provincia using `subregiones', nogen
-
-    save `promedio'
-
-    use `base', clear
-    append using `promedio'
-
-    gen orden_fila = 1 if tipo_fila == "Municipio"
-    replace orden_fila = 2 if tipo_fila == "Promedio provincia"
-
-    sort subregion id_provincia orden_fila municipio
-
-    label variable ind_mpio          "Código DANE"
-    label variable municipio         "Municipio"
-    label variable subregion         "Subregión"
-    label variable provincia         "Provincia"
-    label variable tipo_fila         "Tipo de fila"
-
-    label variable tot_to            "Tasa de ocupación total"
-    label variable urb_to            "Tasa de ocupación urbana"
-    label variable rur_to            "Tasa de ocupación rural"
-
-    label variable tot_emp_informal  "Tasa de empleo informal total"
-    label variable urb_emp_informal  "Tasa de empleo informal urbana"
-    label variable rur_emp_informal  "Tasa de empleo informal rural"
-
-    format tot_to urb_to rur_to ///
-           tot_emp_informal urb_emp_informal rur_emp_informal %6.1f
-
-    export excel ///
-        ind_mpio municipio subregion provincia tipo_fila ///
-        tot_to urb_to rur_to ///
-        tot_emp_informal urb_emp_informal rur_emp_informal ///
-        using "$output/tablas_provincias.xlsx", ///
-        sheet("ecv_ocupacion_informal") firstrow(varlabels) sheetreplace
 
 restore
 

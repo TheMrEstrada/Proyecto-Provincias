@@ -4,12 +4,17 @@ set more off
 
 ** Definir globals y directorios
 
-global input "C:/Users/aarenas/Proantioquia/Proantioquia Team Site - ACV/PRODUCTOS/EJERCICIO CLUSTERIZACIÓN MUNICIPAL ANTIOQUIA/DATOS"
-global output "C:/Users/aarenas/Proantioquia/Proantioquia Team Site - ACV/PRODUCTOS/EJERCICIO CLUSTERIZACIÓN MUNICIPAL ANTIOQUIA/DATOS/BASES HOMOGENEIZADAS"
+* ---- Configuración de directorios ----
+
+	global path "D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias"
+	global rawdata "$path/01_Data/00_Inputs"
+	global scripts "$path/02_Code"
+	global data "$path/01_Data/01_Derived"
+	global output "$path/03_Outputs"
 
 ** Importar datos
 
-import excel "${input}/DATALAKE EDUCACION.xlsx", sheet("Sheet1") firstrow
+import excel "${rawdata}/DATALAKE EDUCACION.xlsx", sheet("Sheet1") firstrow
 
 ** Conservar observaciones a nivel municipal
 
@@ -71,11 +76,26 @@ replace Indicador="ninis" if Indicador=="Jóvenes entre 15 y 28 años que no est
 
 format DatoNumérico %4.1f
 
+
+** Homogeneizar nombres municipales antes del reshape
+
+replace NombreUnidadGeográfica = "San Andrés de Cuerquia" ///
+    if CódigoUnidadGeográfica=="05647"
+
+replace NombreUnidadGeográfica = "San José de la Montaña" ///
+    if CódigoUnidadGeográfica=="05658"
+
+replace NombreUnidadGeográfica = "San Pedro de los Milagros" ///
+    if CódigoUnidadGeográfica=="05664"
+
 ** Transformar datos en estructura amplia
 
 ren DatoNumérico x_
 reshape wide x_, i(CódigoUnidadGeográfica) j(Indicador) string
-renvars *, subst(x_ )
+foreach var of varlist x_* {
+    local nuevo = subinstr("`var'", "x_", "", .)
+    rename `var' `nuevo'
+}
 order NombreUnidadGeográfica, after(CódigoUnidadGeográfica)
 
 ** Homegeneización nombre de variables
@@ -83,6 +103,7 @@ order NombreUnidadGeográfica, after(CódigoUnidadGeográfica)
 ren (CódigoUnidadGeográfica NombreUnidadGeográfica) (ind_mpio nvl_label)
 
 ** Guardar base de datos
+destring ind_mpio, replace
 
 compress
-export excel using "${output}/20250506 EDUCACION.xlsx", firstrow(variables) replace
+export excel using "${data}/20250506 EDUCACION.xlsx", firstrow(variables) replace
