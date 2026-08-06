@@ -13,12 +13,11 @@
 *   $rawdata/AREA_ORIGINAL.xlsx              (hoja Area)
 *   $rawdata/codigos_provincias.dta
 *   $data/20260504_SEGURIDAD_SALUD_DEFICT_VIVIENDA  (tasa_natalidad, tasa_mortalidad)
-* OUTPUTS: $out_02/demografia.xlsx (hojas: poblacion, estructura_edad,
-*          natalidad_mortalidad, migracion)
+*   $data/poblacion_municipal_total_2025_dicc       (I_enve_T)
+* OUTPUTS: $out_02/demografia.xlsx (hojas: poblacion, estructura_edad, natalidad_mortalidad)
 * REQUIERE: 00_master.do (define globals)
-* NOTA: agregado provincial de TASAS (natalidad, mortalidad, TNM) = PONDERADO por
-*       poblacion ( Sum(tasa_i*pob_i)/Sum(pob_i) ). El Indice de Envejecimiento se
-*       RECOMPUTA de los grupos de edad (65+ / <15), no se pondera.
+* NOTA: el agregado provincial de TASAS/INDICE se calcula PONDERADO por poblacion
+*       ( Sum(tasa_i*pob_i)/Sum(pob_i) = tasa agregada ), no como promedio simple.
 * ----------------------------------------------------------------------------
 
 capture erase "$out_02/demografia.xlsx"
@@ -171,12 +170,9 @@ preserve
     tempfile tdep
     save `tdep'
 
-    * Traer id_provincia (para dominante) y subregión COMPLETA (crosswalk 125)
+    * Traer subregión por merge con códigos (para el total de subregión)
     use `fullpob', clear
     merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
-    drop subregion
-    merge m:1 ind_mpio using "$rawdata/códigos_municipios_clean.dta", ///
-        keepusing(subregion) keep(master match) nogen
     tempfile fullpob2
     save `fullpob2'
 
@@ -251,9 +247,35 @@ gen edad_60_69  = TOTAL6064 + TOTAL6569
 gen edad_70_79  = TOTAL7074 + TOTAL7579
 gen edad_80_mas = TOTAL8084 + TOTAL85ymás
 
+* Grupos de edad de 10 anios POR SEXO (para la piramide poblacional: edad x sexo)
+* Hombres
+gen h_edad_0_9    = Hombre04   + Hombre59
+gen h_edad_10_19  = Hombre1014 + Hombre1519
+gen h_edad_20_29  = Hombre2024 + Hombre2529
+gen h_edad_30_39  = Hombre3034 + Hombre3539
+gen h_edad_40_49  = Hombre4044 + Hombre4549
+gen h_edad_50_59  = Hombre5054 + Hombre5559
+gen h_edad_60_69  = Hombre6064 + Hombre6569
+gen h_edad_70_79  = Hombre7074 + Hombre7579
+gen h_edad_80_mas = Hombre8084 + Hombre85ymás
+* Mujeres
+gen m_edad_0_9    = Mujeres04   + Mujeres59
+gen m_edad_10_19  = Mujeres1014 + Mujeres1519
+gen m_edad_20_29  = Mujeres2024 + Mujeres2529
+gen m_edad_30_39  = Mujeres3034 + Mujeres3539
+gen m_edad_40_49  = Mujeres4044 + Mujeres4549
+gen m_edad_50_59  = Mujeres5054 + Mujeres5559
+gen m_edad_60_69  = Mujeres6064 + Mujeres6569
+gen m_edad_70_79  = Mujeres7074 + Mujeres7579
+gen m_edad_80_mas = Mujeres8084 + Mujeres85ymás
+
 keep ind_mpio nvl_label subregion provincia pob_masc pob_fem ///
      edad_0_9 edad_10_19 edad_20_29 edad_30_39 edad_40_49 ///
-     edad_50_59 edad_60_69 edad_70_79 edad_80_mas
+     edad_50_59 edad_60_69 edad_70_79 edad_80_mas ///
+     h_edad_0_9 h_edad_10_19 h_edad_20_29 h_edad_30_39 h_edad_40_49 ///
+     h_edad_50_59 h_edad_60_69 h_edad_70_79 h_edad_80_mas ///
+     m_edad_0_9 m_edad_10_19 m_edad_20_29 m_edad_30_39 m_edad_40_49 ///
+     m_edad_50_59 m_edad_60_69 m_edad_70_79 m_edad_80_mas
 
 gen tipo_fila = "Municipio"
 tempfile base_edad
@@ -261,7 +283,11 @@ save `base_edad'
 
 * Total provincia (suma)
 collapse (sum) pob_masc pob_fem edad_0_9 edad_10_19 edad_20_29 edad_30_39 ///
-    edad_40_49 edad_50_59 edad_60_69 edad_70_79 edad_80_mas, by(provincia)
+    edad_40_49 edad_50_59 edad_60_69 edad_70_79 edad_80_mas ///
+    h_edad_0_9 h_edad_10_19 h_edad_20_29 h_edad_30_39 h_edad_40_49 ///
+    h_edad_50_59 h_edad_60_69 h_edad_70_79 h_edad_80_mas ///
+    m_edad_0_9 m_edad_10_19 m_edad_20_29 m_edad_30_39 m_edad_40_49 ///
+    m_edad_50_59 m_edad_60_69 m_edad_70_79 m_edad_80_mas, by(provincia)
 gen nvl_label = "TOTAL PROVINCIA $provincia_label"
 gen subregion = ""
 gen ind_mpio  = .
@@ -291,13 +317,35 @@ label variable edad_50_59  "50 a 59"
 label variable edad_60_69  "60 a 69"
 label variable edad_70_79  "70 a 79"
 label variable edad_80_mas "80 o más"
+label variable h_edad_0_9    "Hombres 0 a 9"
+label variable h_edad_10_19  "Hombres 10 a 19"
+label variable h_edad_20_29  "Hombres 20 a 29"
+label variable h_edad_30_39  "Hombres 30 a 39"
+label variable h_edad_40_49  "Hombres 40 a 49"
+label variable h_edad_50_59  "Hombres 50 a 59"
+label variable h_edad_60_69  "Hombres 60 a 69"
+label variable h_edad_70_79  "Hombres 70 a 79"
+label variable h_edad_80_mas "Hombres 80 o más"
+label variable m_edad_0_9    "Mujeres 0 a 9"
+label variable m_edad_10_19  "Mujeres 10 a 19"
+label variable m_edad_20_29  "Mujeres 20 a 29"
+label variable m_edad_30_39  "Mujeres 30 a 39"
+label variable m_edad_40_49  "Mujeres 40 a 49"
+label variable m_edad_50_59  "Mujeres 50 a 59"
+label variable m_edad_60_69  "Mujeres 60 a 69"
+label variable m_edad_70_79  "Mujeres 70 a 79"
+label variable m_edad_80_mas "Mujeres 80 o más"
 
-format pob_masc pob_fem edad_* %12.0f
+format pob_masc pob_fem edad_* h_edad_* m_edad_* %12.0f
 
 export excel ///
     ind_mpio nvl_label subregion provincia pob_masc pob_fem ///
     edad_0_9 edad_10_19 edad_20_29 edad_30_39 edad_40_49 ///
     edad_50_59 edad_60_69 edad_70_79 edad_80_mas ///
+    h_edad_0_9 h_edad_10_19 h_edad_20_29 h_edad_30_39 h_edad_40_49 ///
+    h_edad_50_59 h_edad_60_69 h_edad_70_79 h_edad_80_mas ///
+    m_edad_0_9 m_edad_10_19 m_edad_20_29 m_edad_30_39 m_edad_40_49 ///
+    m_edad_50_59 m_edad_60_69 m_edad_70_79 m_edad_80_mas ///
     using "$out_02/demografia.xlsx", ///
     sheet("estructura_edad") firstrow(varlabels) sheetreplace
 
@@ -305,71 +353,50 @@ export excel ///
 /********************************************************************
 * 2.3 Natalidad, Mortalidad e Indice de Envejecimiento
 *     Figuras: Tasa de Natalidad y Mortalidad, Indice de Envejecimiento
-*     - Natalidad y Mortalidad: agregado provincial PONDERADO por poblacion
-*       (la poblacion es el denominador de la tasa => exacto).
-*     - Indice de Envejecimiento: definicion ESTANDAR = poblacion 65+ / poblacion
-*       menor de 15 * 100, RECOMPUTADO desde grupos de edad (Rangos_Quintenios
-*       2025, area Total). El agregado provincial se recomputa de las SUMAS
-*       (Sum(65+)/Sum(<15)), exacto. (Corregido 2026-08-06: antes se traia
-*       I_enve_T del derivado y se ponderaba por poblacion total -> definicion
-*       no estandar y peso incorrecto.)
+*     Agregado provincial PONDERADO por poblacion.
 ********************************************************************/
-
-* --- Componentes del indice de envejecimiento por municipio (2025, Total) ---
-import excel "$rawdata/POBLACION MUNICIPAL.xlsx", firstrow clear sheet("Rangos_Quintenios")
-keep if AÑO == 2025
-keep if ÁREAGEOGRÁFICA == "Total"
-rename DPMP ind_mpio
-destring ind_mpio, replace
-egen pob_men15 = rowtotal(TOTAL04 TOTAL59 TOTAL1014)
-egen pob_65mas = rowtotal(TOTAL6569 TOTAL7074 TOTAL7579 TOTAL8084 TOTAL85ymás)
-keep ind_mpio pob_men15 pob_65mas
-tempfile envcomp
-save `envcomp'
 
 use "$data/20260504_SEGURIDAD_SALUD_DEFICT_VIVIENDA", clear
 keep ind_mpio tasa_natalidad tasa_mortalidad
 
-merge 1:1 ind_mpio using "`envcomp'", keep(master match) nogen
+merge 1:1 ind_mpio using "$data/poblacion_municipal_total_2025_dicc", ///
+    keepusing(I_enve_T) keep(master match) nogen
 
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
 keep if id_provincia == $id_provincia
 
-* Peso poblacional (poblacion total municipal 2025) para natalidad/mortalidad
+* Peso poblacional (poblacion total municipal 2025)
 merge 1:1 ind_mpio using "`pobtot'", keep(master match) nogen
 
-* Indice de envejecimiento municipal (65+ / <15 * 100)
-gen I_enve_T = pob_65mas / pob_men15 * 100
-
 keep ind_mpio nvl_label subregion provincia habitantes_total ///
-     tasa_natalidad tasa_mortalidad I_enve_T pob_men15 pob_65mas
+     tasa_natalidad tasa_mortalidad I_enve_T
 
 gen tipo_fila = "Municipio"
 tempfile base_nat
 save `base_nat'
 
-* --- Agregado provincial ---
-*   Natalidad y mortalidad: ponderadas por poblacion (exacto).
-*   Envejecimiento: recomputado de las sumas de grupos de edad (exacto).
+* --- Agregado provincial ponderado por poblacion ---
 gen xn = tasa_natalidad  * habitantes_total
 gen xm = tasa_mortalidad * habitantes_total
+gen xe = I_enve_T        * habitantes_total
 gen wn = habitantes_total if !missing(tasa_natalidad)
 gen wm = habitantes_total if !missing(tasa_mortalidad)
+gen we = habitantes_total if !missing(I_enve_T)
 
-collapse (sum) xn xm wn wm pob_men15 pob_65mas, by(provincia)
+collapse (sum) xn xm xe wn wm we, by(provincia)
 gen tasa_natalidad  = xn / wn
 gen tasa_mortalidad = xm / wm
-gen I_enve_T        = pob_65mas / pob_men15 * 100
-gen nvl_label = "PROVINCIA $provincia_label (agregado)"
+gen I_enve_T        = xe / we
+gen nvl_label = "PROMEDIO PONDERADO PROVINCIA $provincia_label (por población)"
 gen subregion = ""
 gen ind_mpio  = .
-gen tipo_fila = "Provincia (agregado)"
+gen tipo_fila = "Provincia (ponderado)"
 keep ind_mpio nvl_label subregion provincia tasa_natalidad tasa_mortalidad I_enve_T tipo_fila
 
 append using `base_nat'
 
 gen orden_fila = 1 if tipo_fila == "Municipio"
-replace orden_fila = 2 if tipo_fila == "Provincia (agregado)"
+replace orden_fila = 2 if tipo_fila == "Provincia (ponderado)"
 sort orden_fila nvl_label
 
 label variable ind_mpio        "Código DANE"
@@ -426,10 +453,6 @@ save `pob_all'
 use `tnm_all', clear
 merge 1:1 ind_mpio using "`pob_all'", keep(match) nogen
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
-* Subregión COMPLETA (crosswalk 125) para el agregado de subregión
-drop subregion
-merge m:1 ind_mpio using "$rawdata/códigos_municipios_clean.dta", ///
-    keepusing(subregion) keep(master match) nogen
 tempfile mig_all
 save `mig_all'
 
