@@ -164,11 +164,12 @@ restore
 
 /********************************************************************
 * 4.4 Índice de Capacidad Municipal (ICM)
+*     Agregado provincia y subregión: PROMEDIO PONDERADO por población del año.
+*     Departamento: valor OFICIAL de la hoja BD_ICM_Departamental (Antioquia,
+*     por año), NO agregado calculado por nosotros.
 ********************************************************************/
 
 import excel "$data/ICM_PROVINCIAS.xlsx", sheet("BD_ICM_Municipal") firstrow clear
-
-keep if prov == "$provincia_nombre"
 
 * Renombrar variables (Stata importa ICM-00-0 como ICM000, etc.)
 rename ICM000 ICM_total
@@ -184,6 +185,14 @@ destring Divipola, replace force
 keep Divipola Municipio subreg prov Año ///
      ICM_total PCC_total GPI_total EIS_total ///
      CTI_total SEG_total SOS_total
+
+* Base con TODOS los municipios (para el agregado de subregión)
+tempfile icm_all
+save `icm_all'
+
+* Municipios de la provincia seleccionada
+use `icm_all', clear
+keep if prov == "$provincia_nombre"
 gen tipo_fila = "Municipio"
 tempfile base_icm
 save `base_icm'
@@ -220,11 +229,69 @@ gen subreg = ""
 tempfile promedio
 save `promedio'
 
+*----------------------------------*
+* Promedio subregión mayoritaria PONDERADO por población del año
+*----------------------------------*
+use `base_icm', clear
+contract subreg
+gsort -_freq subreg
+local dom_subreg = subreg[1]
+
+use `icm_all', clear
+keep if subreg == "`dom_subreg'"
+merge m:1 Divipola Año using `pobyr', keep(master match) nogen
+foreach v in ICM_total PCC_total GPI_total EIS_total CTI_total SEG_total SOS_total {
+    gen _x_`v' = `v' * pob
+    gen _w_`v' = pob if !missing(`v')
+}
+collapse (sum) _x_* _w_*, by(Año)
+foreach v in ICM_total PCC_total GPI_total EIS_total CTI_total SEG_total SOS_total {
+    gen `v' = _x_`v' / _w_`v'
+}
+drop _x_* _w_*
+gen Municipio = "PROMEDIO PONDERADO SUBREGIÓN `dom_subreg' (por población del año)"
+gen tipo_fila = "Total subregión"
+gen Divipola = .
+gen subreg = ""
+gen prov = ""
+tempfile subreg_icm
+save `subreg_icm'
+
+*----------------------------------*
+* Departamento: ICM OFICIAL (hoja BD_ICM_Departamental), NO agregado por nosotros
+* Encabezado en la fila 5 del archivo; Antioquia por año.
+*----------------------------------*
+import excel "$data/ICM_PROVINCIAS.xlsx", sheet("BD_ICM_Departamental") cellrange(A5) firstrow clear
+rename ICM000 ICM_total
+rename PCC000 PCC_total
+rename GPI000 GPI_total
+rename EIS000 EIS_total
+rename CTI000 CTI_total
+rename SEG000 SEG_total
+rename SOS000 SOS_total
+rename AÑO Año
+destring Año ICM_total PCC_total GPI_total EIS_total CTI_total SEG_total SOS_total, replace force
+keep Año ICM_total PCC_total GPI_total EIS_total CTI_total SEG_total SOS_total
+gen Municipio = "DEPARTAMENTO (ANTIOQUIA) - ICM oficial"
+gen tipo_fila = "Total departamento"
+gen Divipola = .
+gen subreg = ""
+gen prov = "DEPARTAMENTO DE ANTIOQUIA"
+tempfile dep_icm
+save `dep_icm'
+
+*----------------------------------*
+* Unir todo
+*----------------------------------*
 use `base_icm', clear
 append using `promedio'
+append using `subreg_icm'
+append using `dep_icm'
 
 gen orden_fila = 1 if tipo_fila == "Municipio"
 replace orden_fila = 2 if tipo_fila == "Promedio provincia"
+replace orden_fila = 3 if tipo_fila == "Total subregión"
+replace orden_fila = 4 if tipo_fila == "Total departamento"
 sort Año orden_fila Municipio
 
 *----------------------------------*
