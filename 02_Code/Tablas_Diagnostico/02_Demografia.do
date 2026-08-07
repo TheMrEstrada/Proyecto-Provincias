@@ -353,7 +353,7 @@ export excel ///
 /********************************************************************
 * 2.3 Natalidad, Mortalidad e Indice de Envejecimiento
 *     Figuras: Tasa de Natalidad y Mortalidad, Indice de Envejecimiento
-*     Agregado provincial PONDERADO por poblacion.
+*     Agregados provincia, subregión y departamento PONDERADOS por población.
 ********************************************************************/
 
 use "$data/20260504_SEGURIDAD_SALUD_DEFICT_VIVIENDA", clear
@@ -363,30 +363,90 @@ merge 1:1 ind_mpio using "$data/poblacion_municipal_total_2025_dicc", ///
     keepusing(I_enve_T) keep(master match) nogen
 
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
+
+* --- Peso poblacional: poblacion total municipal 2025 (TODOS los municipios) ---
+preserve
+    import excel "$rawdata/POBLACION MUNICIPAL.xlsx", firstrow clear
+    keep if AÑO == 2025
+    keep if ÁREAGEOGRÁFICA == "Total"
+    keep DPMP TotalGeneral
+    rename DPMP ind_mpio
+    destring ind_mpio, replace
+    destring TotalGeneral, replace force
+    rename TotalGeneral habitantes_total
+    tempfile pob_all_nat
+    save `pob_all_nat'
+restore
+
+merge 1:1 ind_mpio using "`pob_all_nat'", keep(master match) nogen
+
+keep ind_mpio nvl_label subregion provincia id_provincia habitantes_total ///
+     tasa_natalidad tasa_mortalidad I_enve_T
+tempfile nat_all
+save `nat_all'
+
+* --- Total departamento (ponderado por población, TODOS los municipios) ---
+foreach v in tasa_natalidad tasa_mortalidad I_enve_T {
+    gen _x_`v' = `v' * habitantes_total
+    gen _w_`v' = habitantes_total if !missing(`v')
+}
+collapse (sum) _x_* _w_*
+foreach v in tasa_natalidad tasa_mortalidad I_enve_T {
+    gen `v' = _x_`v' / _w_`v'
+}
+drop _x_* _w_*
+gen nvl_label = "PROMEDIO PONDERADO DEPARTAMENTO (ANTIOQUIA) (por población)"
+gen subregion = ""
+gen provincia = "DEPARTAMENTO DE ANTIOQUIA"
+gen ind_mpio  = .
+gen tipo_fila = "Total departamento"
+tempfile nat_dep
+save `nat_dep'
+
+* --- Subregión mayoritaria (ponderado por población) ---
+use `nat_all', clear
 keep if id_provincia == $id_provincia
+contract subregion
+gsort -_freq subregion
+local dom_subreg = subregion[1]
 
-* Peso poblacional (poblacion total municipal 2025)
-merge 1:1 ind_mpio using "`pobtot'", keep(master match) nogen
+use `nat_all', clear
+keep if subregion == "`dom_subreg'"
+foreach v in tasa_natalidad tasa_mortalidad I_enve_T {
+    gen _x_`v' = `v' * habitantes_total
+    gen _w_`v' = habitantes_total if !missing(`v')
+}
+collapse (sum) _x_* _w_*
+foreach v in tasa_natalidad tasa_mortalidad I_enve_T {
+    gen `v' = _x_`v' / _w_`v'
+}
+drop _x_* _w_*
+gen nvl_label = "PROMEDIO PONDERADO SUBREGIÓN `dom_subreg' (por población)"
+gen subregion = ""
+gen provincia = ""
+gen ind_mpio  = .
+gen tipo_fila = "Total subregión"
+tempfile nat_sub
+save `nat_sub'
 
+* --- Provincia (ponderado) + municipios ---
+use `nat_all', clear
+keep if id_provincia == $id_provincia
 keep ind_mpio nvl_label subregion provincia habitantes_total ///
      tasa_natalidad tasa_mortalidad I_enve_T
-
 gen tipo_fila = "Municipio"
 tempfile base_nat
 save `base_nat'
 
-* --- Agregado provincial ponderado por poblacion ---
-gen xn = tasa_natalidad  * habitantes_total
-gen xm = tasa_mortalidad * habitantes_total
-gen xe = I_enve_T        * habitantes_total
-gen wn = habitantes_total if !missing(tasa_natalidad)
-gen wm = habitantes_total if !missing(tasa_mortalidad)
-gen we = habitantes_total if !missing(I_enve_T)
-
-collapse (sum) xn xm xe wn wm we, by(provincia)
-gen tasa_natalidad  = xn / wn
-gen tasa_mortalidad = xm / wm
-gen I_enve_T        = xe / we
+foreach v in tasa_natalidad tasa_mortalidad I_enve_T {
+    gen _x_`v' = `v' * habitantes_total
+    gen _w_`v' = habitantes_total if !missing(`v')
+}
+collapse (sum) _x_* _w_*, by(provincia)
+foreach v in tasa_natalidad tasa_mortalidad I_enve_T {
+    gen `v' = _x_`v' / _w_`v'
+}
+drop _x_* _w_*
 gen nvl_label = "PROMEDIO PONDERADO PROVINCIA $provincia_label (por población)"
 gen subregion = ""
 gen ind_mpio  = .
@@ -394,9 +454,13 @@ gen tipo_fila = "Provincia (ponderado)"
 keep ind_mpio nvl_label subregion provincia tasa_natalidad tasa_mortalidad I_enve_T tipo_fila
 
 append using `base_nat'
+append using `nat_sub'
+append using `nat_dep'
 
 gen orden_fila = 1 if tipo_fila == "Municipio"
 replace orden_fila = 2 if tipo_fila == "Provincia (ponderado)"
+replace orden_fila = 3 if tipo_fila == "Total subregión"
+replace orden_fila = 4 if tipo_fila == "Total departamento"
 sort orden_fila nvl_label
 
 label variable ind_mpio        "Código DANE"
