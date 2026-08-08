@@ -272,6 +272,7 @@ rename SOS000 SOS_total
 rename AÑO Año
 destring Año ICM_total PCC_total GPI_total EIS_total CTI_total SEG_total SOS_total, replace force
 keep Año ICM_total PCC_total GPI_total EIS_total CTI_total SEG_total SOS_total
+drop if missing(Año)   // el used range de la hoja arrastra filas vacías al final
 gen Municipio = "DEPARTAMENTO (ANTIOQUIA) - ICM oficial"
 gen tipo_fila = "Total departamento"
 gen Divipola = .

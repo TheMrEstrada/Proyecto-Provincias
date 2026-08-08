@@ -1019,11 +1019,34 @@ rename S va_profesionales
 rename T va_administracion
 rename U va_artisticas
 destring Año ind_mpio va_*, replace force
-drop if missing(ind_mpio) | missing(Año)
 keep if Año >= 2015 & Año <= 2024
 
-* Total departamental por año (sobre TODOS los municipios del archivo VA, no solo la PAP)
-bysort Año: egen dpto_va_total = total(va_total)
+* --- Departamento (Antioquia): filas del archivo con Código municipio vacío ---
+* Se usan los valores OFICIALES de departamento del archivo (no la suma de municipios).
+preserve
+    keep if missing(ind_mpio)
+    collapse (sum) va_total va_primario va_secundario va_terciario ///
+        va_agricultura va_minas va_manufactura va_construccion va_electricidad ///
+        va_comercio va_informacion va_financieras va_inmobiliarias va_profesionales ///
+        va_administracion va_artisticas, by(Año)
+    gen dpto_va_total = va_total
+    tempfile dep_va
+    save `dep_va'
+restore
+
+* Poblacion total de Antioquia por año (solo para el per cápita del departamento)
+preserve
+    use "`pobyear'", clear
+    collapse (sum) pob, by(Año)
+    rename pob pob_dpto
+    tempfile pobdpto
+    save `pobdpto'
+restore
+
+drop if missing(ind_mpio) | missing(Año)
+
+* Total departamental por año = VA Total OFICIAL de Antioquia (del archivo, no suma de municipios)
+merge m:1 Año using "`dep_va'", keepusing(dpto_va_total) nogen
 
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(match) nogen
 keep if id_provincia == $id_provincia
@@ -1064,8 +1087,29 @@ gen ind_mpio  = .
 gen tipo_fila = "Total provincia"
 append using `base_va'
 
+* --- Fila de departamento (Antioquia): valores OFICIALES del archivo ---
+preserve
+    use `dep_va', clear
+    merge 1:1 Año using "`pobdpto'", keepusing(pob_dpto) nogen
+    gen prop_va_prov       = .
+    gen prop_va_dpto       = 1
+    gen va_pc              = va_total * 1e9 / pob_dpto
+    gen prop_va_primario   = va_primario  / va_total
+    gen prop_va_secundario = va_secundario/ va_total
+    gen prop_va_terciario  = va_terciario / va_total
+    gen nvl_label = "TOTAL DEPARTAMENTO (ANTIOQUIA)"
+    gen subregion = ""
+    gen provincia = "DEPARTAMENTO DE ANTIOQUIA"
+    gen ind_mpio  = .
+    gen tipo_fila = "Total departamento"
+    tempfile dep_row
+    save `dep_row'
+restore
+append using `dep_row'
+
 gen orden_fila = 1 if tipo_fila == "Municipio"
 replace orden_fila = 2 if tipo_fila == "Total provincia"
+replace orden_fila = 3 if tipo_fila == "Total departamento"
 sort Año orden_fila nvl_label
 
 * --- Etiquetas ---
