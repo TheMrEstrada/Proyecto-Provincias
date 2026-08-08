@@ -18,70 +18,91 @@ capture erase "$out_05/economia.xlsx"
 ********************************************************************/
 
 import excel "$data/EXTRANJEROS_PROVINCIAS.xlsx", sheet("Extranjeros") firstrow clear
-
-keep if prov == "$provincia_nombre"
 destring CODIGO_MUN, replace force
 
-preserve
+keep CODIGO_MUN Ciudad subreg prov Año CantExtranjerosnoResidentes
+rename CantExtranjerosnoResidentes extranjeros
+rename CODIGO_MUN cod_mun
+tempfile ext_all
+save `ext_all'
 
-    keep CODIGO_MUN Ciudad subreg prov Año CantExtranjerosnoResidentes
+* --- Municipios de la provincia ---
+use `ext_all', clear
+keep if prov == "$provincia_nombre"
+gen tipo_fila = "Municipio"
+tempfile base
+save `base'
 
-    rename CantExtranjerosnoResidentes extranjeros
-    rename CODIGO_MUN cod_mun
+* --- Total provincial por año ---
+use `ext_all', clear
+keep if prov == "$provincia_nombre"
+collapse (sum) extranjeros (count) n_municipios = cod_mun, by(prov Año)
+gen Ciudad = "TOTAL PROVINCIA $provincia_label"
+gen tipo_fila = "Total provincia"
+gen cod_mun = .
+gen subreg = "TOTAL PROVINCIA"
+tempfile total_prov
+save `total_prov'
 
-    gen tipo_fila = "Municipio"
+* --- Total subregión mayoritaria por año (todos sus municipios) ---
+use `ext_all', clear
+keep if prov == "$provincia_nombre"
+contract subreg
+gsort -_freq subreg
+local dom_subreg = subreg[1]
 
-    tempfile base total
-    save `base'
+use `ext_all', clear
+keep if subreg == "`dom_subreg'"
+collapse (sum) extranjeros, by(Año)
+gen Ciudad = "TOTAL SUBREGIÓN `dom_subreg'"
+gen tipo_fila = "Total subregión"
+gen cod_mun = .
+gen subreg = ""
+gen prov = ""
+tempfile total_sub
+save `total_sub'
 
-    *----------------------------------*
-    * Total provincial por año
-    *----------------------------------*
-    use `base', clear
+* --- Total departamento por año (todos los municipios de Antioquia) ---
+use `ext_all', clear
+collapse (sum) extranjeros, by(Año)
+gen Ciudad = "TOTAL DEPARTAMENTO (ANTIOQUIA)"
+gen tipo_fila = "Total departamento"
+gen cod_mun = .
+gen subreg = ""
+gen prov = "DEPARTAMENTO DE ANTIOQUIA"
+tempfile total_dep
+save `total_dep'
 
-    collapse ///
-        (sum) extranjeros ///
-        (count) n_municipios = cod_mun, ///
-        by(prov Año)
+* --- Unir todo ---
+use `base', clear
+append using `total_prov'
+append using `total_sub'
+append using `total_dep'
 
-    gen Ciudad = "TOTAL PROVINCIA $provincia_label"
-    gen tipo_fila = "Total provincia"
-    gen cod_mun = .
-    gen subreg = "TOTAL PROVINCIA"
+gen orden_fila = 1 if tipo_fila == "Municipio"
+replace orden_fila = 2 if tipo_fila == "Total provincia"
+replace orden_fila = 3 if tipo_fila == "Total subregión"
+replace orden_fila = 4 if tipo_fila == "Total departamento"
+sort Año orden_fila Ciudad
 
-    save `total'
+*----------------------------------*
+* Labels
+*----------------------------------*
+label variable cod_mun     "Código DANE"
+label variable Ciudad      "Municipio"
+label variable subreg      "Subregión"
+label variable prov        "Provincia"
+label variable tipo_fila   "Tipo de fila"
+label variable Año         "Año"
+label variable extranjeros "Visitantes extranjeros no residentes"
 
-    *----------------------------------*
-    * Unir todo
-    *----------------------------------*
-    use `base', clear
-    append using `total'
+format extranjeros %12.0f
 
-    gen orden_fila = 1 if tipo_fila == "Municipio"
-    replace orden_fila = 2 if tipo_fila == "Total provincia"
-
-    sort Año orden_fila Ciudad
-
-    *----------------------------------*
-    * Labels
-    *----------------------------------*
-    label variable cod_mun     "Código DANE"
-    label variable Ciudad      "Municipio"
-    label variable subreg      "Subregión"
-    label variable prov        "Provincia"
-    label variable tipo_fila   "Tipo de fila"
-    label variable Año         "Año"
-    label variable extranjeros "Visitantes extranjeros no residentes"
-
-    format extranjeros %12.0f
-
-    export excel ///
-        cod_mun Ciudad subreg prov tipo_fila Año ///
-        extranjeros ///
-        using "$out_05/economia.xlsx", ///
-        sheet("extranjeros_municipio") firstrow(varlabels) sheetreplace
-
-restore
+export excel ///
+    cod_mun Ciudad subreg prov tipo_fila Año ///
+    extranjeros ///
+    using "$out_05/economia.xlsx", ///
+    sheet("extranjeros_municipio") firstrow(varlabels) sheetreplace
 
 
 /********************************************************************
@@ -788,7 +809,7 @@ export excel ///
 * ----------------------------------------------------------------------------
 * IDE = (poblacion <15 + poblacion 65+) / poblacion 15-64 * 100
 * Fuente: POBLACION MUNICIPAL.xlsx (Rangos_Quintenios, 2025, area Total).
-* Agregado provincial: recomputado desde sumas de grupos (exacto).
+* Agregados provincia, subregión y departamento: recomputados desde sumas de grupos (exacto).
 * ============================================================================
 
 import excel "$rawdata/POBLACION MUNICIPAL.xlsx", firstrow clear sheet("Rangos_Quintenios")
@@ -797,28 +818,76 @@ keep if ÁREAGEOGRÁFICA == "Total"
 rename DPMP ind_mpio
 destring ind_mpio, replace
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
-keep if id_provincia == $id_provincia
 
 egen pob_men15 = rowtotal(TOTAL04 TOTAL59 TOTAL1014)
 egen pob_1564  = rowtotal(TOTAL1519 TOTAL2024 TOTAL2529 TOTAL3034 TOTAL3539 ///
                           TOTAL4044 TOTAL4549 TOTAL5054 TOTAL5559 TOTAL6064)
 egen pob_65mas = rowtotal(TOTAL6569 TOTAL7074 TOTAL7579 TOTAL8084 TOTAL85ymás)
-gen ide = (pob_men15 + pob_65mas) / pob_1564 * 100
 
-keep ind_mpio nvl_label subregion provincia pob_men15 pob_1564 pob_65mas ide
+keep ind_mpio nvl_label subregion provincia id_provincia pob_men15 pob_1564 pob_65mas
+tempfile ide_all
+save `ide_all'
+
+* --- Municipios de la provincia ---
+use `ide_all', clear
+keep if id_provincia == $id_provincia
+gen ide = (pob_men15 + pob_65mas) / pob_1564 * 100
 gen tipo_fila = "Municipio"
 tempfile base
 save `base'
 
+* --- Provincia (agregado exacto desde sumas de grupos) ---
+use `ide_all', clear
+keep if id_provincia == $id_provincia
 collapse (sum) pob_men15 pob_1564 pob_65mas, by(provincia)
 gen ide = (pob_men15 + pob_65mas) / pob_1564 * 100
 gen nvl_label = "PROVINCIA $provincia_label (agregado)"
 gen subregion = ""
 gen ind_mpio  = .
 gen tipo_fila = "Provincia (agregado)"
-append using `base'
+tempfile agg_prov
+save `agg_prov'
+
+* --- Subregión mayoritaria (agregado exacto) ---
+use `ide_all', clear
+keep if id_provincia == $id_provincia
+contract subregion
+gsort -_freq subregion
+local dom_subreg = subregion[1]
+
+use `ide_all', clear
+keep if subregion == "`dom_subreg'"
+collapse (sum) pob_men15 pob_1564 pob_65mas
+gen ide = (pob_men15 + pob_65mas) / pob_1564 * 100
+gen nvl_label = "SUBREGIÓN `dom_subreg' (agregado)"
+gen subregion = ""
+gen provincia = ""
+gen ind_mpio  = .
+gen tipo_fila = "Total subregión"
+tempfile agg_sub
+save `agg_sub'
+
+* --- Departamento (agregado exacto, todos los municipios de Antioquia) ---
+use `ide_all', clear
+collapse (sum) pob_men15 pob_1564 pob_65mas
+gen ide = (pob_men15 + pob_65mas) / pob_1564 * 100
+gen nvl_label = "DEPARTAMENTO (ANTIOQUIA) (agregado)"
+gen subregion = ""
+gen provincia = "DEPARTAMENTO DE ANTIOQUIA"
+gen ind_mpio  = .
+gen tipo_fila = "Total departamento"
+tempfile agg_dep
+save `agg_dep'
+
+* --- Unir todo ---
+use `base', clear
+append using `agg_prov'
+append using `agg_sub'
+append using `agg_dep'
 gen orden_fila = 1 if tipo_fila == "Municipio"
 replace orden_fila = 2 if tipo_fila == "Provincia (agregado)"
+replace orden_fila = 3 if tipo_fila == "Total subregión"
+replace orden_fila = 4 if tipo_fila == "Total departamento"
 sort orden_fila nvl_label
 
 label variable ind_mpio  "Código DANE"
