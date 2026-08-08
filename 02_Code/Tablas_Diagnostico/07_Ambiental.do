@@ -545,8 +545,10 @@ restore
 * Fuente: Pérdida de cobertura árborea.xlsx (hoja "Pérdida cobertura árborea").
 * El encabezado del % es largo/con acentos: se importa sin firstrow y se
 * renombra por posicion (A=Cod_mpio, C=% perdida).
-* NOTA: verificar unidad (fraccion 0-1 vs %) en debugging. Figura municipal;
-*       sin fila de agregado provincial (requeriria area base de cobertura).
+* NOTA: verificar unidad (fraccion 0-1 vs %) en debugging.
+*       Agregados provincia/subregion/departamento = PROMEDIO PONDERADO por AREA
+*       MUNICIPAL (km2). Aproximacion: lo ideal seria ponderar por area base de
+*       cobertura arborea, no por area total del municipio.
 * ============================================================================
 
 import excel "$rawdata/Pérdida de cobertura árborea.xlsx", ///
@@ -559,9 +561,95 @@ destring ind_mpio, replace force
 destring perdida_ca, replace force
 drop if missing(ind_mpio)
 
+* --- Área municipal (peso) desde AREA_ORIGINAL ---
+preserve
+    import excel "$rawdata/AREA_ORIGINAL.xlsx", sheet("Area") firstrow clear
+    rename COD_MPIO ind_mpio
+    destring ind_mpio, replace force
+    rename AREAKM2 area_km2
+    destring area_km2, replace force
+    keep ind_mpio area_km2
+    tempfile area_pca
+    save `area_pca'
+restore
+merge 1:1 ind_mpio using "`area_pca'", keep(master match) nogen
+
+* --- Provincia/subregión (códigos) + subregión DANE completa (125 municipios) ---
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
+tempfile pca_all
+save `pca_all'
+
+* --- Detalle: municipios de la provincia ---
+use `pca_all', clear
 keep if id_provincia == $id_provincia
-sort nvl_label
+keep ind_mpio nvl_label subregion provincia perdida_ca
+gen tipo_fila = "Municipio"
+tempfile base
+save `base'
+
+* --- Promedio provincia (PONDERADO por área municipal) ---
+use `pca_all', clear
+keep if id_provincia == $id_provincia
+gen _x = perdida_ca * area_km2
+gen _w = area_km2 if !missing(perdida_ca)
+collapse (sum) _x _w, by(provincia)
+gen perdida_ca = _x / _w
+drop _x _w
+gen nvl_label = "PROMEDIO PONDERADO PROVINCIA $provincia_label (por área)"
+gen subregion = ""
+gen ind_mpio  = .
+gen tipo_fila = "Promedio provincia"
+tempfile agg_prov
+save `agg_prov'
+
+* --- Promedio subregión mayoritaria (PONDERADO por área municipal) ---
+use `pca_all', clear
+keep if id_provincia == $id_provincia
+contract subregion_full
+gsort -_freq subregion_full
+local dom_subreg = subregion_full[1]
+
+use `pca_all', clear
+keep if subregion_full == "`dom_subreg'"
+gen _x = perdida_ca * area_km2
+gen _w = area_km2 if !missing(perdida_ca)
+collapse (sum) _x _w
+gen perdida_ca = _x / _w
+drop _x _w
+gen nvl_label = "PROMEDIO PONDERADO SUBREGIÓN `dom_subreg' (por área)"
+gen subregion = ""
+gen provincia = ""
+gen ind_mpio  = .
+gen tipo_fila = "Promedio subregión"
+tempfile agg_sub
+save `agg_sub'
+
+* --- Promedio departamento (PONDERADO por área, TODOS los municipios de Antioquia) ---
+use `pca_all', clear
+gen _x = perdida_ca * area_km2
+gen _w = area_km2 if !missing(perdida_ca)
+collapse (sum) _x _w
+gen perdida_ca = _x / _w
+drop _x _w
+gen nvl_label = "PROMEDIO PONDERADO DEPARTAMENTO (ANTIOQUIA) (por área)"
+gen subregion = ""
+gen provincia = "DEPARTAMENTO DE ANTIOQUIA"
+gen ind_mpio  = .
+gen tipo_fila = "Promedio departamento"
+tempfile agg_dep
+save `agg_dep'
+
+* --- Unir municipios + promedios ---
+use `base', clear
+append using `agg_prov'
+append using `agg_sub'
+append using `agg_dep'
+gen orden_fila = 1 if tipo_fila == "Municipio"
+replace orden_fila = 2 if tipo_fila == "Promedio provincia"
+replace orden_fila = 3 if tipo_fila == "Promedio subregión"
+replace orden_fila = 4 if tipo_fila == "Promedio departamento"
+sort orden_fila nvl_label
 
 label variable ind_mpio   "Código DANE"
 label variable nvl_label  "Municipio"
