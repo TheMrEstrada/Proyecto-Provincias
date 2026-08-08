@@ -818,13 +818,15 @@ keep if ÁREAGEOGRÁFICA == "Total"
 rename DPMP ind_mpio
 destring ind_mpio, replace
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
+* Subregión DANE completa (125 municipios) para el agregado de subregión
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
 
 egen pob_men15 = rowtotal(TOTAL04 TOTAL59 TOTAL1014)
 egen pob_1564  = rowtotal(TOTAL1519 TOTAL2024 TOTAL2529 TOTAL3034 TOTAL3539 ///
                           TOTAL4044 TOTAL4549 TOTAL5054 TOTAL5559 TOTAL6064)
 egen pob_65mas = rowtotal(TOTAL6569 TOTAL7074 TOTAL7579 TOTAL8084 TOTAL85ymás)
 
-keep ind_mpio nvl_label subregion provincia id_provincia pob_men15 pob_1564 pob_65mas
+keep ind_mpio nvl_label subregion subregion_full provincia id_provincia pob_men15 pob_1564 pob_65mas
 tempfile ide_all
 save `ide_all'
 
@@ -851,12 +853,12 @@ save `agg_prov'
 * --- Subregión mayoritaria (agregado exacto) ---
 use `ide_all', clear
 keep if id_provincia == $id_provincia
-contract subregion
-gsort -_freq subregion
-local dom_subreg = subregion[1]
+contract subregion_full
+gsort -_freq subregion_full
+local dom_subreg = subregion_full[1]
 
 use `ide_all', clear
-keep if subregion == "`dom_subreg'"
+keep if subregion_full == "`dom_subreg'"
 collapse (sum) pob_men15 pob_1564 pob_65mas
 gen ide = (pob_men15 + pob_65mas) / pob_1564 * 100
 gen nvl_label = "SUBREGIÓN `dom_subreg' (agregado)"

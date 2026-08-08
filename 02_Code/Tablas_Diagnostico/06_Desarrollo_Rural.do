@@ -82,45 +82,97 @@ merge 1:1 ind_mpio Año using `pecuario', nogen
 save `pecuario', replace
 
 *------------------------------------
-* Merge con códigos, filtrar provincia y consolidar
+* Consolidar: departamento = TODOS los municipios del archivo (Antioquia, 125);
+* provincia y subregión desde códigos_provincias (solo municipios PAP, 88).
 *------------------------------------
-merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
-keep if _merge == 3
-drop _merge
-
-keep if id_provincia == $id_provincia
-
 * Especies sin registro en un municipio-año -> 0
 foreach v in bovinos bufalos caprinos ovinos equinos porcinos {
     replace `v' = 0 if missing(`v')
 }
-
 * Total de todas las especies por municipio y año
 egen total_especies = rowtotal(bovinos bufalos caprinos ovinos equinos porcinos)
 
-keep ind_mpio nvl_label subregion provincia Año ///
+* Base departamental: TODOS los municipios de Antioquia del archivo pecuario
+tempfile pecuario_full
+save `pecuario_full'
+
+* Traer códigos (subregión/provincia); solo municipios PAP
+merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta"
+keep if _merge == 3
+drop _merge
+keep ind_mpio nvl_label subregion provincia id_provincia Año ///
      bovinos bufalos caprinos ovinos equinos porcinos total_especies
+tempfile pecuario_all
+save `pecuario_all'
 
+* --- Municipios de la provincia (base para las 3 hojas) ---
+use `pecuario_all', clear
+keep if id_provincia == $id_provincia
 sort Año nvl_label
+tempfile base_pec
+save `base_pec'
 
-*----------------------------------*
-* Participación municipal en el total pecuario provincial (fig. 55)
-*----------------------------------*
-bysort Año: egen tot_prov_especies = total(total_especies)
-gen participacion_pecuario_prov_pct = total_especies / tot_prov_especies
-replace participacion_pecuario_prov_pct = . if tot_prov_especies == 0
+*====================================*
+* Hoja 1: conteos por especie (fig. 54) + agregados provincia/subregión/departamento
+*====================================*
 
-*----------------------------------*
-* Composición porcentual por especie dentro del municipio (fig. 56)
-*----------------------------------*
-foreach v in bovinos bufalos caprinos ovinos equinos porcinos {
-    gen `v'_pct = `v' / total_especies
-    replace `v'_pct = . if total_especies == 0
-}
+* Provincia (suma total por año)
+use `pecuario_all', clear
+keep if id_provincia == $id_provincia
+collapse (sum) bovinos bufalos caprinos ovinos equinos porcinos total_especies, by(provincia Año)
+gen nvl_label = "TOTAL PROVINCIA $provincia_label"
+gen subregion = ""
+gen ind_mpio  = .
+gen tipo_fila = "Total provincia"
+tempfile pec_prov
+save `pec_prov'
 
-*----------------------------------*
-* Labels
-*----------------------------------*
+* Subregión mayoritaria (suma total por año, subregión DANE COMPLETA = todos sus municipios)
+* dom = subregión mayoritaria entre los municipios de la provincia
+use `pecuario_all', clear
+keep if id_provincia == $id_provincia
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
+contract subregion_full
+gsort -_freq subregion_full
+local dom_subreg = subregion_full[1]
+
+* suma sobre TODOS los municipios de esa subregión (base departamental de 125)
+use `pecuario_full', clear
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
+keep if subregion_full == "`dom_subreg'"
+collapse (sum) bovinos bufalos caprinos ovinos equinos porcinos total_especies, by(Año)
+gen nvl_label = "TOTAL SUBREGIÓN `dom_subreg'"
+gen subregion = ""
+gen provincia = ""
+gen ind_mpio  = .
+gen tipo_fila = "Total subregión"
+tempfile pec_sub
+save `pec_sub'
+
+* Departamento (suma total por año, TODOS los municipios de Antioquia = 125)
+use `pecuario_full', clear
+collapse (sum) bovinos bufalos caprinos ovinos equinos porcinos total_especies, by(Año)
+gen nvl_label = "TOTAL DEPARTAMENTO (ANTIOQUIA)"
+gen subregion = ""
+gen provincia = "DEPARTAMENTO DE ANTIOQUIA"
+gen ind_mpio  = .
+gen tipo_fila = "Total departamento"
+tempfile pec_dep
+save `pec_dep'
+
+* Unir municipios + agregados
+use `base_pec', clear
+gen tipo_fila = "Municipio"
+append using `pec_prov'
+append using `pec_sub'
+append using `pec_dep'
+
+gen orden_fila = 1 if tipo_fila == "Municipio"
+replace orden_fila = 2 if tipo_fila == "Total provincia"
+replace orden_fila = 3 if tipo_fila == "Total subregión"
+replace orden_fila = 4 if tipo_fila == "Total departamento"
+sort Año orden_fila nvl_label
+
 label variable ind_mpio          "Código DANE"
 label variable nvl_label         "Municipio"
 label variable subregion         "Subregión"
@@ -133,6 +185,35 @@ label variable ovinos            "Ovinos"
 label variable equinos           "Equinos"
 label variable porcinos          "Porcinos"
 label variable total_especies    "Total especies pecuarias"
+
+export excel ///
+    ind_mpio nvl_label subregion provincia Año ///
+    bovinos bufalos caprinos ovinos equinos porcinos total_especies ///
+    using "$out_06/desarrollo_rural.xlsx", ///
+    sheet("inventario_pecuario") firstrow(varlabels) sheetreplace
+
+*====================================*
+* Hojas 2 y 3: participación y composición (solo municipios de la provincia)
+*====================================*
+use `base_pec', clear
+
+* Participación municipal en el total pecuario provincial (fig. 55)
+bysort Año: egen tot_prov_especies = total(total_especies)
+gen participacion_pecuario_prov_pct = total_especies / tot_prov_especies
+replace participacion_pecuario_prov_pct = . if tot_prov_especies == 0
+
+* Composición porcentual por especie dentro del municipio (fig. 56)
+foreach v in bovinos bufalos caprinos ovinos equinos porcinos {
+    gen `v'_pct = `v' / total_especies
+    replace `v'_pct = . if total_especies == 0
+}
+
+label variable ind_mpio          "Código DANE"
+label variable nvl_label         "Municipio"
+label variable subregion         "Subregión"
+label variable provincia         "Provincia"
+label variable Año               "Año"
+label variable total_especies    "Total especies pecuarias"
 label variable participacion_pecuario_prov_pct "Participación en el total provincial (%)"
 label variable bovinos_pct       "Bovinos (%)"
 label variable bufalos_pct       "Búfalos (%)"
@@ -143,14 +224,6 @@ label variable porcinos_pct      "Porcinos (%)"
 
 format participacion_pecuario_prov_pct bovinos_pct bufalos_pct caprinos_pct ///
        ovinos_pct equinos_pct porcinos_pct %6.2f
-
-
-* Hoja 1: conteos por especie (fig. 54)
-export excel ///
-    ind_mpio nvl_label subregion provincia Año ///
-    bovinos bufalos caprinos ovinos equinos porcinos total_especies ///
-    using "$out_06/desarrollo_rural.xlsx", ///
-    sheet("inventario_pecuario") firstrow(varlabels) sheetreplace
 
 * Hoja 2: participación municipal en el total provincial (fig. 55)
 export excel ///
@@ -247,8 +320,8 @@ restore
 *   Insumo: CULTIVOS_PROVINCIAS.xlsx (UPRA/EVA), filtrando por
 *   prov == "$provincia_nombre".
 *   Hojas:
-*     - permanentes / transitorios : PRINCIPAL cultivo (el de mayor producción)
-*       por municipio-año (área sembrada, área cosechada, producción, rendimiento).
+*     - principales_cultivos : por municipio-año, el PRINCIPAL cultivo permanente
+*       y el PRINCIPAL transitorio (cada uno el de mayor producción) con su producción (t).
 *     - composicion_agricola : por MUNICIPIO (participación del municipio en la
 *       producción de la provincia [G39] + reparto permanentes/transitorios [G38]).
 *     - rendimiento : rendimiento agregado por municipio (Σprod/Σárea) + provincia [G40].
@@ -288,67 +361,55 @@ tempfile cultivos_base
 save `cultivos_base'
 
 *------------------------------------
-* 6.3.1 Principal cultivo PERMANENTE por municipio-año (mayor producción)
-*   1 fila por municipio-año = el cultivo permanente de MAYOR producción.
+* 6.3.1 Principales cultivos por municipio-año (permanente y transitorio)
+*   Una sola tabla: por municipio-año, el PRINCIPAL cultivo permanente y el
+*   PRINCIPAL transitorio (cada uno el de MAYOR producción) con su producción (t).
 *------------------------------------
+
+* Principal cultivo PERMANENTE por municipio-año
 preserve
     keep if Ciclodelcultivo == "Permanente"
-    collapse (sum) area_sembrada area_cosechada produccion_cultivo, ///
-        by(cod_mun Municipio subreg prov Ciclodelcultivo Cultivo Año)
+    collapse (sum) produccion_cultivo, by(cod_mun Municipio subreg prov Cultivo Año)
     drop if missing(produccion_cultivo)
-    gen rendimiento = produccion_cultivo / area_cosechada
     bysort cod_mun Año (produccion_cultivo): keep if _n == _N   // top-1 por producción
-    label variable cod_mun            "Código DANE"
-    label variable Municipio          "Municipio"
-    label variable subreg             "Subregión"
-    label variable prov               "Provincia"
-    label variable Cultivo            "Principal cultivo permanente"
-    label variable Ciclodelcultivo    "Ciclo del cultivo"
-    label variable Año                "Año"
-    label variable area_sembrada      "Área sembrada (ha)"
-    label variable area_cosechada     "Área cosechada (ha)"
-    label variable produccion_cultivo "Producción (t)"
-    label variable rendimiento        "Rendimiento (t/ha)"
-    format area_sembrada area_cosechada produccion_cultivo %12.1f
-    format rendimiento %6.2f
-    gsort Año -produccion_cultivo
-    export excel ///
-        cod_mun Municipio subreg prov Cultivo Ciclodelcultivo Año ///
-        area_sembrada area_cosechada produccion_cultivo rendimiento ///
-        using "$out_06/desarrollo_rural.xlsx", ///
-        sheet("permanentes") firstrow(varlabels) sheetreplace
+    keep cod_mun Municipio subreg prov Año Cultivo produccion_cultivo
+    rename Cultivo            cultivo_perm
+    rename produccion_cultivo prod_perm
+    tempfile perm_ppal
+    save `perm_ppal'
 restore
 
-*------------------------------------
-* 6.3.2 Principal cultivo TRANSITORIO por municipio-año (mayor producción)
-*   Se suma sobre periodos (semestres) antes de elegir el principal.
-*------------------------------------
+* Principal cultivo TRANSITORIO por municipio-año (sumado sobre periodos)
 preserve
     keep if Ciclodelcultivo == "Transitorio"
-    collapse (sum) area_sembrada area_cosechada produccion_cultivo, ///
-        by(cod_mun Municipio subreg prov Ciclodelcultivo Cultivo Año)
+    collapse (sum) produccion_cultivo, by(cod_mun Municipio subreg prov Cultivo Año)
     drop if missing(produccion_cultivo)
-    gen rendimiento = produccion_cultivo / area_cosechada
     bysort cod_mun Año (produccion_cultivo): keep if _n == _N   // top-1 por producción
-    label variable cod_mun            "Código DANE"
-    label variable Municipio          "Municipio"
-    label variable subreg             "Subregión"
-    label variable prov               "Provincia"
-    label variable Cultivo            "Principal cultivo transitorio"
-    label variable Ciclodelcultivo    "Ciclo del cultivo"
-    label variable Año                "Año"
-    label variable area_sembrada      "Área sembrada (ha)"
-    label variable area_cosechada     "Área cosechada (ha)"
-    label variable produccion_cultivo "Producción (t)"
-    label variable rendimiento        "Rendimiento (t/ha)"
-    format area_sembrada area_cosechada produccion_cultivo %12.1f
-    format rendimiento %6.2f
-    gsort Año -produccion_cultivo
+    keep cod_mun Municipio subreg prov Año Cultivo produccion_cultivo
+    rename Cultivo            cultivo_tran
+    rename produccion_cultivo prod_tran
+    tempfile tran_ppal
+    save `tran_ppal'
+restore
+
+* Unir permanente + transitorio por municipio-año -> una sola tabla
+preserve
+    use `perm_ppal', clear
+    merge 1:1 cod_mun Municipio subreg prov Año using `tran_ppal', nogen
+    gsort Año Municipio
+
+    label variable Municipio    "Municipio"
+    label variable Año          "Año"
+    label variable cultivo_perm "Principal cultivo permanente"
+    label variable prod_perm    "Producción total (t)"
+    label variable cultivo_tran "Principal cultivo transitorio"
+    label variable prod_tran    "Producción total (t)"
+    format prod_perm prod_tran %14.1f
+
     export excel ///
-        cod_mun Municipio subreg prov Cultivo Ciclodelcultivo Año ///
-        area_sembrada area_cosechada produccion_cultivo rendimiento ///
+        Municipio Año cultivo_perm prod_perm cultivo_tran prod_tran ///
         using "$out_06/desarrollo_rural.xlsx", ///
-        sheet("transitorios") firstrow(varlabels) sheetreplace
+        sheet("principales_cultivos") firstrow(varlabels) sheetreplace
 restore
 
 

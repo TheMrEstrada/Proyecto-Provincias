@@ -5,10 +5,8 @@
 *          homicidios, violencia intrafamiliar, delitos sexuales),
 *          Hechos victimizantes, SRTDAF, Tierras despojadas (tasa)
 * INPUTS: $data/CULTILICITOS_PROVINCIAS.xlsx, EVOA_PROVINCIAS.xlsx,
-*         seguridad_policia.xlsx, SRDAFT_PROVINCIAS.xlsx,
-*         poblacion_total_2025.dta,
-*         $rawdata/cifras_victimas_ruv.xlsx (hechos victimizantes, RUV original)
-*         [ya NO usa HECHOSVICTIM_PROVINCIAS.xlsx]
+*         seguridad_policia.xlsx, HECHOSVICTIM_PROVINCIAS.xlsx,
+*         SRDAFT_PROVINCIAS.xlsx, poblacion_total_2025.dta
 * OUTPUTS: $out_10 (archivos .xlsx)
 * REQUIERE: 00_master.do (define globals)
 * ----------------------------------------------------------------------------
@@ -302,10 +300,8 @@ rename Total pob
 
 * --- Provincia / subregión / municipio (códigos) ---
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
-* Subregión COMPLETA (crosswalk 125) para el agregado de subregión dominante
-drop subregion
-merge m:1 ind_mpio using "$rawdata/códigos_municipios_clean.dta", ///
-    keepusing(subregion) keep(master match) nogen
+* Subregión DANE completa (125 municipios) para el agregado de subregión
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
 
 * --- Detalle: tasas por municipio de la provincia ---
 tempfile filas
@@ -343,7 +339,7 @@ restore
 
 * Subregión dominante
 preserve
-    keep if subregion == "`dom_subreg'"
+    keep if subregion_full == "`dom_subreg'"
     collapse (sum) n_hurtos n_homicidios n_violencia n_sexuales pob
     gen hurtos           = n_hurtos     / pob * 100000
     gen homicidios       = n_homicidios / pob * 100000
@@ -399,178 +395,111 @@ export excel ///
 
 /********************************************************************
 * 10.4 Hechos victimizantes (conflicto armado) -> 2 hojas
-*     FUENTE ORIGINAL: cifras_victimas_ruv.xlsx (RUV), NO el derivado
-*     HECHOSVICTIM_PROVINCIAS (que solo trae 88 munis y suma sobre
-*     hechos, doble-contando víctimas). El RUV original trae los 125
-*     municipios y totales deduplicados por municipio.
-*
-*     total_victimas: total deduplicado por municipio (hoja
-*        "RUV_totales_municipios") + agregados de provincia, subregión
-*        dominante y departamento.
-*        - municipios: total deduplicado (REPORTE VICTIMAS).
-*        - provincia y subregión: Σ de los totales municipales
-*          deduplicados. APROXIMACIÓN: sobrestima levemente el nivel,
-*          porque una víctima registrada en >1 municipio se cuenta más
-*          de una vez; no existe dedup oficial por provincia/subregión.
-*        - departamento: fila OFICIAL deduplicada "TOTAL DEPARTAMENTO".
-*        La fuente RUV_totales_municipios NO trae "Eventos"; esta hoja
-*        no incluye esa columna.
+*     total_victimas: agregado por municipio (suma de todos los hechos)
+*        de las 5 variables + total provincial.
 *     proporcion_hechos: proporción (%) de cada hecho en la provincia
-*        sobre el total de "Víctimas por ocurrencia" (hoja
-*        "RUV_hechos_municipios", desagregada por hecho).
+*        sobre el total de "Víctimas por ocurrencia".
 ********************************************************************/
 
-* --- Subregión dominante de la provincia (la más frecuente) ---
-use "$rawdata/códigos_provincias.dta", clear
-keep if id_provincia == $id_provincia
-contract subregion
-gsort -_freq subregion
-local dom_subreg = subregion[1]
+import excel "$data/HECHOSVICTIM_PROVINCIAS.xlsx", sheet("hechos victim") firstrow clear
+
+keep if prov == "$provincia_nombre"
+
+capture rename CódigoDANE cod_dane
+destring cod_dane, replace force
+capture drop Tipodefila
+rename Hechovictimizante hecho_victim
+
+* Las 5 columnas de conteo tienen acentos/espacios -> renombrar por posición
+ds cod_dane Municipio subreg prov hecho_victim, not
+local c1 : word 1 of `r(varlist)'
+local c2 : word 2 of `r(varlist)'
+local c3 : word 3 of `r(varlist)'
+local c4 : word 4 of `r(varlist)'
+local c5 : word 5 of `r(varlist)'
+rename `c1' victimas_ocurrencia
+rename `c2' victimas_declaracion
+rename `c3' victimas_ubicacion
+rename `c4' sujetos_atencion
+rename `c5' eventos
+destring victimas_ocurrencia victimas_declaracion victimas_ubicacion sujetos_atencion eventos, replace force
 
 *==================================================================
-* Hoja 1: total_victimas (deduplicado por municipio + agregados)
+* Hoja 1: total_victimas (agregado por municipio + total provincial)
 *==================================================================
-import excel "$rawdata/cifras_victimas_ruv.xlsx", sheet("RUV_totales_municipios") firstrow clear
-destring COD_MUN VICTIMAS_OCURRENCIA VICTIMAS_DECLARACION VICTIMAS_UBICACION SUJETOS_ATENCION, replace force
-
-* -- Fila oficial de departamento (guardar los 4 totales deduplicados) --
 preserve
-    keep if NIVEL == "DEPARTAMENTO"
-    local dep_ocu = VICTIMAS_OCURRENCIA[1]
-    local dep_dec = VICTIMAS_DECLARACION[1]
-    local dep_ubi = VICTIMAS_UBICACION[1]
-    local dep_suj = SUJETOS_ATENCION[1]
+    collapse (sum) victimas_ocurrencia victimas_declaracion victimas_ubicacion ///
+        sujetos_atencion eventos, by(cod_dane Municipio subreg prov)
+    gen tipo_fila = "Municipio"
+
+    tempfile muni total
+    save `muni'
+
+    collapse (sum) victimas_ocurrencia victimas_declaracion victimas_ubicacion ///
+        sujetos_atencion eventos (count) n_municipios = cod_dane, by(prov)
+    gen Municipio = "TOTAL PROVINCIA $provincia_label"
+    gen cod_dane  = .
+    gen subreg    = ""
+    gen tipo_fila = "Total provincia"
+    save `total'
+
+    use `muni', clear
+    append using `total'
+    gen orden_fila = 1 if tipo_fila == "Municipio"
+    replace orden_fila = 2 if tipo_fila == "Total provincia"
+    sort orden_fila Municipio
+
+    label variable cod_dane             "Código DANE"
+    label variable Municipio            "Municipio"
+    label variable subreg               "Subregión"
+    label variable prov                 "Provincia"
+    label variable victimas_ocurrencia  "Víctimas por ocurrencia"
+    label variable victimas_declaracion "Víctimas por declaración"
+    label variable victimas_ubicacion   "Víctimas por ubicación"
+    label variable sujetos_atencion     "Sujetos de atención"
+    label variable eventos              "Eventos"
+
+    format victimas_ocurrencia victimas_declaracion victimas_ubicacion ///
+        sujetos_atencion eventos %12.0f
+
+
+    export excel ///
+        cod_dane Municipio subreg prov ///
+        victimas_ocurrencia victimas_declaracion victimas_ubicacion sujetos_atencion eventos ///
+        using "$out_10/seguridad.xlsx", ///
+        sheet("total_victimas") firstrow(varlabels) sheetreplace
 restore
-
-keep if NIVEL == "MUNICIPIO"
-rename COD_MUN            ind_mpio
-rename VICTIMAS_OCURRENCIA  victimas_ocurrencia
-rename VICTIMAS_DECLARACION victimas_declaracion
-rename VICTIMAS_UBICACION   victimas_ubicacion
-rename SUJETOS_ATENCION     sujetos_atencion
-
-* Nombre de municipio + subregión COMPLETA (crosswalk 125) para el
-* agregado de subregión dominante sobre TODA la subregión.
-merge m:1 ind_mpio using "$rawdata/códigos_municipios_clean.dta", ///
-    keepusing(nvl_label subregion) keep(master match) nogen
-* Provincia / id_provincia (solo los 88 munis PAP) para filtrar la provincia.
-merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", ///
-    keepusing(provincia id_provincia) keep(master match) nogen
-
-tempfile hvfilas
-
-* -- Detalle: municipios de la provincia --
-preserve
-    keep if id_provincia == $id_provincia
-    keep ind_mpio nvl_label subregion ///
-         victimas_ocurrencia victimas_declaracion victimas_ubicacion sujetos_atencion
-    gen tipo_fila  = "Municipio"
-    gen orden_fila = 1
-    save `hvfilas'
-restore
-
-* -- Provincia: Σ de totales municipales deduplicados --
-preserve
-    keep if id_provincia == $id_provincia
-    collapse (sum) victimas_ocurrencia victimas_declaracion victimas_ubicacion sujetos_atencion
-    gen ind_mpio   = .
-    gen nvl_label  = "TOTAL PROVINCIA $provincia_label"
-    gen subregion  = ""
-    gen tipo_fila  = "Total provincia"
-    gen orden_fila = 2
-    append using `hvfilas'
-    save `hvfilas', replace
-restore
-
-* -- Subregión dominante (crosswalk 125): Σ de municipales deduplicados --
-preserve
-    keep if subregion == "`dom_subreg'"
-    collapse (sum) victimas_ocurrencia victimas_declaracion victimas_ubicacion sujetos_atencion
-    gen ind_mpio   = .
-    gen nvl_label  = "TOTAL SUBREGIÓN `dom_subreg'"
-    gen subregion  = "`dom_subreg'"
-    gen tipo_fila  = "Total subregión"
-    gen orden_fila = 3
-    append using `hvfilas'
-    save `hvfilas', replace
-restore
-
-* -- Departamento: fila OFICIAL deduplicada (no es la suma municipal) --
-preserve
-    clear
-    set obs 1
-    gen ind_mpio   = .
-    gen nvl_label  = "TOTAL DEPARTAMENTO (ANTIOQUIA)"
-    gen subregion  = ""
-    gen victimas_ocurrencia  = `dep_ocu'
-    gen victimas_declaracion = `dep_dec'
-    gen victimas_ubicacion   = `dep_ubi'
-    gen sujetos_atencion     = `dep_suj'
-    gen tipo_fila  = "Total departamento"
-    gen orden_fila = 4
-    append using `hvfilas'
-    save `hvfilas', replace
-restore
-
-use `hvfilas', clear
-sort orden_fila nvl_label
-
-label variable ind_mpio             "Código DANE"
-label variable nvl_label            "Municipio"
-label variable subregion            "Subregión"
-label variable victimas_ocurrencia  "Víctimas por ocurrencia"
-label variable victimas_declaracion "Víctimas por declaración"
-label variable victimas_ubicacion   "Víctimas por ubicación"
-label variable sujetos_atencion     "Sujetos de atención"
-
-format victimas_ocurrencia victimas_declaracion victimas_ubicacion ///
-    sujetos_atencion %12.0f
-
-export excel ///
-    ind_mpio nvl_label subregion ///
-    victimas_ocurrencia victimas_declaracion victimas_ubicacion sujetos_atencion ///
-    using "$out_10/seguridad.xlsx", ///
-    sheet("total_victimas") firstrow(varlabels) sheetreplace
 
 *==================================================================
 * Hoja 2: proporcion_hechos (% por hecho, sobre víctimas por ocurrencia)
-*   Fuente: RUV_hechos_municipios (desagregada por hecho). El total
-*   por ocurrencia aquí suma sobre hechos (una víctima puede sufrir
-*   varios hechos), que es el denominador correcto de la proporción.
 *==================================================================
-import excel "$rawdata/cifras_victimas_ruv.xlsx", sheet("RUV_hechos_municipios") firstrow clear
-rename COD_MUN ind_mpio
-destring ind_mpio VICTIMAS_OCURRENCIA, replace force
-merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", ///
-    keepusing(id_provincia) keep(master match) nogen
-keep if id_provincia == $id_provincia
+preserve
+    collapse (sum) victimas_ocurrencia, by(hecho_victim)
 
-rename HECHO hecho_victim
-collapse (sum) victimas_ocurrencia = VICTIMAS_OCURRENCIA, by(hecho_victim)
+    quietly summarize victimas_ocurrencia
+    local tot_ocu = r(sum)
+    gen proporcion_pct = victimas_ocurrencia / `tot_ocu'
 
-quietly summarize victimas_ocurrencia
-local tot_ocu = r(sum)
-gen proporcion_pct = victimas_ocurrencia / `tot_ocu'
+    gsort -victimas_ocurrencia
 
-gsort -victimas_ocurrencia
+    * Fila de total provincial (100%)
+    local n = _N + 1
+    set obs `n'
+    replace hecho_victim       = "TOTAL PROVINCIA $provincia_label" in `n'
+    replace victimas_ocurrencia = `tot_ocu' in `n'
+    replace proporcion_pct      = 1 in `n'
 
-* Fila de total provincial (100%)
-local n = _N + 1
-set obs `n'
-replace hecho_victim        = "TOTAL PROVINCIA $provincia_label" in `n'
-replace victimas_ocurrencia = `tot_ocu' in `n'
-replace proporcion_pct      = 1 in `n'
+    label variable hecho_victim        "Hecho victimizante"
+    label variable victimas_ocurrencia "Víctimas por ocurrencia"
+    label variable proporcion_pct      "Proporción sobre el total (%)"
 
-label variable hecho_victim        "Hecho victimizante"
-label variable victimas_ocurrencia "Víctimas por ocurrencia"
-label variable proporcion_pct      "Proporción sobre el total (%)"
+    format proporcion_pct %6.2f
 
-format proporcion_pct %6.2f
-
-export excel ///
-    hecho_victim victimas_ocurrencia proporcion_pct ///
-    using "$out_10/seguridad.xlsx", ///
-    sheet("proporcion_hechos") firstrow(varlabels) sheetreplace
+    export excel ///
+        hecho_victim victimas_ocurrencia proporcion_pct ///
+        using "$out_10/seguridad.xlsx", ///
+        sheet("proporcion_hechos") firstrow(varlabels) sheetreplace
+restore
 
 
 /********************************************************************
@@ -595,10 +524,8 @@ rename CodigoDANE ind_mpio
 destring ind_mpio NumeroDeSolicitudes NumeroDePredios NumeroDeTitulares, replace force
 capture drop prov subreg
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
-* Subregión COMPLETA (crosswalk 125) para el agregado de subregión dominante
-drop subregion
-merge m:1 ind_mpio using "$rawdata/códigos_municipios_clean.dta", ///
-    keepusing(subregion) keep(master match) nogen
+* Subregión DANE completa (125 municipios) para el agregado de subregión
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
 
 * --- Detalle: municipios de la provincia ---
 tempfile filas
@@ -636,7 +563,7 @@ restore
 
 * --- Total de la subregión dominante ---
 preserve
-    keep if subregion == "`dom_subreg'"
+    keep if subregion_full == "`dom_subreg'"
     if _N > 0 {
         collapse (sum) NumeroDeSolicitudes NumeroDePredios NumeroDeTitulares
     }
@@ -715,11 +642,9 @@ rename CodigoDANE ind_mpio
 destring ind_mpio NumeroDeSolicitudes, replace force
 capture drop prov subreg
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
-* Subregión COMPLETA (crosswalk 125) para el agregado de subregión dominante
-drop subregion
-merge m:1 ind_mpio using "$rawdata/códigos_municipios_clean.dta", ///
-    keepusing(subregion) keep(master match) nogen
 merge m:1 ind_mpio using `pob25', keep(master match) nogen
+* Subregión DANE completa (125 municipios) para el agregado de subregión
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
 
 tempfile tasas
 
@@ -758,7 +683,7 @@ restore
 
 * --- Total de la subregión dominante (tasa agregada) ---
 preserve
-    keep if subregion == "`dom_subreg'"
+    keep if subregion_full == "`dom_subreg'"
     if _N > 0 {
         collapse (sum) NumeroDeSolicitudes pob
     }
@@ -816,16 +741,13 @@ export excel ///
 
 /********************************************************************
 * 10.6 Percepción de seguridad (encuesta ciudadana)
-*     Fuente: $data/percepcion_seguridad.dta (DERIVADO liviano generado por
-*       00_Homogeneizacion_Inputs/percepcion_seguridad.do a partir del
-*       microdato crudo "Data anonimizada encuesta percepcion 2018-2025.xlsx").
-*       El derivado ya trae solo las 8 columnas necesarias, para TODAS las
-*       subregiones; el import lento del archivo grande (1363 columnas) ocurre
-*       una sola vez en la homogenización, no aquí.
+*     Fuente: "Data anonimizada encuesta percepcion 2018-2025.xlsx" (00_Inputs).
 *     Representativa a nivel de SUBREGIÓN -> unidad de análisis = subregión
 *     dominante de la provincia del flujo.
+*     Doble encabezado (nombres cortos en la fila 2) -> cellrange(A2).
 *     4 hojas (P1A, P2, P4A, P6): proporción PONDERADA (FACTOR_PONDERACION) de
 *     cada categoría por periodo (año; las dos olas de 2019 separadas).
+*     OJO: el archivo es muy grande (1363 columnas); el import es lento.
 ********************************************************************/
 
 * --- Subregión dominante de la provincia -> código B_SUBREGION (1-9) ---
@@ -846,8 +768,12 @@ if "`dom_subreg'" == "SUROESTE"        local subcode = 7
 if "`dom_subreg'" == "URABA"           local subcode = 8
 if "`dom_subreg'" == "VALLE DE ABURRA" local subcode = 9
 
-* --- Cargar el derivado liviano (ya reducido a 8 columnas) ---
-use "$data/percepcion_seguridad.dta", clear
+* --- Importar encuesta (nombres cortos en la fila 2) ---
+import excel "$rawdata/Data anonimizada encuesta percepcion 2018-2025.xlsx", ///
+    sheet("Data_033200250000 Perc2018-2025") cellrange(A2) firstrow clear
+
+keep ESTUDIO FECHAINI B_SUBREGION P1A P2 P4A P6 FACTOR_PONDERACION
+destring B_SUBREGION FACTOR_PONDERACION P1A P2 P4A P6, replace force
 
 keep if B_SUBREGION == `subcode'
 

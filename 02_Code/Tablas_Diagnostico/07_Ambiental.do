@@ -21,18 +21,18 @@ capture erase "$out_07/ambiental.xlsx"
 import excel "$data/AREAPROTEGIDA_PROVINCIAS.xlsx", sheet("Hoja1") firstrow clear
 
 destring COD_MPIO, replace force
-rename Area_Sobre_Municipio area_prot_km2
-destring area_prot_km2, replace force
+rename Area_Sobre_Municipio area_km2
+destring area_km2, replace force
 
 * Total departamental (todo Antioquia): escalar para participación
-quietly summarize area_prot_km2
+quietly summarize area_km2
 local tot_dep = r(sum)
 
 *----------------------------------*
 * Total departamental (fila)
 *----------------------------------*
 preserve
-    collapse (sum) area_prot_km2
+    collapse (sum) area_km2
     gen Municipio = "TOTAL DEPARTAMENTO (ANTIOQUIA)"
     gen subreg    = ""
     gen prov      = "DEPARTAMENTO DE ANTIOQUIA"
@@ -47,10 +47,10 @@ restore
 keep if prov == "$provincia_nombre"
 
 * Total provincial: escalar para participación
-quietly summarize area_prot_km2
+quietly summarize area_km2
 local tot_prov = r(sum)
 
-keep COD_MPIO Municipio subreg prov NombreAreaProtegida categori_1 area_prot_km2
+keep COD_MPIO Municipio subreg prov NombreAreaProtegida categori_1 area_km2
 gen tipo_fila = "Municipio"
 
 tempfile base prov_tot
@@ -60,7 +60,7 @@ save `base'
 * Total provincial (fila)
 *----------------------------------*
 use `base', clear
-collapse (sum) area_prot_km2, by(prov)
+collapse (sum) area_km2, by(prov)
 gen Municipio = "TOTAL PROVINCIA $provincia_label"
 gen subreg    = ""
 gen tipo_fila = "Total provincia"
@@ -86,8 +86,8 @@ sort orden_fila Municipio NombreAreaProtegida
 *   - total departamento: queda vacío (es la base)
 *----------------------------------*
 gen participacion_area_prot_pct = .
-replace participacion_area_prot_pct = area_prot_km2 / `tot_prov' if tipo_fila == "Municipio"
-replace participacion_area_prot_pct = area_prot_km2 / `tot_dep'  if tipo_fila == "Total provincia"
+replace participacion_area_prot_pct = area_km2 / `tot_prov' if tipo_fila == "Municipio"
+replace participacion_area_prot_pct = area_km2 / `tot_dep'  if tipo_fila == "Total provincia"
 
 *----------------------------------*
 * Labels
@@ -98,16 +98,16 @@ label variable subreg                      "Subregión"
 label variable prov                        "Provincia"
 label variable NombreAreaProtegida         "Nombre Área Protegida"
 label variable categori_1                  "Categoría"
-label variable area_prot_km2                    "Área sobre municipio (km²)"
+label variable area_km2                    "Área sobre municipio (km²)"
 label variable participacion_area_prot_pct "Participación del área protegida (%)"
 
-format area_prot_km2 %12.2f
+format area_km2 %12.2f
 format participacion_area_prot_pct %6.2f
 
 
 export excel ///
     COD_MPIO Municipio subreg prov ///
-    NombreAreaProtegida categori_1 area_prot_km2 participacion_area_prot_pct ///
+    NombreAreaProtegida categori_1 area_km2 participacion_area_prot_pct ///
     using "$out_07/ambiental.xlsx", ///
     sheet("detalle") firstrow(varlabels) sheetreplace
 
@@ -134,37 +134,37 @@ preserve
         capture destring `v', replace force
     }
 
-    gen orden_fila = 1
-    tempfile base
+    tempfile base promedio
     save `base'
 
     *----------------------------------*
-    * SIN promedio de provincia/subregión: el IRCA es un índice de riesgo hídrico
-    * y no se agrega por promedio (no hay ponderador de población servida). El único
-    * agregado válido es el OFICIAL del departamento, que el insumo IRCA reporta en
-    * la fila "#TODOS" (Antioquia). Hoy solo el archivo 2024 trae esa fila.
-    *----------------------------------*
-    import excel "$rawdata/Indice de riesgo de calidad del agua (IRCA) 2024.xlsx", ///
-        sheet("Hoja1") firstrow clear
-    keep if MunicipioCodigo == "#TODOS"
-    keep Año IRCA Nivelderiesgo IRCAurbano Nivelderiesgourbano IRCArural Nivelderiesgorural
-    foreach v in Año IRCA IRCAurbano IRCArural {
-        capture destring `v', replace force
-    }
-    gen MunicipioCodigo = .
-    gen Municipio  = "TOTAL DEPARTAMENTO (ANTIOQUIA)"
-    gen subreg     = ""
-    gen prov       = "DEPARTAMENTO DE ANTIOQUIA"
-    gen tipo_fila  = "Total departamento"
-    gen orden_fila = 2
-    tempfile dep
-    save `dep'
-
-    *----------------------------------*
-    * Unir: municipios de la provincia + fila departamental oficial
+    * Promedio provincial por año
     *----------------------------------*
     use `base', clear
-    append using `dep'
+
+    collapse ///
+        (mean) IRCA IRCAurbano IRCArural ///
+        (count) n_municipios = MunicipioCodigo, ///
+        by(prov Año)
+
+    gen Municipio = "PROMEDIO SIMPLE PROVINCIA $provincia_label"
+    gen tipo_fila = "Promedio provincia"
+    gen MunicipioCodigo = .
+    gen subreg = ""
+    gen Nivelderiesgo = ""
+    gen Nivelderiesgourbano = ""
+    gen Nivelderiesgorural = ""
+
+    save `promedio'
+
+    *----------------------------------*
+    * Unir todo
+    *----------------------------------*
+    use `base', clear
+    append using `promedio'
+
+    gen orden_fila = 1 if tipo_fila == "Municipio"
+    replace orden_fila = 2 if tipo_fila == "Promedio provincia"
 
     sort Año orden_fila Municipio
 
@@ -368,13 +368,10 @@ gen sis = _ev == "SISMO"
 
 collapse (sum) av mm icv inu seq sis, by(ind_mpio)
 
-* Traer id_provincia y nombre del municipio (PAP) y la subregión COMPLETA (125).
-* keep(master match) para NO descartar municipios no-PAP: se necesitan para el
-* agregado de la subregión dominante (que abarca toda la subregión, no solo la PAP).
+* Traer subregión, provincia y nombre del municipio
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
-drop subregion
-merge m:1 ind_mpio using "$rawdata/códigos_municipios_clean.dta", ///
-    keepusing(subregion) keep(master match) nogen
+* Subregión DANE completa (125 municipios) para el agregado de subregión
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
 
 * --- Detalle: municipios de la provincia ---
 preserve
@@ -399,7 +396,7 @@ restore
 
 * --- Total de la subregión dominante ---
 preserve
-    keep if subregion == "`dom_subreg'"
+    keep if subregion_full == "`dom_subreg'"
     collapse (sum) av mm icv inu seq sis
     gen nvl_label = "TOTAL SUBREGIÓN `dom_subreg'"
     gen subregion = "`dom_subreg'"
@@ -466,19 +463,60 @@ rename `imrc_d' IMRC_D
 
 destring DIVIPOLA IMRC_E IMRC_D, replace force
 
+*----------------------------------*
+* Promedio departamental (todos los municipios, antes de filtrar)
+*----------------------------------*
+preserve
+    collapse (mean) IMRC_E IMRC_D (count) n_municipios = DIVIPOLA
+    gen Municipio = "PROMEDIO SIMPLE DEPARTAMENTO (ANTIOQUIA)"
+    gen subreg    = ""
+    gen prov      = "DEPARTAMENTO DE ANTIOQUIA"
+    gen DIVIPOLA  = .
+    gen tipo_fila = "Promedio departamento"
+    tempfile depprom
+    save `depprom'
+restore
+
 keep if prov == "$provincia_nombre"
 
 preserve
 
     keep DIVIPOLA Municipio subreg prov IMRC_E IMRC_D
 
+    gen tipo_fila = "Municipio"
+
+    tempfile base promedio
+    save `base'
+
     *----------------------------------*
-    * SIN agregado: el IMRC es un índice de riesgo municipal; no se agrega por
-    * promedio a provincia/subregión, y la fuente no trae un IMRC departamental
-    * (IMRC_ORIGINAL es municipal/nacional, sin fila de departamento). Por eso se
-    * exportan SOLO los municipios de la provincia seleccionada.
+    * Promedio provincial
     *----------------------------------*
-    sort Municipio
+    use `base', clear
+
+    collapse ///
+        (mean) IMRC_E IMRC_D ///
+        (count) n_municipios = DIVIPOLA, ///
+        by(prov)
+
+    gen Municipio = "PROMEDIO SIMPLE PROVINCIA $provincia_label"
+    gen tipo_fila = "Promedio provincia"
+    gen DIVIPOLA = .
+    gen subreg = ""
+
+    save `promedio'
+
+    *----------------------------------*
+    * Unir todo
+    *----------------------------------*
+    use `base', clear
+    append using `promedio'
+    append using `depprom'
+
+    gen orden_fila = 1 if tipo_fila == "Municipio"
+    replace orden_fila = 2 if tipo_fila == "Promedio provincia"
+    replace orden_fila = 3 if tipo_fila == "Promedio departamento"
+
+    sort orden_fila Municipio
 
     *----------------------------------*
     * Labels

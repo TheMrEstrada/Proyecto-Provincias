@@ -173,18 +173,19 @@ preserve
     * Traer subregión por merge con códigos (para el total de subregión)
     use `fullpob', clear
     merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
+    merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
     tempfile fullpob2
     save `fullpob2'
 
     * Subregión mayoritaria entre los municipios de la provincia
     keep if id_provincia == $id_provincia
-    contract subregion
-    gsort -_freq subregion
-    local dom_subreg = subregion[1]
+    contract subregion_full
+    gsort -_freq subregion_full
+    local dom_subreg = subregion_full[1]
 
-    * Total subregión mayoritaria (todos sus municipios)
+    * Total subregión mayoritaria (subregión DANE completa: todos sus municipios)
     use `fullpob2', clear
-    keep if subregion == "`dom_subreg'"
+    keep if subregion_full == "`dom_subreg'"
     collapse (sum) habitantes_total habitantes_cabecera habitantes_rural
     gen pct_cabecera = habitantes_cabecera / habitantes_total
     gen pct_rural    = habitantes_rural    / habitantes_total
@@ -379,8 +380,10 @@ preserve
 restore
 
 merge 1:1 ind_mpio using "`pob_all_nat'", keep(master match) nogen
+* Subregión DANE completa (125 municipios) para el agregado de subregión
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
 
-keep ind_mpio nvl_label subregion provincia id_provincia habitantes_total ///
+keep ind_mpio nvl_label subregion subregion_full provincia id_provincia habitantes_total ///
      tasa_natalidad tasa_mortalidad I_enve_T
 tempfile nat_all
 save `nat_all'
@@ -406,12 +409,12 @@ save `nat_dep'
 * --- Subregión mayoritaria (ponderado por población) ---
 use `nat_all', clear
 keep if id_provincia == $id_provincia
-contract subregion
-gsort -_freq subregion
-local dom_subreg = subregion[1]
+contract subregion_full
+gsort -_freq subregion_full
+local dom_subreg = subregion_full[1]
 
 use `nat_all', clear
-keep if subregion == "`dom_subreg'"
+keep if subregion_full == "`dom_subreg'"
 foreach v in tasa_natalidad tasa_mortalidad I_enve_T {
     gen _x_`v' = `v' * habitantes_total
     gen _w_`v' = habitantes_total if !missing(`v')
@@ -517,6 +520,8 @@ save `pob_all'
 use `tnm_all', clear
 merge 1:1 ind_mpio using "`pob_all'", keep(match) nogen
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
+* Subregión DANE completa (125 municipios) para el agregado de subregión
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
 tempfile mig_all
 save `mig_all'
 
@@ -541,12 +546,12 @@ save `mtdep'
 * --- Subregión mayoritaria (ponderado por población) ---
 use `mig_all', clear
 keep if id_provincia == $id_provincia
-contract subregion
-gsort -_freq subregion
-local dom_subreg = subregion[1]
+contract subregion_full
+gsort -_freq subregion_full
+local dom_subreg = subregion_full[1]
 
 use `mig_all', clear
-keep if subregion == "`dom_subreg'"
+keep if subregion_full == "`dom_subreg'"
 foreach v in tot_tnm urb_tnm rur_tnm {
     gen _x_`v' = `v' * pob
     gen _w_`v' = pob if !missing(`v')

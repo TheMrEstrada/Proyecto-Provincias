@@ -54,8 +54,10 @@ rename viviendas_con_deficit vdef_cuali
 * Unir ambos déficits + provincia/subregión (TODOS los municipios)
 merge 1:1 ind_mpio using "`dcuanti'", nogen
 merge m:1 ind_mpio using "$rawdata/códigos_provincias.dta", keep(master match) nogen
+* Subregión DANE completa (125 municipios) para el agregado de subregión
+merge m:1 ind_mpio using "$rawdata/subreg_completo.dta", keep(master match) nogen
 
-keep ind_mpio nvl_label subregion provincia id_provincia ///
+keep ind_mpio nvl_label subregion subregion_full provincia id_provincia ///
      vdef_cuanti viv_cuanti vdef_cuali viv_cuali
 tempfile def_all
 save `def_all'
@@ -85,12 +87,12 @@ save `agg_prov'
 * --- Subregión mayoritaria = TASA AGREGADA (todos sus municipios) ---
 use `def_all', clear
 keep if id_provincia == $id_provincia
-contract subregion
-gsort -_freq subregion
-local dom_subreg = subregion[1]
+contract subregion_full
+gsort -_freq subregion_full
+local dom_subreg = subregion_full[1]
 
 use `def_all', clear
-keep if subregion == "`dom_subreg'"
+keep if subregion_full == "`dom_subreg'"
 collapse (sum) vdef_cuanti viv_cuanti vdef_cuali viv_cuali
 gen deficit_cuanti = vdef_cuanti / viv_cuanti
 gen deficit_cuali  = vdef_cuali  / viv_cuali
