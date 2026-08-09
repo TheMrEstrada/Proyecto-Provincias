@@ -57,3 +57,10 @@ source("run_provincia.R")
 
 > Las figuras se escriben en el mismo archivo de la sección. Las hojas auxiliares
 > ocultas `_fig_*` contienen los datos exactos que alimentan cada gráfico.
+
+
+## Estado de validación (fase actual)
+El pipeline se está validando **sección por sección**. En `run_provincia.R`, la lista
+`.secciones` tiene activas solo las secciones ya validadas (hoy: **01 y 02**); las demás
+están listadas pero comentadas. Se descomentan a medida que se validan, para no
+sobrescribir los outputs de secciones aún no ajustadas.

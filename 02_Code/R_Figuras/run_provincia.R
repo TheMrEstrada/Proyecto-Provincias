@@ -27,17 +27,19 @@ source(R("R/00_setup.R")); source(R("R/00_config.R")); source(R("R/01_tema.R"));
 for (f in list.files(R("R/fig"), pattern = "\\.R$", full.names = TRUE)) source(f)
 
 # Secciones: subcarpeta, archivo, función(es) que insertan figuras+tablas
+# FASE DE VALIDACIÓN: activas solo las secciones ya validadas.
+# Se van descomentando a medida que se validan (evita sobrescribir con versión previa).
 .secciones <- list(
   list("01_Generalidades",   "distribucion_territorial.xlsx", "figuras_generalidades"),
-  list("02_Demografia",      "demografia.xlsx",               c("figuras_demografia","tablas_demografia")),
-  list("03_Ordenamiento",    "ordenamiento.xlsx",             "figuras_ordenamiento"),
-  list("04_Gobernabilidad",  "gobernabilidad.xlsx",           "figuras_gobernabilidad"),
-  list("05_Economia",        "economia.xlsx",                 "figuras_economia"),
-  list("06_Desarrollo_Rural","desarrollo_rural.xlsx",         "figuras_desarrollo_rural"),
-  list("07_Ambiental",       "ambiental.xlsx",                "figuras_ambiental"),
-  list("08_Educacion",       "educacion.xlsx",                "figuras_educacion"),
-  list("09_Salud",           "salud.xlsx",                    "figuras_salud"),
-  list("10_Seguridad",       "seguridad.xlsx",                "figuras_seguridad")
+  list("02_Demografia",      "demografia.xlsx",               c("figuras_demografia","tablas_demografia"))
+  , list("03_Ordenamiento",    "ordenamiento.xlsx",             "figuras_ordenamiento")
+  , list("04_Gobernabilidad",  "gobernabilidad.xlsx",           "figuras_gobernabilidad")
+  , list("05_Economia",        "economia.xlsx",                 "figuras_economia")
+    , list("06_Desarrollo_Rural","desarrollo_rural.xlsx",         "figuras_desarrollo_rural")
+    , list("07_Ambiental",       "ambiental.xlsx",                "figuras_ambiental")
+    , list("08_Educacion",       "educacion.xlsx",                "figuras_educacion")
+    , list("09_Salud",           "salud.xlsx",                    "figuras_salud")
+    , list("10_Seguridad",       "seguridad.xlsx",                "figuras_seguridad")
 )
 
 message(sprintf(">> Provincia %d (%s)", id_provincia, provincia_carpeta))
