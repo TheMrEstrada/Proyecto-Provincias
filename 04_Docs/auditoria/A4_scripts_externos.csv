@@ -1,0 +1,8 @@
+"script","n_rutas_absolutas","n_instrucciones_escritura","produce_algo"
+"02_Code/01_homogeneizacion/externos/datalake_gestion_publica.R",2,1,TRUE
+"02_Code/01_homogeneizacion/externos/infraestructura.R",5,1,TRUE
+"02_Code/01_homogeneizacion/externos/irca.R",6,2,TRUE
+"02_Code/01_homogeneizacion/externos/mortalidad_iam.R",0,0,FALSE
+"02_Code/01_homogeneizacion/externos/poblacion_municipal.R",2,1,TRUE
+"02_Code/01_homogeneizacion/externos/suicidios_e_intentos_medias.R",22,0,FALSE
+"02_Code/01_homogeneizacion/externos/suicidios_e_intentos.R",11,0,FALSE

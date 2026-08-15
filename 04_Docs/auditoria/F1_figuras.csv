@@ -1,0 +1,815 @@
+"provincia","seccion","figura","hay_pdf","hoja_de_datos","hay_hoja_de_datos","kb"
+"Agroindustrial del Occidente","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,78
+"Agroindustrial del Occidente","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,193
+"Agroindustrial del Occidente","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,148
+"Agroindustrial del Occidente","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,82
+"Agroindustrial del Occidente","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,110
+"Agroindustrial del Occidente","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,100
+"Agroindustrial del Occidente","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,136
+"Agroindustrial del Occidente","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,105
+"Agroindustrial del Occidente","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,153
+"Agroindustrial del Occidente","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,89
+"Agroindustrial del Occidente","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,91
+"Agroindustrial del Occidente","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,95
+"Agroindustrial del Occidente","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,99
+"Agroindustrial del Occidente","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,110
+"Agroindustrial del Occidente","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,106
+"Agroindustrial del Occidente","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,133
+"Agroindustrial del Occidente","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,176
+"Agroindustrial del Occidente","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,89
+"Agroindustrial del Occidente","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,100
+"Agroindustrial del Occidente","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,153
+"Agroindustrial del Occidente","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,100
+"Agroindustrial del Occidente","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,94
+"Agroindustrial del Occidente","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,98
+"Agroindustrial del Occidente","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,153
+"Agroindustrial del Occidente","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,87
+"Agroindustrial del Occidente","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,99
+"Agroindustrial del Occidente","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,105
+"Agroindustrial del Occidente","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,103
+"Agroindustrial del Occidente","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,175
+"Agroindustrial del Occidente","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,107
+"Agroindustrial del Occidente","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,109
+"Agroindustrial del Occidente","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,121
+"Agroindustrial del Occidente","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,118
+"Agroindustrial del Occidente","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,112
+"Agroindustrial del Occidente","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,107
+"Agroindustrial del Occidente","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,110
+"Agroindustrial del Occidente","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,100
+"Agroindustrial del Occidente","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,95
+"Agroindustrial del Occidente","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,90
+"Agroindustrial del Occidente","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,134
+"Agroindustrial del Occidente","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,168
+"Agroindustrial del Occidente","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,132
+"Agroindustrial del Occidente","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,119
+"Agroindustrial del Occidente","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,116
+"Agroindustrial del Occidente","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,155
+"Agroindustrial del Occidente","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,93
+"Agroindustrial del Occidente","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,118
+"Agroindustrial del Occidente","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,112
+"Agroindustrial del Occidente","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,100
+"Agroindustrial del Occidente","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,99
+"Agroindustrial del Occidente","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,77
+"Agroindustrial del Occidente","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,94
+"Agroindustrial del Occidente","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,112
+"Agroindustrial del Occidente","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,88
+"Agroindustrial del Occidente","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,134
+"Agroindustrial del Occidente","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,98
+"Agroindustrial del Occidente","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,115
+"Agroindustrial del Occidente","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,150
+"Agroindustrial del Occidente","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,124
+"Agroindustrial del Occidente","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,113
+"Agroindustrial del Occidente","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,114
+"Agroindustrial del Occidente","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,164
+"Agroindustrial del Occidente","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,126
+"Agroindustrial del Occidente","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,120
+"Agroindustrial del Occidente","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,116
+"Agroindustrial del Occidente","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,124
+"Agroindustrial del Occidente","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,162
+"Agroindustrial del Occidente","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,154
+"Agroindustrial del Occidente","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,132
+"Agroindustrial del Occidente","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,99
+"Agroindustrial del Occidente","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,105
+"Agroindustrial del Occidente","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,211
+"Agroindustrial del Occidente","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,227
+"Agroindustrial del Occidente","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,156
+"Bioenergética del Norte de Antioquia","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,133
+"Bioenergética del Norte de Antioquia","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,213
+"Bioenergética del Norte de Antioquia","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,187
+"Bioenergética del Norte de Antioquia","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,136
+"Bioenergética del Norte de Antioquia","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,179
+"Bioenergética del Norte de Antioquia","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,153
+"Bioenergética del Norte de Antioquia","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,138
+"Bioenergética del Norte de Antioquia","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,161
+"Bioenergética del Norte de Antioquia","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,197
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,143
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,146
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,145
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,144
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,164
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,161
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,133
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,176
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,138
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,147
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,165
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,156
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,143
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,151
+"Bioenergética del Norte de Antioquia","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,199
+"Bioenergética del Norte de Antioquia","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,142
+"Bioenergética del Norte de Antioquia","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,148
+"Bioenergética del Norte de Antioquia","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,161
+"Bioenergética del Norte de Antioquia","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,155
+"Bioenergética del Norte de Antioquia","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,178
+"Bioenergética del Norte de Antioquia","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,166
+"Bioenergética del Norte de Antioquia","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,166
+"Bioenergética del Norte de Antioquia","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,184
+"Bioenergética del Norte de Antioquia","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,187
+"Bioenergética del Norte de Antioquia","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,186
+"Bioenergética del Norte de Antioquia","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,170
+"Bioenergética del Norte de Antioquia","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,164
+"Bioenergética del Norte de Antioquia","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,150
+"Bioenergética del Norte de Antioquia","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,146
+"Bioenergética del Norte de Antioquia","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,142
+"Bioenergética del Norte de Antioquia","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,209
+"Bioenergética del Norte de Antioquia","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,172
+"Bioenergética del Norte de Antioquia","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,123
+"Bioenergética del Norte de Antioquia","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,138
+"Bioenergética del Norte de Antioquia","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,116
+"Bioenergética del Norte de Antioquia","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,199
+"Bioenergética del Norte de Antioquia","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,149
+"Bioenergética del Norte de Antioquia","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,191
+"Bioenergética del Norte de Antioquia","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,173
+"Bioenergética del Norte de Antioquia","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,156
+"Bioenergética del Norte de Antioquia","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,152
+"Bioenergética del Norte de Antioquia","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,91
+"Bioenergética del Norte de Antioquia","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,142
+"Bioenergética del Norte de Antioquia","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,118
+"Bioenergética del Norte de Antioquia","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,144
+"Bioenergética del Norte de Antioquia","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,137
+"Bioenergética del Norte de Antioquia","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,94
+"Bioenergética del Norte de Antioquia","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,184
+"Bioenergética del Norte de Antioquia","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,195
+"Bioenergética del Norte de Antioquia","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,187
+"Bioenergética del Norte de Antioquia","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,169
+"Bioenergética del Norte de Antioquia","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,176
+"Bioenergética del Norte de Antioquia","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,202
+"Bioenergética del Norte de Antioquia","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,194
+"Bioenergética del Norte de Antioquia","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,180
+"Bioenergética del Norte de Antioquia","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,171
+"Bioenergética del Norte de Antioquia","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,194
+"Bioenergética del Norte de Antioquia","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,200
+"Bioenergética del Norte de Antioquia","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,149
+"Bioenergética del Norte de Antioquia","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,179
+"Bioenergética del Norte de Antioquia","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,153
+"Bioenergética del Norte de Antioquia","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,160
+"Bioenergética del Norte de Antioquia","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,211
+"Bioenergética del Norte de Antioquia","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,229
+"Bioenergética del Norte de Antioquia","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,191
+"Del Río Grande","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,79
+"Del Río Grande","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,192
+"Del Río Grande","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,146
+"Del Río Grande","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,86
+"Del Río Grande","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,104
+"Del Río Grande","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,104
+"Del Río Grande","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,137
+"Del Río Grande","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,106
+"Del Río Grande","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,153
+"Del Río Grande","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,88
+"Del Río Grande","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,92
+"Del Río Grande","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,96
+"Del Río Grande","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,95
+"Del Río Grande","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,106
+"Del Río Grande","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,108
+"Del Río Grande","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,134
+"Del Río Grande","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,173
+"Del Río Grande","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,93
+"Del Río Grande","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,106
+"Del Río Grande","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,160
+"Del Río Grande","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,101
+"Del Río Grande","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,99
+"Del Río Grande","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,99
+"Del Río Grande","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,155
+"Del Río Grande","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,97
+"Del Río Grande","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,100
+"Del Río Grande","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,105
+"Del Río Grande","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,103
+"Del Río Grande","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,180
+"Del Río Grande","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,105
+"Del Río Grande","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,112
+"Del Río Grande","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,119
+"Del Río Grande","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,121
+"Del Río Grande","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,113
+"Del Río Grande","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,106
+"Del Río Grande","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,112
+"Del Río Grande","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,102
+"Del Río Grande","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,102
+"Del Río Grande","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,93
+"Del Río Grande","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,137
+"Del Río Grande","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,166
+"Del Río Grande","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,120
+"Del Río Grande","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,134
+"Del Río Grande","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,108
+"Del Río Grande","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,159
+"Del Río Grande","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,103
+"Del Río Grande","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,124
+"Del Río Grande","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,113
+"Del Río Grande","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,106
+"Del Río Grande","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,109
+"Del Río Grande","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,76
+"Del Río Grande","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,98
+"Del Río Grande","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,119
+"Del Río Grande","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,96
+"Del Río Grande","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,128
+"Del Río Grande","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,93
+"Del Río Grande","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,111
+"Del Río Grande","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,152
+"Del Río Grande","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,128
+"Del Río Grande","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,115
+"Del Río Grande","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,115
+"Del Río Grande","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,158
+"Del Río Grande","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,125
+"Del Río Grande","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,123
+"Del Río Grande","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,110
+"Del Río Grande","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,131
+"Del Río Grande","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,161
+"Del Río Grande","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,146
+"Del Río Grande","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,132
+"Del Río Grande","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,101
+"Del Río Grande","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,109
+"Del Río Grande","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,208
+"Del Río Grande","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,224
+"Del Río Grande","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,148
+"Turística y Agroecológica","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,85
+"Turística y Agroecológica","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,193
+"Turística y Agroecológica","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,112
+"Turística y Agroecológica","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,92
+"Turística y Agroecológica","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,117
+"Turística y Agroecológica","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,109
+"Turística y Agroecológica","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,135
+"Turística y Agroecológica","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,113
+"Turística y Agroecológica","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,112
+"Turística y Agroecológica","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,92
+"Turística y Agroecológica","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,98
+"Turística y Agroecológica","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,101
+"Turística y Agroecológica","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,101
+"Turística y Agroecológica","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,114
+"Turística y Agroecológica","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,113
+"Turística y Agroecológica","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,134
+"Turística y Agroecológica","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,177
+"Turística y Agroecológica","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,100
+"Turística y Agroecológica","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,111
+"Turística y Agroecológica","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,162
+"Turística y Agroecológica","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,107
+"Turística y Agroecológica","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,102
+"Turística y Agroecológica","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,112
+"Turística y Agroecológica","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,118
+"Turística y Agroecológica","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,100
+"Turística y Agroecológica","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,104
+"Turística y Agroecológica","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,113
+"Turística y Agroecológica","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,110
+"Turística y Agroecológica","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,179
+"Turística y Agroecológica","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,113
+"Turística y Agroecológica","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,116
+"Turística y Agroecológica","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,126
+"Turística y Agroecológica","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,132
+"Turística y Agroecológica","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,122
+"Turística y Agroecológica","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,115
+"Turística y Agroecológica","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,118
+"Turística y Agroecológica","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,108
+"Turística y Agroecológica","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,103
+"Turística y Agroecológica","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,99
+"Turística y Agroecológica","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,139
+"Turística y Agroecológica","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,165
+"Turística y Agroecológica","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,123
+"Turística y Agroecológica","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,126
+"Turística y Agroecológica","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,110
+"Turística y Agroecológica","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,120
+"Turística y Agroecológica","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,99
+"Turística y Agroecológica","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,126
+"Turística y Agroecológica","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,121
+"Turística y Agroecológica","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,109
+"Turística y Agroecológica","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,106
+"Turística y Agroecológica","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,84
+"Turística y Agroecológica","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,102
+"Turística y Agroecológica","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,116
+"Turística y Agroecológica","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,97
+"Turística y Agroecológica","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,121
+"Turística y Agroecológica","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,101
+"Turística y Agroecológica","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,127
+"Turística y Agroecológica","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,113
+"Turística y Agroecológica","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,132
+"Turística y Agroecológica","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,122
+"Turística y Agroecológica","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,123
+"Turística y Agroecológica","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,123
+"Turística y Agroecológica","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,138
+"Turística y Agroecológica","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,124
+"Turística y Agroecológica","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,124
+"Turística y Agroecológica","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,136
+"Turística y Agroecológica","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,117
+"Turística y Agroecológica","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,153
+"Turística y Agroecológica","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,138
+"Turística y Agroecológica","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,107
+"Turística y Agroecológica","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,118
+"Turística y Agroecológica","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,208
+"Turística y Agroecológica","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,225
+"Turística y Agroecológica","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,113
+"Agua, Bosques y Turismo","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,120
+"Agua, Bosques y Turismo","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,209
+"Agua, Bosques y Turismo","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,193
+"Agua, Bosques y Turismo","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,125
+"Agua, Bosques y Turismo","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,159
+"Agua, Bosques y Turismo","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,139
+"Agua, Bosques y Turismo","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,134
+"Agua, Bosques y Turismo","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,145
+"Agua, Bosques y Turismo","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,192
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,110
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,122
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,128
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,134
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,151
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,152
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,136
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,180
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,130
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,143
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,162
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,143
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,131
+"Agua, Bosques y Turismo","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,140
+"Agua, Bosques y Turismo","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,199
+"Agua, Bosques y Turismo","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,128
+"Agua, Bosques y Turismo","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,138
+"Agua, Bosques y Turismo","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,147
+"Agua, Bosques y Turismo","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,139
+"Agua, Bosques y Turismo","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,178
+"Agua, Bosques y Turismo","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,155
+"Agua, Bosques y Turismo","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,152
+"Agua, Bosques y Turismo","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,170
+"Agua, Bosques y Turismo","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,167
+"Agua, Bosques y Turismo","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,170
+"Agua, Bosques y Turismo","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,154
+"Agua, Bosques y Turismo","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,149
+"Agua, Bosques y Turismo","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,138
+"Agua, Bosques y Turismo","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,134
+"Agua, Bosques y Turismo","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,130
+"Agua, Bosques y Turismo","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,188
+"Agua, Bosques y Turismo","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,173
+"Agua, Bosques y Turismo","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,116
+"Agua, Bosques y Turismo","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,121
+"Agua, Bosques y Turismo","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,113
+"Agua, Bosques y Turismo","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,198
+"Agua, Bosques y Turismo","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,135
+"Agua, Bosques y Turismo","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,171
+"Agua, Bosques y Turismo","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,159
+"Agua, Bosques y Turismo","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,142
+"Agua, Bosques y Turismo","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,135
+"Agua, Bosques y Turismo","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,121
+"Agua, Bosques y Turismo","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,126
+"Agua, Bosques y Turismo","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,121
+"Agua, Bosques y Turismo","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,131
+"Agua, Bosques y Turismo","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,136
+"Agua, Bosques y Turismo","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,96
+"Agua, Bosques y Turismo","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,162
+"Agua, Bosques y Turismo","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,197
+"Agua, Bosques y Turismo","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,166
+"Agua, Bosques y Turismo","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,156
+"Agua, Bosques y Turismo","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,156
+"Agua, Bosques y Turismo","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,199
+"Agua, Bosques y Turismo","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,181
+"Agua, Bosques y Turismo","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,158
+"Agua, Bosques y Turismo","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,154
+"Agua, Bosques y Turismo","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,179
+"Agua, Bosques y Turismo","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,195
+"Agua, Bosques y Turismo","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,143
+"Agua, Bosques y Turismo","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,168
+"Agua, Bosques y Turismo","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,141
+"Agua, Bosques y Turismo","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,149
+"Agua, Bosques y Turismo","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,212
+"Agua, Bosques y Turismo","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,227
+"Agua, Bosques y Turismo","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,197
+"Cartama","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,104
+"Cartama","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,198
+"Cartama","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,181
+"Cartama","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,109
+"Cartama","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,144
+"Cartama","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,123
+"Cartama","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,134
+"Cartama","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,130
+"Cartama","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,185
+"Cartama","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,87
+"Cartama","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,118
+"Cartama","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,116
+"Cartama","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,119
+"Cartama","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,135
+"Cartama","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,138
+"Cartama","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,130
+"Cartama","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,171
+"Cartama","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,111
+"Cartama","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,124
+"Cartama","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,149
+"Cartama","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,125
+"Cartama","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,118
+"Cartama","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,125
+"Cartama","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,181
+"Cartama","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,113
+"Cartama","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,122
+"Cartama","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,134
+"Cartama","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,124
+"Cartama","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,176
+"Cartama","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,134
+"Cartama","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,136
+"Cartama","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,158
+"Cartama","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,158
+"Cartama","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,153
+"Cartama","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,137
+"Cartama","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,138
+"Cartama","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,124
+"Cartama","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,119
+"Cartama","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,118
+"Cartama","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,189
+"Cartama","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,167
+"Cartama","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,115
+"Cartama","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,139
+"Cartama","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,110
+"Cartama","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,188
+"Cartama","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,121
+"Cartama","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,157
+"Cartama","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,135
+"Cartama","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,125
+"Cartama","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,126
+"Cartama","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,92
+"Cartama","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,118
+"Cartama","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,109
+"Cartama","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,117
+"Cartama","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,134
+"Cartama","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,93
+"Cartama","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,153
+"Cartama","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,183
+"Cartama","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,155
+"Cartama","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,140
+"Cartama","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,145
+"Cartama","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,192
+"Cartama","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,168
+"Cartama","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,145
+"Cartama","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,141
+"Cartama","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,162
+"Cartama","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,186
+"Cartama","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,146
+"Cartama","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,153
+"Cartama","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,125
+"Cartama","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,135
+"Cartama","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,212
+"Cartama","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,220
+"Cartama","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,179
+"De la Paz","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,71
+"De la Paz","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,182
+"De la Paz","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,137
+"De la Paz","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,75
+"De la Paz","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,96
+"De la Paz","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,88
+"De la Paz","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,134
+"De la Paz","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,98
+"De la Paz","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,142
+"De la Paz","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,83
+"De la Paz","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,84
+"De la Paz","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,82
+"De la Paz","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,87
+"De la Paz","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,97
+"De la Paz","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,98
+"De la Paz","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,131
+"De la Paz","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,174
+"De la Paz","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,82
+"De la Paz","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,94
+"De la Paz","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,138
+"De la Paz","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,89
+"De la Paz","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,84
+"De la Paz","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,89
+"De la Paz","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,150
+"De la Paz","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,80
+"De la Paz","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,89
+"De la Paz","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,93
+"De la Paz","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,93
+"De la Paz","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,176
+"De la Paz","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,98
+"De la Paz","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,101
+"De la Paz","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,112
+"De la Paz","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,111
+"De la Paz","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,103
+"De la Paz","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,100
+"De la Paz","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,104
+"De la Paz","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,89
+"De la Paz","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,89
+"De la Paz","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,83
+"De la Paz","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,127
+"De la Paz","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,165
+"De la Paz","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,115
+"De la Paz","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,112
+"De la Paz","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,114
+"De la Paz","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,148
+"De la Paz","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,86
+"De la Paz","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,105
+"De la Paz","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,101
+"De la Paz","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,91
+"De la Paz","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,96
+"De la Paz","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,77
+"De la Paz","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,89
+"De la Paz","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,117
+"De la Paz","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,81
+"De la Paz","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,127
+"De la Paz","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,95
+"De la Paz","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,103
+"De la Paz","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,145
+"De la Paz","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,115
+"De la Paz","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,105
+"De la Paz","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,106
+"De la Paz","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,152
+"De la Paz","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,116
+"De la Paz","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,109
+"De la Paz","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,104
+"De la Paz","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,122
+"De la Paz","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,151
+"De la Paz","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,141
+"De la Paz","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,124
+"De la Paz","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,95
+"De la Paz","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,100
+"De la Paz","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,210
+"De la Paz","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,222
+"De la Paz","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,147
+"San Juan","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,78
+"San Juan","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,184
+"San Juan","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,124
+"San Juan","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,82
+"San Juan","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,106
+"San Juan","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,95
+"San Juan","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,132
+"San Juan","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,103
+"San Juan","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,132
+"San Juan","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,83
+"San Juan","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,88
+"San Juan","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,87
+"San Juan","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,91
+"San Juan","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,101
+"San Juan","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,107
+"San Juan","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,132
+"San Juan","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,173
+"San Juan","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,86
+"San Juan","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,99
+"San Juan","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,150
+"San Juan","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,94
+"San Juan","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,93
+"San Juan","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,96
+"San Juan","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,130
+"San Juan","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,88
+"San Juan","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,95
+"San Juan","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,101
+"San Juan","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,95
+"San Juan","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,178
+"San Juan","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,107
+"San Juan","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,105
+"San Juan","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,117
+"San Juan","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,117
+"San Juan","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,113
+"San Juan","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,106
+"San Juan","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,106
+"San Juan","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,96
+"San Juan","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,89
+"San Juan","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,89
+"San Juan","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,137
+"San Juan","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,170
+"San Juan","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,107
+"San Juan","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,131
+"San Juan","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,109
+"San Juan","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,134
+"San Juan","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,93
+"San Juan","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,121
+"San Juan","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,104
+"San Juan","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,96
+"San Juan","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,93
+"San Juan","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,79
+"San Juan","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,93
+"San Juan","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,119
+"San Juan","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,86
+"San Juan","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,131
+"San Juan","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,97
+"San Juan","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,112
+"San Juan","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,133
+"San Juan","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,122
+"San Juan","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,111
+"San Juan","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,115
+"San Juan","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,143
+"San Juan","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,124
+"San Juan","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,115
+"San Juan","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,112
+"San Juan","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,125
+"San Juan","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,134
+"San Juan","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,146
+"San Juan","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,124
+"San Juan","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,101
+"San Juan","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,104
+"San Juan","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,211
+"San Juan","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,221
+"San Juan","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,129
+"Minero Agroecológica","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,76
+"Minero Agroecológica","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,191
+"Minero Agroecológica","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,129
+"Minero Agroecológica","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,79
+"Minero Agroecológica","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,101
+"Minero Agroecológica","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,93
+"Minero Agroecológica","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,133
+"Minero Agroecológica","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,99
+"Minero Agroecológica","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,133
+"Minero Agroecológica","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,73
+"Minero Agroecológica","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,85
+"Minero Agroecológica","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,88
+"Minero Agroecológica","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,91
+"Minero Agroecológica","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,103
+"Minero Agroecológica","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,101
+"Minero Agroecológica","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,135
+"Minero Agroecológica","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,179
+"Minero Agroecológica","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,85
+"Minero Agroecológica","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,97
+"Minero Agroecológica","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,149
+"Minero Agroecológica","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,91
+"Minero Agroecológica","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,91
+"Minero Agroecológica","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,91
+"Minero Agroecológica","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,139
+"Minero Agroecológica","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,83
+"Minero Agroecológica","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,94
+"Minero Agroecológica","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,98
+"Minero Agroecológica","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,99
+"Minero Agroecológica","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,178
+"Minero Agroecológica","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,104
+"Minero Agroecológica","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,99
+"Minero Agroecológica","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,112
+"Minero Agroecológica","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,111
+"Minero Agroecológica","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,105
+"Minero Agroecológica","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,100
+"Minero Agroecológica","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,106
+"Minero Agroecológica","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,98
+"Minero Agroecológica","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,94
+"Minero Agroecológica","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,84
+"Minero Agroecológica","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,129
+"Minero Agroecológica","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,166
+"Minero Agroecológica","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,128
+"Minero Agroecológica","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,123
+"Minero Agroecológica","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,108
+"Minero Agroecológica","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,140
+"Minero Agroecológica","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,90
+"Minero Agroecológica","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,107
+"Minero Agroecológica","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,105
+"Minero Agroecológica","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,93
+"Minero Agroecológica","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,97
+"Minero Agroecológica","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,53
+"Minero Agroecológica","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,90
+"Minero Agroecológica","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,114
+"Minero Agroecológica","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,90
+"Minero Agroecológica","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,131
+"Minero Agroecológica","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,103
+"Minero Agroecológica","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,110
+"Minero Agroecológica","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,141
+"Minero Agroecológica","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,117
+"Minero Agroecológica","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,106
+"Minero Agroecológica","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,108
+"Minero Agroecológica","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,148
+"Minero Agroecológica","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,120
+"Minero Agroecológica","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,113
+"Minero Agroecológica","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,115
+"Minero Agroecológica","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,122
+"Minero Agroecológica","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,144
+"Minero Agroecológica","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,148
+"Minero Agroecológica","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,128
+"Minero Agroecológica","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,93
+"Minero Agroecológica","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,102
+"Minero Agroecológica","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,212
+"Minero Agroecológica","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,227
+"Minero Agroecológica","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,131
+"Penderisco y Sinifana","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,88
+"Penderisco y Sinifana","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,192
+"Penderisco y Sinifana","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,150
+"Penderisco y Sinifana","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,97
+"Penderisco y Sinifana","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,122
+"Penderisco y Sinifana","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,110
+"Penderisco y Sinifana","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,132
+"Penderisco y Sinifana","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,114
+"Penderisco y Sinifana","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,149
+"Penderisco y Sinifana","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,98
+"Penderisco y Sinifana","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,102
+"Penderisco y Sinifana","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,103
+"Penderisco y Sinifana","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,106
+"Penderisco y Sinifana","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,116
+"Penderisco y Sinifana","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,119
+"Penderisco y Sinifana","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,132
+"Penderisco y Sinifana","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,175
+"Penderisco y Sinifana","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,101
+"Penderisco y Sinifana","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,117
+"Penderisco y Sinifana","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,159
+"Penderisco y Sinifana","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,111
+"Penderisco y Sinifana","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,107
+"Penderisco y Sinifana","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,107
+"Penderisco y Sinifana","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,158
+"Penderisco y Sinifana","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,102
+"Penderisco y Sinifana","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,107
+"Penderisco y Sinifana","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,118
+"Penderisco y Sinifana","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,111
+"Penderisco y Sinifana","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,177
+"Penderisco y Sinifana","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,117
+"Penderisco y Sinifana","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,119
+"Penderisco y Sinifana","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,132
+"Penderisco y Sinifana","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,135
+"Penderisco y Sinifana","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,129
+"Penderisco y Sinifana","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,121
+"Penderisco y Sinifana","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,122
+"Penderisco y Sinifana","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,111
+"Penderisco y Sinifana","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,104
+"Penderisco y Sinifana","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,100
+"Penderisco y Sinifana","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,153
+"Penderisco y Sinifana","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,167
+"Penderisco y Sinifana","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,121
+"Penderisco y Sinifana","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,142
+"Penderisco y Sinifana","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,117
+"Penderisco y Sinifana","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,161
+"Penderisco y Sinifana","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,106
+"Penderisco y Sinifana","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,140
+"Penderisco y Sinifana","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,121
+"Penderisco y Sinifana","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,112
+"Penderisco y Sinifana","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,108
+"Penderisco y Sinifana","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,89
+"Penderisco y Sinifana","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,107
+"Penderisco y Sinifana","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,123
+"Penderisco y Sinifana","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,101
+"Penderisco y Sinifana","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,136
+"Penderisco y Sinifana","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,96
+"Penderisco y Sinifana","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,126
+"Penderisco y Sinifana","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,149
+"Penderisco y Sinifana","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,136
+"Penderisco y Sinifana","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,125
+"Penderisco y Sinifana","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,124
+"Penderisco y Sinifana","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,167
+"Penderisco y Sinifana","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,140
+"Penderisco y Sinifana","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,129
+"Penderisco y Sinifana","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,126
+"Penderisco y Sinifana","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,142
+"Penderisco y Sinifana","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,157
+"Penderisco y Sinifana","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,150
+"Penderisco y Sinifana","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,141
+"Penderisco y Sinifana","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,109
+"Penderisco y Sinifana","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,120
+"Penderisco y Sinifana","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,214
+"Penderisco y Sinifana","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,226
+"Penderisco y Sinifana","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,151
+"Área Metropolitana","01_Generalidades","fig_01_distribucion_territorial",TRUE,"_fig_01",TRUE,95
+"Área Metropolitana","01_Generalidades","mapa_00_localizacion",TRUE,"_mapa00_localizacion",TRUE,190
+"Área Metropolitana","01_Generalidades","mapa_01_area",TRUE,"_mapa01_area",TRUE,143
+"Área Metropolitana","02_Demografia","fig_01_poblacion_municipio",TRUE,"_fig_01",TRUE,114
+"Área Metropolitana","02_Demografia","fig_02_composicion_urbana_rural",TRUE,"_fig_02",TRUE,134
+"Área Metropolitana","02_Demografia","fig_03_densidad_poblacional",TRUE,"_fig_03",TRUE,131
+"Área Metropolitana","02_Demografia","fig_04_piramide_poblacional",TRUE,"_fig_04",TRUE,144
+"Área Metropolitana","02_Demografia","fig_05_indice_envejecimiento",TRUE,"_fig_05",TRUE,127
+"Área Metropolitana","02_Demografia","mapa_02_densidad",TRUE,"_mapa02_densidad",TRUE,147
+"Área Metropolitana","03_Ordenamiento","fig_01_uso_suelo_rural",TRUE,"_fig_01",TRUE,66
+"Área Metropolitana","03_Ordenamiento","fig_02_catastro_avaluo_rural",TRUE,"_fig_02",TRUE,73
+"Área Metropolitana","03_Ordenamiento","fig_03_vias_area",TRUE,"_fig_03",TRUE,112
+"Área Metropolitana","03_Ordenamiento","fig_04_vias_habitantes",TRUE,"_fig_04",TRUE,111
+"Área Metropolitana","03_Ordenamiento","fig_05_deficit_cuantitativo",TRUE,"_fig_05",TRUE,127
+"Área Metropolitana","03_Ordenamiento","fig_06_deficit_cualitativo",TRUE,"_fig_06",TRUE,130
+"Área Metropolitana","03_Ordenamiento","fig_07_servicios_publicos",TRUE,"_fig_07",TRUE,133
+"Área Metropolitana","03_Ordenamiento","fig_08_imca_dimensiones",TRUE,"_fig_08",TRUE,179
+"Área Metropolitana","03_Ordenamiento","fig_09_imca_adopcion_tic",TRUE,"_fig_09",TRUE,113
+"Área Metropolitana","03_Ordenamiento","fig_10_gobierno_digital",TRUE,"_fig_10",TRUE,125
+"Área Metropolitana","03_Ordenamiento","fig_11_gobierno_digital_componentes",TRUE,"_fig_11",TRUE,165
+"Área Metropolitana","03_Ordenamiento","fig_12_tti_edsup",TRUE,"_fig_12",TRUE,125
+"Área Metropolitana","03_Ordenamiento","fig_13_internet_1000hab",TRUE,"_fig_13",TRUE,116
+"Área Metropolitana","03_Ordenamiento","fig_14_internet_fibra",TRUE,"_fig_14",TRUE,120
+"Área Metropolitana","03_Ordenamiento","mapa_03_deficit_vivienda",TRUE,"_mapa03_deficit_vivienda",TRUE,151
+"Área Metropolitana","04_Gobernabilidad","fig_01_mdm",TRUE,"_fig_01",TRUE,111
+"Área Metropolitana","04_Gobernabilidad","fig_02_idf",TRUE,"_fig_02",TRUE,121
+"Área Metropolitana","04_Gobernabilidad","fig_03_ley617",TRUE,"_fig_03",TRUE,129
+"Área Metropolitana","04_Gobernabilidad","fig_04_icm",TRUE,"_fig_04",TRUE,126
+"Área Metropolitana","04_Gobernabilidad","fig_05_icm_dimensiones",TRUE,"_fig_05",TRUE,171
+"Área Metropolitana","05_Economia","fig_01_pobreza_nbi",TRUE,"_fig_01",TRUE,131
+"Área Metropolitana","05_Economia","fig_02_pobreza_ipm",TRUE,"_fig_02",TRUE,129
+"Área Metropolitana","05_Economia","fig_03_gini_hogar_laboral",TRUE,"_fig_03",TRUE,149
+"Área Metropolitana","05_Economia","fig_04_ocupacion_informalidad",TRUE,"_fig_04",TRUE,146
+"Área Metropolitana","05_Economia","fig_05_desocupacion_total_jovenes",TRUE,"_fig_05",TRUE,142
+"Área Metropolitana","05_Economia","fig_06_jovenes_nini",TRUE,"_fig_06",TRUE,129
+"Área Metropolitana","05_Economia","fig_07_dependencia_economica",TRUE,"_fig_07",TRUE,134
+"Área Metropolitana","05_Economia","fig_08_densidad_empresarial",TRUE,"_fig_08",TRUE,124
+"Área Metropolitana","05_Economia","fig_09_valor_agregado_per_capita",TRUE,"_fig_09",TRUE,118
+"Área Metropolitana","05_Economia","fig_10_peso_relativo_valor_agregado",TRUE,"_fig_10",TRUE,114
+"Área Metropolitana","05_Economia","fig_11_composicion_valor_agregado",TRUE,"_fig_11",TRUE,162
+"Área Metropolitana","05_Economia","fig_12_valor_agregado_actividades",TRUE,"_fig_12",TRUE,175
+"Área Metropolitana","05_Economia","fig_13_titulos_mineros",TRUE,"_fig_13",TRUE,118
+"Área Metropolitana","05_Economia","fig_14_visitantes_extranjeros",TRUE,"_fig_14",TRUE,111
+"Área Metropolitana","05_Economia","fig_15_participacion_visitantes",TRUE,"_fig_15",TRUE,105
+"Área Metropolitana","05_Economia","mapa_05_va_percapita",TRUE,"_mapa05_va_percapita",TRUE,151
+"Área Metropolitana","06_Desarrollo_Rural","fig_01_participacion_pecuaria",TRUE,"_fig_01",TRUE,116
+"Área Metropolitana","06_Desarrollo_Rural","fig_02_composicion_especies",TRUE,"_fig_02",TRUE,150
+"Área Metropolitana","06_Desarrollo_Rural","fig_03_composicion_agricola",TRUE,"_fig_03",TRUE,149
+"Área Metropolitana","06_Desarrollo_Rural","fig_04_participacion_produccion",TRUE,"_fig_04",TRUE,125
+"Área Metropolitana","06_Desarrollo_Rural","fig_05_rendimiento_agricola",TRUE,"_fig_05",TRUE,121
+"Área Metropolitana","07_Ambiental","fig_01_areas_protegidas",TRUE,"_fig_01",TRUE,85
+"Área Metropolitana","07_Ambiental","fig_02_irca",TRUE,"_fig_02",TRUE,115
+"Área Metropolitana","07_Ambiental","fig_03_irca_evolucion",TRUE,"_fig_03",TRUE,113
+"Área Metropolitana","07_Ambiental","fig_04_perdida_cobertura",TRUE,"_fig_04",TRUE,115
+"Área Metropolitana","07_Ambiental","fig_05_desastres_tipo",TRUE,"_fig_05",TRUE,138
+"Área Metropolitana","07_Ambiental","fig_06_eventos_anio",TRUE,"_fig_06",TRUE,96
+"Área Metropolitana","07_Ambiental","fig_07_imrc",TRUE,"_fig_07",TRUE,143
+"Área Metropolitana","07_Ambiental","mapa_07_perdida_cobertura",TRUE,"_mapa07_perdida_cobertura",TRUE,156
+"Área Metropolitana","08_Educacion","fig_01_cobertura_neta",TRUE,"_fig_01",TRUE,152
+"Área Metropolitana","08_Educacion","fig_02_desercion_escolar",TRUE,"_fig_02",TRUE,137
+"Área Metropolitana","08_Educacion","fig_03_repitencia_escolar",TRUE,"_fig_03",TRUE,135
+"Área Metropolitana","08_Educacion","mapa_08_cobertura_neta",TRUE,"_mapa08_cobertura_neta",TRUE,163
+"Área Metropolitana","09_Salud","fig_01_aseguramiento_sgsss",TRUE,"_fig_01",TRUE,158
+"Área Metropolitana","09_Salud","fig_02_bajo_peso",TRUE,"_fig_02",TRUE,143
+"Área Metropolitana","09_Salud","fig_03_enfermedades_vectores",TRUE,"_fig_03",TRUE,138
+"Área Metropolitana","09_Salud","fig_04_suicidios",TRUE,"_fig_04",TRUE,158
+"Área Metropolitana","09_Salud","mapa_09_mortalidad_infantil",TRUE,"_mapa09_mortalidad_infantil",TRUE,156
+"Área Metropolitana","10_Seguridad","fig_01_percepcion_seguridad",TRUE,"_fig_01",TRUE,146
+"Área Metropolitana","10_Seguridad","fig_02_restitucion_tierras",TRUE,"_fig_02",TRUE,143
+"Área Metropolitana","10_Seguridad","fig_03_personas_desaparecidas",TRUE,"_fig_03",TRUE,124
+"Área Metropolitana","10_Seguridad","fig_04_victimas_ocurrencia",TRUE,"_fig_04",TRUE,132
+"Área Metropolitana","10_Seguridad","fig_05_hechos_victimizantes",TRUE,"_fig_05",TRUE,212
+"Área Metropolitana","10_Seguridad","mapa_10_homicidios_dpto",TRUE,"_mapa10_homicidios_dpto",TRUE,224
+"Área Metropolitana","10_Seguridad","mapa_10_homicidios",TRUE,"_mapa10_homicidios",TRUE,147

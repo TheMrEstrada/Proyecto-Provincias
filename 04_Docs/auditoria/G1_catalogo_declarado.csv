@@ -1,0 +1,84 @@
+"fig_id","seccion","subdim","figura","visualizacion","archivo","hoja","columnas_clave","tipo_grafico","salida","helper","estado","notas"
+3,"01_Generalidades",,"Distribución territorial de la PAP por municipio (% superficie)","Gráfico","distribucion_territorial.xlsx","distribucion_territorial","Proporción del territorio municipal sobre total provincial","barra_h","nativo","enc_hbar","hecho",
+4,"02_Demografia",,"Proyecciones de población 2025","Tabla","demografia.xlsx","poblacion","Población total/urbana/rural, participaciones","tabla","tabla","estilo_tabla","hecho",
+5,"02_Demografia",,"Composición urbana-rural por municipio","Gráfico","demografia.xlsx","poblacion","% urbana / % rural","barra_h_apilada_100","nativo","enc_hbar","hecho",
+6,"02_Demografia",,"Densidad poblacional por municipio","Gráfico","demografia.xlsx","poblacion","Densidad (hab/km²)","barra_h","nativo","enc_hbar","hecho",
+7,"02_Demografia",,"Distribución por género y grupos de edad (pirámide)","Gráfico","demografia.xlsx","estructura_edad","Hombres/Mujeres por banda de edad (fila TOTAL)","piramide","nativo","enc_piramide","hecho",
+8,"02_Demografia",,"Tasa de Natalidad y Mortalidad","Tabla","demografia.xlsx","natalidad_mortalidad","Natalidad, Mortalidad, Envejecimiento","tabla","tabla","estilo_tabla","hecho",
+9,"02_Demografia",,"Índice de Envejecimiento","Gráfico","demografia.xlsx","natalidad_mortalidad","Índice de Envejecimiento","barra_h","nativo","enc_hbar","hecho",
+10,"02_Demografia",,"Tasa Neta de Migración","Tabla","demografia.xlsx","migracion","Migración total/cabecera/rural","tabla","tabla","estilo_tabla","hecho",
+11,"03_Ordenamiento","3.1 POT","Instrumentos de Ordenamiento Territorial (POT)","Tabla","ordenamiento.xlsx","(sin hoja)","—","tabla","tabla","estilo_tabla","fuera de alcance","Sin hoja en el export; declarado fuera de esta fase."
+12,"03_Ordenamiento","3.1 POT","Uso adecuado del suelo rural","Gráfico","ordenamiento.xlsx","uso_suelo_rural","Predios con uso adecuado del suelo rural","barra_h","nativo","enc_hbar","hecho","Solo municipal (sin agregado, por cobertura parcial POTA)."
+13,"03_Ordenamiento","3.1 POT","Caracterización del catastro municipal","Tabla","ordenamiento.xlsx","catastro","Avalúos, proporciones, estado catastro","tabla","tabla","estilo_tabla","hecho",
+14,"03_Ordenamiento","3.2 Agua","POMCA y PORH","Tabla","ordenamiento.xlsx","(sin hoja)","—","tabla","tabla","estilo_tabla","fuera de alcance","Sin hoja en el export; fuera de esta fase."
+15,"03_Ordenamiento","3.3 Transporte","Km de vía según área del municipio","Gráfico","ordenamiento.xlsx","vias_area","Km vía primaria/secundaria/terciaria por km²","barra_h_apilada","nativo","enc_hbar (stacked)","hecho","Extender enc_hbar: apilado absoluto."
+16,"03_Ordenamiento","3.3 Transporte","Km de vía por cada mil habitantes","Gráfico","ordenamiento.xlsx","vias_habitantes","Km vía por 1.000 hab (3 tipos)","barra_h_apilada","nativo","enc_hbar (stacked)","hecho",
+17,"03_Ordenamiento","3.4 CTI","Tasa de tránsito inmediato a educación superior","Gráfico","ordenamiento.xlsx","tti_edsup","Tasa de tránsito","barra_h","nativo","enc_hbar","hecho",
+18,"03_Ordenamiento","3.4 CTI","IMCA por dimensiones: Provincia vs Subregión","Gráfico","ordenamiento.xlsx","imca","IMCA por dimensión (prov vs subreg)","barra_agrupada","nativo","enc_hbar (clustered)","hecho","Requiere agregar prov y subreg; extender enc_hbar a clustered."
+19,"03_Ordenamiento","3.4 CTI","IMCA: Adopción de TIC por municipio","Gráfico","ordenamiento.xlsx","imca","IMCA adopción TIC","barra_h","nativo","enc_hbar","hecho",
+20,"03_Ordenamiento","3.4 CTI","Índice de Gobierno Digital","Gráfico","ordenamiento.xlsx","gobierno_digital","Índice de Gobierno Digital","barra_h","nativo","enc_hbar","hecho",
+21,"03_Ordenamiento","3.4 CTI","IGD por componente FURAG","Gráfico","ordenamiento.xlsx","gobierno_digital","Componentes FURAG","barra_agrupada","nativo","enc_hbar (clustered)","hecho","Comparación por componente."
+22,"03_Ordenamiento","3.5 Vivienda","Líneas de internet fijo por 1.000 hab","Gráfico","ordenamiento.xlsx","internet_2025","Líneas por 1.000 hab","barra_h","nativo","enc_hbar","hecho",
+23,"03_Ordenamiento","3.5 Vivienda","Proporción de líneas sobre fibra óptica","Gráfico","ordenamiento.xlsx","internet_2025","Proporción sobre fibra óptica","barra_h","nativo","enc_hbar","hecho",
+24,"03_Ordenamiento","3.5 Vivienda","Déficit cualitativo de vivienda","Gráfico","ordenamiento.xlsx","deficit_vivienda","Déficit cualitativo","barra_h","nativo","enc_hbar","hecho",
+25,"03_Ordenamiento","3.5 Vivienda","Déficit cuantitativo de vivienda","Gráfico","ordenamiento.xlsx","deficit_vivienda","Déficit cuantitativo","barra_h","nativo","enc_hbar","hecho",
+26,"03_Ordenamiento","3.5 Vivienda","Acceso a servicios públicos","Tabla","ordenamiento.xlsx","servicios_publicos","Coberturas por servicio","tabla","tabla","estilo_tabla","hecho",
+27,"04_Gobernabilidad","4.1","Medición de Desempeño Municipal (MDM)","Gráfico","gobierno? gobernabilidad.xlsx","mdm","MDM (último año)","barra_h","nativo","enc_hbar","hecho","Hoja con varios años: filtrar último."
+28,"04_Gobernabilidad","4.2","Índice de Desempeño Fiscal (IDF)","Gráfico","gobernabilidad.xlsx","idf","IDF (último año)","barra_h","nativo","enc_hbar","hecho",
+29,"04_Gobernabilidad","4.2","Límite e indicador Ley 617","Tabla","gobernabilidad.xlsx","ley617","ICDL, gastos, indicador","tabla","tabla","estilo_tabla","hecho","Varios años."
+30,"04_Gobernabilidad","4.3","Índice de Ciudades Modernas (ICM)","Tabla","gobernabilidad.xlsx","icm","ICM y subíndices","tabla","tabla","estilo_tabla","hecho","Varios años."
+31,"05_Economia","5.1","Índice de Dependencia Económica","Gráfico","economia.xlsx","dependencia_economica","Índice de Dependencia","barra_h","nativo","enc_hbar","hecho",
+32,"05_Economia","5.1","Pobreza según NBI","Gráfico","economia.xlsx","ecv_pobreza","NBI total (%)","barra_h","nativo","enc_hbar","hecho",
+33,"05_Economia","5.1","Pobreza según IPM","Gráfico","economia.xlsx","ecv_ipm","IPM personas/hogares (%)","barra_h","nativo","enc_hbar","hecho",
+34,"05_Economia","5.1","Gini ingresos hogar vs Gini laboral","Gráfico","economia.xlsx","ecv_gini","Gini hogar total vs Gini laboral total","dumbbell","nativo","enc_dumbbell (NUEVO)","hecho","Aproximación nativa: 2 series de puntos + líneas conectoras."
+35,"05_Economia","5.1","Medición del GINI (hogares y ocupados)","Tabla","economia.xlsx","ecv_gini","Gini hogar/laboral","tabla","tabla","estilo_tabla","hecho",
+36,"05_Economia","5.1","Tasa de ocupación vs informalidad","Gráfico","economia.xlsx","ecv_ocupacion_informal","Ocupación total vs informalidad total","dumbbell","nativo","enc_dumbbell (NUEVO)","hecho",
+37,"05_Economia","5.1","Ocupación e Informalidad","Tabla","economia.xlsx","ecv_ocupacion_informal","Ocupación/informalidad","tabla","tabla","estilo_tabla","hecho",
+38,"05_Economia","5.1","Desocupación total vs jóvenes","Gráfico","economia.xlsx","ecv_desocupacion_nini","Desocupación total vs jóvenes","dumbbell","nativo","enc_dumbbell (NUEVO)","hecho",
+39,"05_Economia","5.1","Jóvenes NiNi por municipio","Gráfico","economia.xlsx","ecv_desocupacion_nini","% NiNi","barra_h","nativo","enc_hbar","hecho",
+40,"05_Economia","5.2","Valor agregado total y por sectores","Tabla","economia.xlsx","valor_agregado","VA total y por sector","tabla","tabla","estilo_tabla","hecho",
+41,"05_Economia","5.2","Valor Agregado per cápita","Gráfico","economia.xlsx","valor_agregado","VA per cápita","barra_h","nativo","enc_hbar","hecho",
+42,"05_Economia","5.2","Peso relativo del Valor Agregado","Gráfico","economia.xlsx","valor_agregado","Proporción VA municipal sobre prov","barra_h","nativo","enc_hbar","hecho",
+43,"05_Economia","5.2","Distribución % del VA por sectores","Gráfico","economia.xlsx","valor_agregado","Participación primarias/secundarias/terciarias","barra_h_apilada_100","nativo","enc_hbar","hecho","Alternativa: torta."
+44,"05_Economia","5.2","Distribución del VA por actividades económicas","Gráfico","economia.xlsx","va_actividades","VA por actividad (nivel provincia)","barra_h","nativo","enc_hbar","hecho",
+45,"05_Economia","5.2","Densidad empresarial por municipio","Gráfico","economia.xlsx","densidad_empresarial","Densidad empresarial","barra_h","nativo","enc_hbar","hecho",
+46,"05_Economia","5.3","Capacidad instalada por tecnología (SIN)","Tabla","economia.xlsx","energia_tecnologia","Tecnología, capacidad, participación","tabla","tabla","estilo_tabla","hecho",
+47,"05_Economia","5.3","Centrales de generación en la PAP","Tabla","economia.xlsx","energia_centrales","Central, tecnología, capacidad","tabla","tabla","estilo_tabla","hecho",
+48,"05_Economia","5.3","Participación PAP en capacidad instalada","Tabla","economia.xlsx","energia_participacion","Ámbito, capacidad, participación","tabla","tabla","estilo_tabla","hecho",
+49,"05_Economia","5.3","Títulos mineros por tipo de mineral","Gráfico","economia.xlsx","titulos_mineros","Nº títulos por mineral","barra_h","nativo","enc_hbar","hecho",
+50,"05_Economia","5.4","Evolución de visitantes extranjeros 2019-2025","Gráfico","economia.xlsx","extranjeros_municipio","Visitantes por año/municipio","linea","nativo","enc_line (NUEVO)","hecho","Serie temporal por municipio."
+51,"05_Economia","5.4","Visitantes: PAP vs Antioquia vs Depto","Gráfico","economia.xlsx","comparativo_pap_antioquia","Visitantes prov vs Antioquia; participación","linea","nativo","enc_line (NUEVO)","hecho","Doble eje posible."
+52,"05_Economia","5.4","Inventario turístico e instrumentos","Tabla","economia.xlsx","turismo_instrumentos","Inventario, PLT, MLT","tabla","tabla","estilo_tabla","hecho",
+53,"06_Desarrollo_Rural",,"Inventario de especies pecuarias","Tabla","desarrollo_rural.xlsx","inventario_pecuario","Bovinos...porcinos, total","tabla","tabla","estilo_tabla","hecho",
+54,"06_Desarrollo_Rural",,"Participación municipios en inventario pecuario","Gráfico","desarrollo_rural.xlsx","participacion_municipal","Participación (%)","barra_h","nativo","enc_hbar","hecho",
+55,"06_Desarrollo_Rural",,"Composición % del inventario pecuario","Gráfico","desarrollo_rural.xlsx","composicion_especies","% por especie","barra_h_apilada_100","nativo","enc_hbar","hecho",
+56,"06_Desarrollo_Rural",,"Extensión municipal y suelo rural (ha)","Tabla","desarrollo_rural.xlsx","area_km2","Área municipal (km²)","tabla","tabla","estilo_tabla","fuera de alcance","Suelo rural sin fuente (pendiente conocido)."
+57,"06_Desarrollo_Rural",,"Participación del suelo rural en el total","Gráfico","desarrollo_rural.xlsx","area_km2","—","barra_h","nativo","enc_hbar","fuera de alcance","Suelo rural sin fuente (pendiente conocido)."
+58,"06_Desarrollo_Rural",,"Proporción producción agrícola por municipio y tipo","Gráfico","desarrollo_rural.xlsx","composicion_agricola","Prop. permanentes/transitorios","barra_h_apilada_100","nativo","enc_hbar","hecho",
+59,"06_Desarrollo_Rural",,"Composición % producción agrícola PAP","Gráfico","desarrollo_rural.xlsx","composicion_agricola","Permanentes vs transitorios (provincia)","torta","nativo","enc_pie (NUEVO)","hecho","Alternativa: barra apilada."
+60,"06_Desarrollo_Rural",,"Principales cultivos transitorios y permanentes","Tabla","desarrollo_rural.xlsx","permanentes/transitorios","Cultivo, área, producción","tabla","tabla","estilo_tabla","hecho","Dos hojas."
+61,"06_Desarrollo_Rural",,"% Área perdida vs Rendimiento","Gráfico","desarrollo_rural.xlsx","rendimiento (+permanentes/transitorios)","Área perdida (der.) vs rendimiento","dispersion","nativo","enc_scatter (NUEVO)","hecho","Área perdida = (sembrada-cosechada)/sembrada."
+62,"07_Ambiental","7.1","Clima, Hidrografía y Vegetación","Tabla","ambiental.xlsx","(sin hoja)","—","tabla","tabla","estilo_tabla","fuera de alcance","Descriptiva sin fuente (pendiente conocido)."
+63,"07_Ambiental","7.1","Áreas Protegidas","Tabla","ambiental.xlsx","detalle","Área protegida, categoría, %","tabla","tabla","estilo_tabla","hecho",
+64,"07_Ambiental","7.1","IRCA","Tabla","ambiental.xlsx","irca","IRCA y nivel de riesgo","tabla","tabla","estilo_tabla","hecho",
+65,"07_Ambiental","7.2","Pérdida de cobertura arbórea 2001-2023","Gráfico","ambiental.xlsx","perdida_cobertura","Pérdida de cobertura (fracción)","barra_h","nativo","enc_hbar","hecho",
+66,"07_Ambiental","7.2","Ocurrencia de desastres seleccionados","Tabla","ambiental.xlsx","desastres_selectos","Eventos por tipo","tabla","tabla","estilo_tabla","hecho",
+67,"07_Ambiental","7.2","IMRC exceso/déficit de lluvias","Tabla","ambiental.xlsx","imrc","IMRC exceso/déficit","tabla","tabla","estilo_tabla","hecho",
+68,"08_Educacion",,"Cobertura neta en educación","Gráfico","educacion.xlsx","educacion","Cobertura neta (último año)","barra_h","nativo","enc_hbar","hecho","Varios años: filtrar."
+69,"08_Educacion",,"Deserción escolar","Gráfico","educacion.xlsx","educacion","Tasa de deserción","barra_h","nativo","enc_hbar","hecho",
+70,"08_Educacion",,"Repitencia escolar","Gráfico","educacion.xlsx","educacion","Tasa de repitencia","barra_h","nativo","enc_hbar","hecho",
+71,"09_Salud",,"Composición de afiliados al SGSSS","Gráfico","salud.xlsx","aseguramiento_sgsss","% por régimen","barra_h_apilada_100","nativo","enc_hbar","hecho",
+72,"09_Salud",,"Bajo peso al nacer","Gráfico","salud.xlsx","bajo_peso","% bajo peso","barra_h","nativo","enc_hbar","hecho",
+73,"09_Salud",,"Mortalidad infantil 2020-2024","Tabla","salud.xlsx","mortalidad_infantil","Tasa por 1.000 nacidos","tabla","tabla","estilo_tabla","hecho","Varios años."
+74,"09_Salud",,"Tasa dengue/malaria/leishmaniasis","Gráfico","salud.xlsx","enfermedades_tropicales","Tasas por 100 mil (3 enfermedades)","barra_agrupada","nativo","enc_hbar (clustered)","hecho",
+75,"09_Salud",,"Intento de suicidio vs suicidio consumado","Gráfico","salud.xlsx","suicidios","Tasa intento vs consumado","barra_agrupada","nativo","enc_hbar (clustered)","hecho","Alternativa dumbbell."
+76,"10_Seguridad","10.1","Densidad de cultivos ilícitos (coca)","Tabla","seguridad.xlsx","coca","Ha coca, %","tabla","tabla","estilo_tabla","hecho","1 fila."
+77,"10_Seguridad","10.1","Explotación de Oro de Aluvión (EVOA)","Tabla","seguridad.xlsx","evoa","Ha con permisos/tránsito/ilícita","tabla","tabla","estilo_tabla","hecho",
+78,"10_Seguridad","10.1","Percepción de seguridad 2019-2025","Gráfico","seguridad.xlsx","P1A_barrio/P2/P4A/P6","% percepción por periodo","linea/apilada","nativo","enc_line (NUEVO)","hecho","Serie por periodo, nivel subregión."
+79,"10_Seguridad","10.2","Tasa solicitudes tierras despojadas","Gráfico","seguridad.xlsx","tasas","Tasa por 1.000 hab","barra_h","nativo","enc_hbar","hecho",
+80,"10_Seguridad","10.2","Proporción de personas desaparecidas","Gráfico","seguridad.xlsx","desaparecidos","Proporción dentro de la provincia","barra_h","nativo","enc_hbar","hecho",
+81,"10_Seguridad","10.2","Total de víctimas por ocurrencia","Gráfico","seguridad.xlsx","total_victimas","Víctimas por ocurrencia","barra_h","nativo","enc_hbar","hecho",
+82,"10_Seguridad","10.2","Composición por hecho victimizante","Gráfico","seguridad.xlsx","proporcion_hechos","Proporción por hecho","torta","nativo","enc_pie (NUEVO)","hecho","Alternativa: barra_h."
+83,"10_Seguridad","10.1","Tasa de delitos de alto impacto","Tabla","seguridad.xlsx","delitos","Hurtos/homicidios/VIF/sexuales","tabla","tabla","estilo_tabla","hecho",
+84,"10_Seguridad","10.3","Índice de riesgo de victimización","Tabla","seguridad.xlsx","irv","IRV y categoría","tabla","tabla","estilo_tabla","hecho",
+85,"10_Seguridad","10.3","Solicitudes de restitución de tierras (SRTDAF)","Tabla","seguridad.xlsx","srtdaf","Solicitudes, predios, titulares","tabla","tabla","estilo_tabla","hecho",

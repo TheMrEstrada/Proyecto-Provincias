@@ -1,0 +1,1071 @@
+% =============================================================================
+% anexo_metodologico.tex — Anexo metodológico del Proyecto Provincias
+%
+% COMPILAR:  cd 04_Docs && latexmk -pdf anexo_metodologico.tex
+%
+% ANTES DE COMPILAR, regenerar las tablas y las cifras:
+%   Rscript 02_Code/run_all.R
+%   Rscript 02_Code/99_checks/auditoria_end_to_end.R
+%   Rscript 02_Code/99_checks/diccionario_indicadores.R
+%   Rscript 02_Code/99_checks/generar_tablas_anexo.R
+%
+% Ninguna cifra de este documento está escrita a mano. Todas entran por
+% \input{tablas/...} o por las macros de tablas/cifras.tex, que produce el
+% último script a partir de las salidas reales del pipeline.
+% =============================================================================
+
+\documentclass[11pt,a4paper]{article}
+\input{preambulo}
+\input{tablas/cifras}
+
+\title{\vspace{-1.5cm}\bfseries\color{tintauno}
+  Anexo metodológico\\[2mm]
+  \large\mdseries\color{tintados}
+  Tratamiento de datos, fuentes, protocolos, limpieza y actualización}
+\author{\normalsize\color{tintados} Proyecto Provincias · Planes Estratégicos
+  Provinciales de Antioquia}
+\date{\normalsize\color{tintatres}\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{abstract}
+\noindent
+Este anexo documenta cómo se construye cada cifra que publican los informes
+provinciales: de qué archivo sale, qué transformaciones sufre, con qué fórmula
+se agrega y cómo se actualiza. Está escrito para tres lectores distintos: quien
+tenga que \emph{defender} una cifra ante la Gobernación o ante un municipio,
+quien tenga que \emph{actualizar} el diagnóstico dentro de un año, y quien tenga
+que \emph{auditarlo} sin conocer el proyecto.
+
+El principio que ordena todo el documento es uno solo: \textbf{ninguna cifra
+publicada puede existir sin un archivo fuente y una fórmula declarada}. Las
+secciones \ref{sec:trazabilidad} y \ref{sec:limitaciones} verifican
+mecánicamente que se cumpla, y dicen dónde todavía no se cumple.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% =============================================================================
+\section{Alcance y arquitectura}
+% =============================================================================
+
+\subsection{Qué produce el flujo}
+
+El diagnóstico territorial cubre \cifraProvincias{} provincias que agrupan
+\cifraMunicipios{} de los 125 municipios de Antioquia, en diez secciones
+temáticas por provincia. Para cada provincia el flujo produce diez libros de
+Excel —uno por sección, con todas sus tablas— y \cifraFiguras{} archivos de
+figura entre las \cifraProvincias{} provincias, de los cuales \cifraMapas{} son
+mapas. Cada figura se exporta dos veces: en PNG a 300\,dpi para Word y en PDF
+vectorial para imprenta.
+
+\begin{regla}[title={Regla 0 — el dato manda sobre el informe}]
+Cuando la fuente actual y el informe publicado difieren, el flujo entrega la
+cifra de la fuente actual y lo declara. El informe de 2026 no es la referencia
+de verdad: es una fotografía de las fuentes que existían al escribirlo.
+\end{regla}
+
+\subsection{El universo territorial}
+
+La pertenencia de un municipio a una provincia y a una subregión sale siempre
+del crosswalk territorial, nunca de la columna de texto que traiga cada fuente.
+Varias fuentes traen su propia columna \fn{prov} o \fn{subreg}, y en al menos
+dos casos verificados vienen desalineadas respecto del listado oficial.
+
+\begin{table}[htbp]\centering
+\caption{Las once provincias y su composición municipal}
+\small
+\input{tablas/T1_provincias}
+\end{table}
+
+\begin{advertencia}[title={Una errata que hay que conservar}]
+El nombre de la provincia~5 aparece en varias fuentes como
+«POVINCIA DEL AGUA, BOSQUES Y TURISMO», sin la \emph{r}. El listado maestro ya
+se corrigió, pero otros archivos conservan la errata. El emparejamiento del
+flujo normaliza el texto y acepta las dos grafías; corregir la constante sin
+corregir todos los archivos dejaría a la provincia~5 sin municipios.
+\end{advertencia}
+
+% =============================================================================
+\section{Convenciones del documento}
+\label{sec:convenciones}
+% =============================================================================
+
+Un anexo de estructura de datos se lee salteado, buscando un dato concreto. Para
+que eso funcione, la notación tiene que ser previsible. Todo lo que sigue está
+declarado una sola vez, aquí, y aplicado en todo el documento.
+
+\subsection{Notación tipográfica}
+
+\noindent\begin{tabularx}{\linewidth}{l >{\RaggedRight\arraybackslash}X}
+\toprule
+\textbf{Forma} & \textbf{Qué señala} \\
+\midrule
+\ruta{01\_Data/00\_Inputs} & Ruta dentro del repositorio, siempre relativa a la raíz \\
+\fn{leer\_derivado()} & Función, variable o nombre de columna del código \\
+\textit{cursiva} & Término técnico en su primera aparición, o énfasis de contraste \\
+\textbf{negrita} & Cifra o afirmación que el lector debería poder citar \\
+«comillas angulares» & Cita literal de una etiqueta que aparece en una tabla publicada \\
+\bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+Las cajas marcan tres cosas distintas y solo tres:
+
+\vspace{4pt}
+\noindent\begin{tabularx}{\linewidth}{l >{\RaggedRight\arraybackslash}X}
+\toprule
+\textbf{Caja} & \textbf{Qué contiene} \\
+\midrule
+Regla del pipeline & Una decisión que el código aplica siempre. Cambiarla exige cambiar el código, no el criterio de quien escribe. \\
+Hallazgo de la auditoría & Un resultado de la verificación automática, con su cifra. Nada entra aquí sin CSV de respaldo. \\
+Advertencia sobre el dato & Un límite de la fuente que el informe debe declarar al publicar la cifra. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Estilos del diagrama}
+\label{sec:estilos-dag}
+
+Los DAG de la sección~\ref{sec:dag} se dibujan con estos estilos, declarados en
+\ruta{04\_Docs/preambulo.tex}. Cada muestra de esta leyenda se dibuja con el
+mismo estilo que usa el diagrama: la leyenda no puede quedar desincronizada de
+lo que describe.
+
+\vspace{4pt}
+\noindent\begin{tabularx}{\linewidth}{c l >{\RaggedRight\arraybackslash}X}
+\toprule
+\textbf{Muestra} & \textbf{Estilo} & \textbf{Qué representa} \\
+\midrule
+\muestranodo{nodofuente}   & \fn{nodofuente}   & Archivo de entrada, tal como lo entrega la fuente \\
+\muestranodo{nodoscript}   & \fn{nodoscript}   & Script del pipeline: una transformación con autor y código \\
+\muestranodo{nododerivado} & \fn{nododerivado} & Derivado en Parquet, regenerable \\
+\muestranodo{nodorecurso}  & \fn{nodorecurso}  & Recurso que una sección consume, sea derivado, curado o crudo \\
+\muestranodo{nodoseccion}  & \fn{nodoseccion}  & Sección temática del diagnóstico \\
+\muestranodo{nodosalida}   & \fn{nodosalida}   & Salida publicada: tabla, figura o mapa \\
+\addlinespace
+\muestraarista{flujo}           & \fn{flujo}           & Dependencia normal: el destino lee lo que el origen produce \\
+\muestraarista{flujoexcepcion}  & \fn{flujoexcepcion}  & Dependencia de un insumo \textbf{curado}: entra al flujo sin pasar por ningún script \\
+\muestraarista{paso}            & \fn{paso}            & Etapa del flujo en el diagrama de arquitectura \\
+\muestraarista{control}         & \fn{control}         & Verificación: lee sin modificar \\
+\bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+La distinción entre \fn{flujo} y \fn{flujoexcepcion} no es decorativa: es el
+hallazgo estructural del proyecto. Una arista roja discontinua señala un dato
+que entra al informe sin haber pasado por código, y por lo tanto sin que exista
+forma de regenerarlo.
+
+\subsection{Formato de cifras, fechas y territorios}
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \textbf{Números:} convención colombiana. Punto para miles, coma decimal:
+    \fn{1.234,5}. Los porcentajes llevan un decimal y espacio antes del signo.
+  \item \textbf{Fechas:} \fn{AAAA-MM-DD} en el texto y en los CSV de auditoría.
+    En los nombres de archivo de las fuentes, \fn{AAAAMMDD} sin separadores,
+    porque así los entrega el equipo.
+  \item \textbf{Años de referencia:} un indicador se cita siempre con su año.
+    Distintos indicadores tienen cortes distintos y algunos son posteriores al
+    informe de 2026.
+  \item \textbf{Municipios:} se nombran con su forma de presentación —con tildes
+    y preposiciones en minúscula— y se identifican por su código DIVIPOLA.
+  \item \textbf{Unidades:} van en el encabezado de la columna o en el subtítulo
+    de la figura, nunca solo en el texto que la acompaña.
+\end{itemize}
+
+% =============================================================================
+\section{El grafo de procesamiento}
+\label{sec:dag}
+% =============================================================================
+
+\subsection{Arquitectura}
+
+El flujo tiene cuatro etapas y dos almacenes. La dirección es siempre la misma y
+no hay ciclos: ninguna etapa escribe sobre lo que otra ya leyó.
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm, y=1cm]
+  % Fila 1: la cadena reproducible, de la fuente a la tabla.
+  \node[almacen] (fuentes)   at (0,0)
+    {\textbf{Fuentes}\\[2pt]\texttt{\scriptsize 00\_Inputs}\\ \cifraInsumos{} archivos};
+  \node[etapa]   (homog)     at (4,0)
+    {\textbf{Homogeneización}\\[2pt]\texttt{\scriptsize 01\_homogeneizacion}\\ 11 scripts};
+  \node[almacen] (derivados) at (8,0)
+    {\textbf{Derivados}\\[2pt]\texttt{\scriptsize 01\_Derived}\\ \cifraDerivados{} tablas Parquet};
+  \node[etapa]   (tablas)    at (12,0)
+    {\textbf{Tablas}\\[2pt]\texttt{\scriptsize 03\_tablas}\\ 10 secciones};
+
+  % Fila 2: de la tabla a la pieza publicada.
+  \node[etapa]  (figuras) at (8,-2.7)
+    {\textbf{Figuras y mapas}\\[2pt]\texttt{\scriptsize 04\_figuras}\\ \cifraFiguras{} archivos};
+  \node[salida] (salidas) at (12,-2.7)
+    {\textbf{Salidas}\\[2pt]\texttt{\scriptsize 03\_Outputs}\\ .xlsx $\cdot$ .png $\cdot$ .pdf};
+  \node[almacen] (checks) at (8,-5.0)
+    {\textbf{Verificación}\\[2pt]\texttt{\scriptsize 99\_checks}\\ 5 controles};
+
+  \draw[paso] (fuentes)   -- (homog);
+  \draw[paso] (homog)     -- (derivados);
+  \draw[paso] (derivados) -- (tablas);
+  \draw[paso] (tablas.south) -- (salidas.north);
+  \draw[paso] (tablas.south west) -- (figuras.north east);
+  \draw[paso] (figuras)   -- (salidas);
+  \draw[control] (checks.east) -| (salidas.south);
+
+  % Los insumos curados saltan la homogeneización y entran directo a las tablas.
+  \draw[flujoexcepcion, line width=0.7pt]
+    (fuentes.north) .. controls +(0,1.15) and +(0,1.15) .. (tablas.north);
+  \node[font=\scriptsize, text=baya, align=center] at (6,1.95)
+    {\cifraCurados{} insumos curados entran sin pasar por ningún script};
+\end{tikzpicture}
+\caption{Arquitectura del flujo. Las cifras salen del propio repositorio; la
+arista roja discontinua es la ruta que no tiene código detrás.}
+\end{figure}
+
+\begin{regla}[title={Regla 1 — la figura no recalcula}]
+Una figura y un mapa leen la tabla que la sección acaba de escribir. Si
+recalcularan desde el derivado podrían discrepar de ella, y el informe tendría
+dos cifras distintas para el mismo hecho. Por eso los mapas corren después de
+las diez secciones y no dentro de ellas.
+\end{regla}
+
+\subsection{Cadena de homogeneización}
+
+Qué script produce qué derivado. El grafo se deriva de leer el código, no de la
+documentación: un diagrama dibujado a mano envejece en silencio, este no puede
+discrepar del pipeline.
+
+\begin{figure}[htbp]\centering
+\input{tablas/DAG1_homogeneizacion}
+\caption{De script de homogeneización a derivado. Los
+\cifraDerivados{} derivados tienen productor identificado; cuatro scripts
+producen más de uno. Este grafo cubre solo la ruta reproducible: los insumos
+curados no aparecen porque ningún script los escribe.}
+\end{figure}
+
+\subsection{Consumo por sección}
+
+Qué lee cada sección temática. Es el grafo que importa para responder «¿de dónde
+salió esta cifra?», y el que muestra que las secciones se alimentan de tres
+sitios distintos: derivados del pipeline, tableros curados y fuentes crudas
+leídas directamente.
+
+\begin{figure}[p]\centering
+\input{tablas/DAG2a_consumo}
+\caption{Recursos que consumen las secciones 01 a 05. En rojo discontinuo, los
+insumos curados: entran al informe sin pasar por ningún script.}
+\end{figure}
+
+\begin{figure}[p]\centering
+\input{tablas/DAG2b_consumo}
+\caption{Recursos que consumen las secciones 06 a 10.}
+\end{figure}
+
+\clearpage
+
+% =============================================================================
+\section{Fuentes de datos}
+% =============================================================================
+
+\subsection{Catálogo}
+
+El código referencia \cifraInsumos{} archivos de entrada, de los cuales
+\cifraInsumosPresentes{} están en el repositorio y \cifraInsumosAusentes{} deben
+pedirse al equipo. La tabla~\ref{tab:fuentes} los lista con su peso, su fecha de
+última modificación y cuántos scripts los leen.
+
+\begin{table}[htbp]\centering
+\caption{Catálogo de fuentes que el flujo lee}
+\label{tab:fuentes}
+\scriptsize
+\input{tablas/T2_fuentes}
+\end{table}
+
+\subsection{Las tres clases de insumo}
+
+\begin{description}[leftmargin=*, style=nextline, itemsep=3pt]
+  \item[Crudo] Fuente original de una entidad (DANE, Gobernación de Antioquia,
+    Policía Nacional, MinSalud, MinTIC, DNP, UPRA, ANM, XM, UNGRD, UBPD, Global
+    Forest Watch). Se reemplaza conservando el nombre del archivo.
+  \item[Actualización] Fuentes nuevas o revisadas que llegaron después del corte
+    original. Viven en \ruta{00\_Inputs/Actualización/Fuentes/} y algunas ya son
+    parte del flujo vigente: la carpeta no es un borrador.
+  \item[Curado] Tableros que el equipo arma a mano en Excel y que ningún script
+    regenera. Son \cifraCurados{} archivos y constituyen el mayor riesgo de
+    reproducibilidad del proyecto (sección~\ref{sec:limitaciones}). Viven
+    separados en \ruta{00\_Inputs/curados/} precisamente para que no se
+    confundan con lo que sí se regenera.
+\end{description}
+
+\begin{table}[htbp]\centering
+\caption{Fuentes que no viajan con el repositorio}
+\small
+\input{tablas/T6_fuentes_ausentes}
+\end{table}
+
+\subsection{Derivados}
+
+La homogeneización produce \cifraDerivados{} derivados, todos en formato
+Parquet: columnar, comprimido, tipado y legible desde R, Python y Stata~18+.
+En el código no se abren por ruta sino con \fn{leer\_derivado("nombre")}, de modo
+que cambiar el formato mañana no obligue a tocar treinta scripts.
+
+\begin{table}[htbp]\centering
+\caption{Derivados del flujo y el script que los produce}
+\small
+\input{tablas/T3_derivados}
+\end{table}
+
+% =============================================================================
+\section{Estructura de datos}
+\label{sec:estructura}
+% =============================================================================
+
+Esta sección declara el modelo: qué representa una fila, qué la identifica, qué
+tipo tiene cada columna, cómo se escribe un dato ausente y en qué unidades está
+todo. Es lo que hay que leer antes de cruzar estos datos con otros.
+
+\subsection{Modelo y unidad de observación}
+
+El modelo es deliberadamente plano. No hay una base relacional: hay
+\emph{tablas municipales} que se cruzan por código DANE contra un único
+crosswalk territorial. Tres niveles:
+
+\begin{description}[leftmargin=*, style=nextline, itemsep=3pt]
+  \item[Nivel 0 — territorio] \fn{codigos\_provincias} y \fn{subreg\_completo}.
+    Definen qué municipio existe y a qué provincia y subregión pertenece. Son la
+    tabla maestra: cualquier discrepancia entre fuentes se resuelve a su favor.
+  \item[Nivel 1 — indicadores municipales] Los \cifraDerivados{} derivados. Una
+    fila por municipio, o por municipio y año cuando la serie es temporal.
+  \item[Nivel 2 — salidas por provincia] Las hojas de
+    \ruta{03\_Outputs}. Una fila por municipio de la provincia, más las filas
+    agregadas de provincia, subregión y departamento, que se distinguen por
+    tener el código DANE vacío.
+\end{description}
+
+\begin{regla}[title={Regla 8 — la fila agregada se reconoce por el código vacío}]
+En toda hoja publicada, una fila sin código DANE es un agregado, no un
+municipio. Es la convención de la que dependen los formatos, las figuras y la
+auditoría; romperla haría que un total se contara como un territorio más.
+\end{regla}
+
+\subsection{Llaves e integridad referencial}
+
+\begin{table}[htbp]\centering
+\caption{Llaves del modelo, su dominio y su fuente de verdad}
+\small
+\input{tablas/T11_llaves}
+\end{table}
+
+Las restricciones que el flujo verifica en cada corrida, y que abortan la
+ejecución si dejan de cumplirse:
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \fn{ind\_mpio} es único en el crosswalk y no admite vacíos.
+  \item El crosswalk tiene exactamente \cifraMunicipios{} municipios repartidos
+    en las \cifraProvincias{} provincias, y ninguna provincia queda sin
+    municipios.
+  \item Todo nombre de esquema asociativo del listado maestro empareja con una
+    de las \cifraProvincias{} provincias declaradas.
+  \item Ninguna hoja publicada contiene municipios ajenos a su provincia
+    (verificado en las \cifraProvincias{} provincias, sección~\ref{sec:trazabilidad}).
+\end{itemize}
+
+\subsection{Esquema de los derivados}
+
+Las \cifraTablasDerivadas{} tablas derivadas suman \cifraColumnasDerivadas{}
+columnas. La llave de cada una no se declara a mano: se busca en cada corrida
+probando combinaciones de columnas hasta dar con la más pequeña sin
+repeticiones.
+
+\begin{table}[htbp]\centering
+\caption{Estructura de las tablas derivadas}
+\scriptsize
+\input{tablas/T9_estructura_derivados}
+\end{table}
+
+El esquema columna a columna —tipo, número de valores distintos, porcentaje de
+vacíos y un valor de ejemplo— está en el apéndice~\ref{ap:esquemas} y, en
+formato legible por máquina, en
+
+\vspace{2pt}
+\noindent\hspace*{1em}\ruta{04\_Docs/auditoria/H4\_esquemas\_derivados.csv}
+\vspace{2pt}
+
+\subsection{Tipos de dato y su representación}
+
+\noindent\begin{tabularx}{\linewidth}{l l >{\RaggedRight\arraybackslash}X}
+\toprule
+\textbf{Tipo} & \textbf{En Parquet} & \textbf{Convención} \\
+\midrule
+Entero & \fn{int32} & Códigos DANE, conteos y años. Nunca se guardan como texto ni con decimales. \\
+Decimal & \fn{double} & Tasas, índices, áreas y montos. Sin redondear en el derivado: el redondeo es cosa de la presentación. \\
+Texto & \fn{string} & Nombres, categorías y etiquetas. En UTF-8 y en forma normalizada NFC. \\
+Lógico & \fn{bool} & Marcas internas. No se publican. \\
+\bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+Las columnas etiquetadas de Stata (\fn{haven\_labelled}) se guardan como su tipo
+base y la etiqueta se pierde: ningún paso del flujo la usa, y conservarla
+obligaría a un formato que solo Stata entiende.
+
+\begin{regla}[title={Regla 9 — el derivado no redondea}]
+Un derivado guarda el valor con toda su precisión. El redondeo ocurre una sola
+vez, al escribir la hoja de Excel o la etiqueta de una figura, y queda
+registrado en el formato de la celda. Redondear antes propaga el error a todos
+los agregados que se calculen después.
+\end{regla}
+
+\subsection{Valores ausentes, ceros y códigos centinela}
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item En los derivados, un dato ausente es \fn{NA}. No se usan centinelas
+    numéricos (\fn{-99}, \fn{999}) ni cadenas vacías para representarlo.
+  \item En las hojas de Excel, un \fn{NA} se escribe como \textbf{celda vacía}.
+  \item En los mapas, un municipio sin dato se pinta en gris \fn{\#E8E8E6} y la
+    leyenda lo declara.
+  \item Un \textbf{cero real} se escribe como \fn{0} y significa que el fenómeno
+    se midió y no existe. No es lo mismo que la ausencia de medición.
+\end{itemize}
+
+\begin{advertencia}[title={Dónde el cero y el vacío se confunden con facilidad}]
+En coca, EVOA, centrales de generación y áreas protegidas, la fuente solo lista
+los municipios donde el fenómeno existe. La ausencia de fila significa cero. En
+catastro, gobierno digital y restitución de tierras significa lo contrario: la
+fuente no cubre ese municipio. La tabla de la sección~\ref{sec:trazabilidad}
+separa los dos casos.
+\end{advertencia}
+
+\subsection{Unidades, escalas y precisión}
+
+\noindent\begin{tabularx}{\linewidth}{>{\RaggedRight\arraybackslash}p{4.3cm} >{\RaggedRight\arraybackslash}X}
+\toprule
+\textbf{Familia} & \textbf{Unidad y escala} \\
+\midrule
+Áreas territoriales & km². Las áreas protegidas también en km², aunque el Anexo~1 las publicó en hectáreas. \\
+Población & Personas. Proyecciones a 2025 salvo indicación en contrario. \\
+Valor agregado & Miles de millones de pesos constantes de 2015; el per cápita, en pesos. \\
+Avalúos catastrales & Pesos corrientes. \\
+Proporciones y coberturas & Fracción en $[0,1]$ en el archivo; formato de porcentaje en la celda. \\
+Tasas epidemiológicas & Por 100.000 habitantes; la mortalidad infantil por 1.000 nacidos vivos; la leishmaniasis sobre población \emph{rural}. \\
+Índices (MDM, IDF, ICM, IMCA, IGD) & Escala 0--100. No se convierten a fracción. \\
+Vías & Km por km² (IDV) y km por 1.000 habitantes (VPC). \\
+Producción agrícola & Toneladas; áreas en hectáreas; rendimiento en t/ha. \\
+Coca y oro de aluvión & Hectáreas. \\
+Capacidad de generación & Megavatios (MW). \\
+\bottomrule
+\end{tabularx}
+
+\begin{advertencia}[title={Una unidad que hay que declarar siempre}]
+Un indicador que llega en escala 0--100 y se publica como fracción, o al revés,
+produce cifras cien veces mayores o menores sin que nada falle. El flujo
+convierte explícitamente en cada caso y lo anota en el script; al citar una
+cifra, conviene mirar el formato de la celda antes que el número.
+\end{advertencia}
+
+\subsection{Referencia espacial}
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \textbf{Cartografía base:} DANE, Marco Geoestadístico Nacional
+    (\ruta{01\_Data/\allowbreak 00\_Inputs/\allowbreak maps/\allowbreak MGN\_MPIO\_POLITICO.shp}), 125 municipios de
+    Antioquia.
+  \item \textbf{Sistema de referencia:} WGS~84 geográfico, EPSG:4326.
+  \item \textbf{Llave de cruce:} \fn{MPIO\_CCDGO} del shapefile contra
+    \fn{ind\_mpio}. Nunca por nombre.
+  \item \textbf{Codificación:} los shapefiles no traen \fn{.cpg}, así que el
+    encoding se declara explícitamente al leerlos; sin eso los nombres pierden
+    las tildes.
+  \item \textbf{Etiquetas:} se ubican con \fn{st\_point\_on\_surface} y no con el
+    centroide, que en un municipio en herradura puede caer sobre el vecino.
+\end{itemize}
+
+\subsection{Formatos, codificación y ordenación}
+
+\noindent\begin{tabularx}{\linewidth}{l >{\RaggedRight\arraybackslash}X}
+\toprule
+\textbf{Elemento} & \textbf{Convención} \\
+\midrule
+Derivados & Parquet con compresión \fn{zstd}. Un solo formato, columnar y tipado, legible desde R, Python y Stata~18+. \\
+Salidas tabulares & \fn{.xlsx}, una hoja por tabla, encabezado en la fila~1, panel congelado. \\
+Figuras y mapas & PNG a 300\,dpi y PDF vectorial, ambos al tamaño final de impresión. \\
+Evidencia de auditoría & CSV en UTF-8, comparables entre corridas con un \fn{diff}. \\
+Codificación de texto & UTF-8 en todo el proyecto. La verificación estática rechaza nombres de archivo en forma descompuesta (NFD), que rompen en Linux. \\
+Ordenación alfabética & Sobre el texto sin tildes, para que no dependa del \emph{locale}: en \fn{C}, «Gómez Plata» caería después de «Guadalupe». \\
+Nombres de archivo & Los de las fuentes se respetan tal cual, con espacios y tildes. Lo que crea el pipeline no lleva ni espacios ni tildes. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Nomenclatura}
+
+\noindent\begin{tabularx}{\linewidth}{l >{\RaggedRight\arraybackslash}X}
+\toprule
+\textbf{Objeto} & \textbf{Patrón} \\
+\midrule
+Script de sección & \fn{NN\_nombre.R} en \ruta{03\_tablas} y \ruta{04\_figuras} \\
+Función de sección & \fn{tabla\_nombre(prov)} y \fn{figuras\_nombre(prov, tabla)} \\
+Carpeta de salida & \ruta{03\_Outputs/<Provincia>/<NN\_Sección>/} \\
+Figura & \fn{fig\_NN\_slug.\{png,pdf\}}, slug en minúsculas sin tildes \\
+Mapa & \fn{mapa\_NN\_slug.\{png,pdf\}}, donde \fn{NN} es la sección de destino \\
+Hoja de datos de figura & \fn{\_fig\_NN} para figuras y \fn{\_mapaNN\_slug} para mapas \\
+Columna del código & \fn{minúsculas\_con\_guion\_bajo}; el encabezado legible se pone al escribir la hoja \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Versionado, acceso y confidencialidad}
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \textbf{Qué se versiona:} el código, las fuentes que caben, los
+    tableros curados, este anexo y su evidencia. \textbf{Qué no:} las salidas
+    del pipeline —se regeneran en minutos— y los archivos demasiado grandes o
+    sensibles.
+  \item \textbf{Huella:} cada corrida de la auditoría registra tamaño, fecha y
+    MD5 de cada insumo. Es lo que permite afirmar, meses después, que una cifra
+    salió exactamente de esos bytes.
+  \item \textbf{Microdatos:} los de la ECV~2023 y la encuesta de percepción se
+    procesan localmente; solo se versiona el derivado agregado. El de percepción
+    conserva ocho variables de las 1.363 del original.
+  \item \textbf{Nivel de publicación:} todo lo que el flujo publica es agregado
+    municipal o superior. Ninguna salida contiene registros individuales.
+\end{itemize}
+
+% =============================================================================
+\section{Protocolos de uso de datos}
+% =============================================================================
+
+\subsection{Reglas de manipulación}
+
+\begin{regla}[title={Regla 2 — las fuentes no se tocan}]
+Ningún archivo de \ruta{00\_Inputs} se edita, se limpia ni se renombra a mano.
+Toda transformación ocurre en un script de \ruta{02\_Code/01\_homogeneizacion},
+para que quede registrada, revisable y repetible. Un archivo corregido a mano
+es una corrección que nadie puede auditar y que se pierde en la siguiente
+entrega de la fuente.
+\end{regla}
+
+\begin{regla}[title={Regla 3 — los nombres de archivo son un contrato}]
+Muchas fuentes traen espacios, tildes y mayúsculas inconsistentes
+(\fn{POBLACION MUNICIPAL.xlsx}, \fn{códigos\_municipios\_clean.dta},
+\fn{Pérdida de cobertura árborea.xlsx}). No se renombran: son el contrato entre
+el código y las entregas del equipo. Un derivado conserva incluso el error
+tipográfico «DEFICT» porque es el archivo vigente.
+\end{regla}
+
+\subsection{Datos sensibles y no versionados}
+
+Dos clases de archivo no entran al repositorio:
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \textbf{Microdatos y encuestas anonimizadas} —los microdatos de la ECV
+    2023 y la encuesta de percepción de seguridad 2018--2025—, que se procesan
+    localmente y de los que solo se versiona el derivado agregado. El derivado
+    de percepción, por ejemplo, contiene únicamente las ocho variables que el
+    análisis usa, no las 1\,363 del archivo original.
+  \item \textbf{Fuentes demasiado grandes} para el control de versiones. El
+    flujo se detiene con un mensaje que dice exactamente cuál falta y continúa
+    con el resto.
+\end{itemize}
+
+\begin{regla}[title={Regla 4 — la encuesta de percepción no es provincial}]
+La encuesta de percepción de seguridad es representativa a nivel de
+\emph{subregión}, no de provincia ni de municipio. Sus resultados se publican
+rotulados por subregión y deben leerse así en el informe. Presentarlos como
+cifras provinciales sería atribuir a un territorio una medición que no lo
+representa.
+\end{regla}
+
+\subsection{Huella de las fuentes}
+
+Cada corrida de la auditoría registra el tamaño, la fecha de modificación y la
+huella MD5 de cada insumo en
+\ruta{04\_Docs/auditoria/B1\_inventario\_insumos.csv}. Esa huella es lo que
+permite afirmar, meses después, que una cifra publicada salió exactamente de
+esos bytes. Sin ella, «actualizamos la fuente» es una afirmación que nadie puede
+verificar.
+
+% =============================================================================
+\section{Limpieza y homogeneización}
+% =============================================================================
+
+\subsection{Identificación territorial}
+
+Todo cruce entre fuentes se hace por \textbf{código DANE}, nunca por nombre de
+municipio. Cuando la fuente no trae código —las plantas de generación de XM y el
+catastro minero de la ANM son los dos casos— el nombre se normaliza (mayúsculas,
+sin tildes, espacios compactados, con las equivalencias conocidas del tipo
+\emph{San Pedro} $\to$ \emph{San Pedro de los Milagros}) y se cruza contra el
+listado oficial.
+
+El proyecto distingue tres formas del nombre de un municipio y no las mezcla:
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \fn{nvl\_label} — forma normalizada, en mayúsculas y sin tildes, para
+    cruzar entre fuentes.
+  \item \fn{municipio} — nombre de presentación, con tildes y preposiciones en
+    minúscula («Carolina del Príncipe»), para tablas y figuras.
+  \item El nombre tal como venga en cada fuente, que no se usa para nada más que
+    para el cruce.
+\end{itemize}
+
+\begin{advertencia}[title={Por qué no se deriva el nombre de presentación}]
+Aplicar una función de capitalización sobre el nombre normalizado produce
+«Carolina Del Principe». El nombre de presentación se toma del listado oficial,
+no se calcula.
+\end{advertencia}
+
+\subsection{Lectura de encabezados}
+
+Los encabezados de las fuentes cambian entre entregas y entre herramientas: la
+misma columna aparece como \fn{AREA KM2}, \fn{AREAKM2} o \fn{area\_km2} según
+quién lea el archivo. El flujo no fija el nombre exacto: lo busca de forma
+tolerante a acentos, mayúsculas, espacios y separadores, y aborta con un mensaje
+que enumera las columnas disponibles cuando ninguna coincide.
+
+Cuando el encabezado es irrecuperable —celdas combinadas, encabezados repetidos
+por vigencia, títulos en dos filas— la columna se toma \emph{por posición} y esa
+decisión queda anotada en el script. Es el caso del catastro, del valor agregado
+municipal, del aseguramiento al SGSSS, de la natalidad y de la mortalidad
+infantil.
+
+\subsection{Conversión numérica}
+
+Las fuentes mezclan convenciones: separador decimal de coma (\fn{1.234,5}) y de
+punto (\fn{1,234.5}), notación científica (\fn{5.37E-2}) y números con símbolos.
+El flujo decide el separador decimal por contexto, en este orden:
+
+\begin{enumerate}[leftmargin=*, itemsep=1pt]
+  \item Un separador repetido siempre es de miles (\fn{1.234.567}).
+  \item Si aparecen los dos, el decimal es el último.
+  \item Un punto solo es de miles cuando va seguido de exactamente tres dígitos
+    (\fn{7.550} son siete mil quinientos cincuenta, no 7,55).
+  \item Una coma sola siempre es decimal.
+  \item La notación científica se deja pasar intacta.
+\end{enumerate}
+
+\begin{regla}[title={Regla 5 — cero y vacío no son lo mismo}]
+Un municipio sin dato queda vacío, no en cero. En los mapas va en gris y la
+leyenda lo declara. Confundirlos convierte la ausencia de medición en una
+afirmación sobre el territorio.
+\end{regla}
+
+% =============================================================================
+\section{Reglas de agregación}
+% =============================================================================
+
+Cada tabla provincial añade, según el indicador, una fila de provincia, una de
+subregión y una de departamento. La fórmula no es la misma para todos, y la
+elección no es cosmética: cambia el número publicado.
+
+\subsection{El principio}
+
+\begin{regla}[title={Regla 6 — el denominador del indicador manda}]
+Un indicador medido \emph{por habitante} se pondera por población; uno medido
+\emph{por nacimiento} —bajo peso al nacer, mortalidad infantil— se pondera por
+nacimientos; uno medido \emph{por área} se pondera por área; uno escolar, por
+población en edad escolar. Un conteo se suma. Una razón entre dos conteos se
+recalcula sobre las sumas, no se promedia.
+\end{regla}
+
+La consecuencia práctica: donde el informe publicado promedió tasas municipales,
+el flujo calcula la tasa agregada, que da más peso a los municipios donde vive
+más gente. Son cifras distintas y la diferencia está documentada.
+
+\subsection{Indicadores que no se agregan}
+
+Cuatro familias se publican sin fila de total, por razones de fondo:
+
+\begin{description}[leftmargin=*, style=nextline, itemsep=3pt]
+  \item[Gini] Promediar los Gini municipales ignora la desigualdad
+    \emph{entre} municipios y la subestima. Solo se muestran los valores
+    oficiales; donde la encuesta no publica agregado, la fila queda vacía.
+  \item[Ley 617] Es un cociente institucional de cada entidad, medido contra el
+    techo legal de su categoría. No existe un indicador 617 provincial, y el
+    departamental corresponde a la Gobernación, no a la suma de sus municipios.
+  \item[MDM e IDF] El DNP compara cada municipio dentro de su grupo de
+    capacidades iniciales. Un promedio entre grupos no tiene lectura.
+  \item[Uso adecuado del suelo rural] La fuente cubre \cifraMunicipios{} de los
+    125 municipios y la ausencia no es aleatoria. Un promedio del subconjunto
+    con dato se leería como el valor del territorio completo.
+\end{description}
+
+\subsection{Verificación de las agregaciones}
+
+La auditoría recomputa cada fila de total provincial —\cifraAgregados{} celdas
+en las once provincias— y comprueba con qué fórmula se reproduce.
+
+\begin{table}[htbp]\centering
+\caption{Con qué fórmula se reproduce cada valor agregado publicado}
+\small
+\input{tablas/T4_agregaciones}
+\end{table}
+
+Sobre esas \cifraAgregados{} celdas quedan \cifraBanderasRojas{} que no se
+reproducen con ninguna fórmula estándar \emph{y} caen fuera del rango de sus
+municipios. Las cuatro están explicadas y son deliberadas: en la tabla de coca,
+la fila provincial usa como denominador el área de toda la provincia —no solo la
+de los municipios con cultivo—; en la de áreas protegidas, la participación de
+la provincia se calcula sobre el total departamental. Ninguna otra celda del
+proyecto carece de explicación.
+
+% =============================================================================
+\section{Trazabilidad y verificación}
+\label{sec:trazabilidad}
+% =============================================================================
+
+\subsection{Los cuatro controles}
+
+\begin{description}[leftmargin=*, style=nextline, itemsep=3pt]
+  \item[\fn{check\_pipeline.R}] Revisión estática: rutas absolutas, insumos
+    citados que no existen, nombres de archivo en forma descompuesta o que solo
+    difieren en mayúsculas, secciones sin script.
+  \item[\fn{comparar\_referencia.R}] Compara las tablas generadas contra las
+    cifras del informe publicado, municipio por municipio y a la precisión con
+    que se publicaron.
+  \item[\fn{auditoria\_end\_to\_end.R}] Procedencia, huella de las fuentes,
+    cobertura municipal, recomputación de agregados, rangos plausibles y
+    trazabilidad de cada figura.
+  \item[\fn{diccionario\_indicadores.R}] Cruza lo que el flujo publica con lo
+    que el inventario declara y con las fichas técnicas existentes.
+\end{description}
+
+\subsection{Trazabilidad de las figuras}
+
+Cada figura y cada mapa deja sus datos exactos en una hoja auxiliar del mismo
+libro de Excel de su sección, con el prefijo \fn{\_}. Cualquier cifra que
+aparezca dibujada se puede leer como número y rastrear hasta su tabla y de ahí
+hasta su fuente. La auditoría verifica que la hoja exista para cada figura
+exportada, y que cada figura del código lleve nota de fuente y subtítulo.
+
+\begin{table}[htbp]\centering
+\caption{Figuras y mapas por sección}
+\small
+\input{tablas/T8_figuras}
+\end{table}
+
+\subsection{Cobertura municipal}
+
+La auditoría comprueba, hoja por hoja, que los municipios listados sean
+exactamente los de la provincia. Un municipio ajeno sería una cifra atribuida a
+un territorio que no le corresponde: no se encontró ninguno. Municipios
+faltantes sí hay, y no todos significan lo mismo.
+
+\begin{table}[htbp]\centering
+\caption{Hojas donde falta la fila de algún municipio}
+\small
+\input{tablas/T7_cobertura_municipal}
+\end{table}
+
+% =============================================================================
+\section{Los documentos generados}
+\label{sec:documentos}
+% =============================================================================
+
+Además de las tablas y las figuras, el flujo produce los textos: once
+diagnósticos provinciales y un documento comparativo. Se generan con el mismo
+principio que el resto del proyecto —ninguna cifra se escribe a mano— y se
+verifican con un control propio.
+
+\subsection{Qué se genera}
+
+\begin{description}[leftmargin=*, style=nextline, itemsep=3pt]
+  \item[Diagnóstico provincial] \ruta{04\_Docs/borradores/<Provincia>/}. Sigue
+    la estructura del Anexo~1 —capítulo, diez secciones y dieciséis
+    subsecciones— con sus \cifraFiguras{} figuras y mapas repartidos, seis
+    tablas y la prosa redactada. Los estilos salen del propio Anexo~1, de modo
+    que un borrador se puede pegar en el documento maestro sin recolocar
+    niveles.
+  \item[Comparativo de las once] \ruta{04\_Docs/comparativo/}. Lee las once
+    provincias juntas: cuánto del departamento cubre el sistema provincial, cómo
+    se ordena cada provincia en cada dimensión y qué relaciones aparecen entre
+    indicadores. Se apoya en un panel de \cifraPanelIndicadores{} magnitudes por
+    provincia, extraídas de las mismas hojas que publican los informes.
+\end{description}
+
+\begin{regla}[title={Regla 10 — la prosa no transcribe, calcula}]
+Ninguna cifra de estos documentos la teclea una persona. Cada número se calcula
+desde la tabla publicada en el momento de escribir la frase, con el formateador
+del proyecto. Corregir una cifra equivocada es corregir el flujo y regenerar,
+nunca editar el documento.
+\end{regla}
+
+\subsection{Hasta dónde llega la redacción generada}
+
+El texto escribe el enunciado factual —quién concentra, quién está arriba y
+abajo, cómo se compara la Provincia con su subregión y con el departamento, qué
+relación aparece entre dos indicadores— y se detiene donde la frase natural
+exigiría conocimiento que el flujo no tiene. Ahí deja una nota
+\textit{Verificar con el equipo}: por qué un municipio se comporta como se
+comporta, qué corredor vial explica un patrón, qué actor está detrás de una
+economía ilegal. Son veintidós por documento y señalan trabajo pendiente, no
+huecos disimulados.
+
+\subsection{Auditoría de la redacción}
+
+\begin{regla}[title={Regla 11 — cada cifra impresa queda registrada}]
+Durante la generación, los formateadores anotan cada número que imprimen. La
+auditoría vuelve a generar la prosa con ese registro activo y comprueba que
+todo número del texto esté en él. La pregunta deja de ser «¿existe esta cifra en
+los datos?» —que solo se puede responder buscándola en un conjunto grande, con
+poca potencia— y pasa a ser «¿la calculó el flujo?», que se responde exacto.
+\end{regla}
+
+\begin{table}[htbp]\centering
+\caption{Resultado de la auditoría de la redacción}
+\small
+\noindent\begin{tabularx}{\linewidth}{X r}
+\toprule
+\textbf{Comprobación} & \textbf{Resultado} \\
+\midrule
+Cifras auditadas en la prosa de los once documentos & \cifraProsaAuditada{} \\
+Cifras sin procedencia registrada & \cifraProsaSinOrigen{} \\
+Proporción con procedencia & \cifraProsaPct{}\,\% \\
+\addlinespace
+Cifras falsas inyectadas en el control & \cifraFalsasProbadas{} \\
+Poder de detección medido & \cifraPoderDeteccion{}\,\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{hallazgo}[title={Una comprobación que nunca falla no demuestra nada}]
+La auditoría mide su propio poder: inyecta cifras falsas —valores reales
+alterados un 3,7\,\%, plausibles en forma y magnitud— y reporta qué proporción
+detecta. Sin esa medida, un resultado del 100\,\% podría significar que todo
+está bien o que la comprobación no discrimina.
+
+La primera versión de esta auditoría buscaba cada cifra en el conjunto de
+valores publicados y alcanzaba apenas un 46\,\% de poder: con miles de valores
+admitidos, casi cualquier número coincidía por azar. El registro de procedencia
+lo llevó a \cifraPoderDeteccion{}\,\%. El residuo corresponde a cifras alteradas
+que, al redondearse, coinciden con otra que el flujo sí imprimió.
+\end{hallazgo}
+
+\subsection{Cómo se generan}
+
+\begin{verbatim}
+Rscript 02_Code/06_comparativo/generar_comparativo.R   # panel + figuras + docx
+Rscript 02_Code/05_documento/generar_borrador.R        # los once diagnósticos
+Rscript 02_Code/99_checks/auditoria_redaccion.R        # auditoría + control
+\end{verbatim}
+
+% =============================================================================
+\section{Estrategia de actualización}
+% =============================================================================
+
+\subsection{Actualizar una fuente}
+
+\begin{enumerate}[leftmargin=*, itemsep=3pt]
+  \item Reemplazar el archivo en \ruta{01\_Data/00\_Inputs} \textbf{conservando
+    el nombre}. Si el nombre cambia, hay que actualizar el script que lo lee.
+  \item Correr \fn{Rscript 02\_Code/99\_checks/check\_pipeline.R}. Detecta al
+    instante un insumo que dejó de existir o un encabezado que se movió.
+  \item Correr el flujo completo: \fn{Rscript 02\_Code/run\_all.R}.
+  \item Correr la auditoría y comparar contra la corrida anterior: los CSV de
+    \ruta{04\_Docs/auditoria/} son diffables y muestran qué cambió.
+  \item Regenerar las tablas de este anexo y recompilarlo.
+  \item Registrar en el historial del repositorio qué fuente se actualizó, a qué
+    corte y qué cifras se movieron.
+\end{enumerate}
+
+\begin{regla}[title={Regla 7 — actualizar es cambiar de corte, y hay que decirlo}]
+Cambiar una fuente cambia las cifras publicadas. El informe debe declarar el
+corte de cada indicador; dos indicadores de secciones distintas pueden referirse
+a años distintos y el lector tiene que poder saberlo.
+\end{regla}
+
+\subsection{Cortes que ya no coinciden con el informe}
+
+Varios indicadores usan hoy cortes posteriores a los publicados en 2026: las
+cifras de salud (bajo peso, enfermedades transmitidas por vectores, suicidios,
+aseguramiento) usan cortes de 2023 y de diciembre de 2025; el valor agregado
+está a precios constantes de 2015 mientras el informe salió a corrientes; el uso
+del suelo rural y las víctimas del conflicto vienen de versiones posteriores de
+la fuente. El flujo entrega la cifra actual, que no siempre es la del informe.
+
+\subsection{Qué hay que rehacer a mano}
+
+Los \cifraCurados{} insumos curados no se regeneran con el flujo. Actualizarlos
+exige rehacer el tablero en Excel a partir de la fuente original. Mientras eso
+siga así, una actualización del diagnóstico no es una operación de un solo
+comando.
+
+% =============================================================================
+\section{Fichas técnicas y diccionario de indicadores}
+% =============================================================================
+
+\subsection{Estado actual}
+
+El repositorio conserva 65 fichas técnicas de indicador (más un juego de fichas
+municipales POTA, que son documentos de contexto y no fichas de indicador). Cada
+ficha define el indicador, su fórmula, su unidad, su escala de variación, el
+sentido de su interpretación y su nivel de desagregación: es exactamente el
+formato que este proyecto necesita.
+
+El problema no es su calidad sino su cobertura.
+
+\begin{hallazgo}[title={Las fichas describen otro sistema de indicadores}]
+El flujo publica \cifraIndicadores{} indicadores distintos. Solo
+\cifraConFicha{} tienen una ficha técnica que corresponda por nombre. Las fichas
+existentes describen la familia de indicadores de la Encuesta de Calidad de Vida
+y del Anuario Estadístico —calidad de vida, demografía, fuerza laboral,
+educación—, mientras que el diagnóstico reporta además MDM, IDF, ICM, IMCA,
+IRCA, IMRC, EVOA, IRV, gobierno digital, catastro, vías, internet fijo, uso del
+suelo, títulos mineros, capacidad de generación, hectáreas de coca, hechos
+victimizantes y restitución de tierras, ninguno de los cuales tiene ficha.
+\end{hallazgo}
+
+\begin{table}[htbp]\centering
+\caption{Cobertura documental de los indicadores publicados}
+\small
+\input{tablas/T5_cobertura_documental}
+\end{table}
+
+\subsection{Qué hacer con eso}
+
+El inventario \fn{INVENTARIO\_VARIABLES\_v\_2.xlsx} ya tiene la estructura
+correcta —fuente, periodo, periodicidad, sentido, unidad y estado de
+actualización por indicador— pero tampoco cubre lo que el flujo publica. La ruta
+más corta es completarlo con los indicadores realmente publicados, usando como
+llave el encabezado exacto de la tabla, y generar las fichas faltantes desde ahí
+en vez de escribirlas una a una.
+
+El diccionario completo de lo que hoy se publica —sección, hoja, encabezado, en
+cuántas provincias aparece y si tiene ficha— está en
+\ruta{04\_Docs/auditoria/H1\_diccionario\_indicadores.csv}.
+
+% =============================================================================
+\section{Limitaciones conocidas}
+\label{sec:limitaciones}
+% =============================================================================
+
+Esta sección existe para que nadie descubra estos límites después de publicar.
+
+\subsection{Insumos que se arman a mano}
+
+\begin{hallazgo}[title={El mayor riesgo de reproducibilidad}]
+\cifraCurados{} insumos se construyen a mano en Excel y ningún script los
+regenera. Alimentan secciones completas: gobernabilidad (MDM, IDF, Ley 617,
+ICM), ambiental (áreas protegidas, IRCA, emergencias, IMRC), desarrollo rural
+(inventario pecuario, cultivos), seguridad (coca, EVOA, hechos victimizantes,
+restitución), economía (valor agregado, visitantes extranjeros) y educación. Si
+uno se pierde, hay que rehacerlo a mano y no hay forma de verificar que quedó
+igual.
+\end{hallazgo}
+
+\subsection{Derivados cuyo productor no es ejecutable}
+
+\begin{hallazgo}[title={Cuatro cadenas que no se pueden rehacer}]
+Los scripts de \ruta{02\_Code/01\_homogeneizacion/externos/} documentan cómo se
+construyeron cuatro insumos curados —vías (IDV y VPC), suicidios e intentos,
+índice de envejecimiento e IRCA—, pero leen rutas del computador de quien los
+escribió y no corren en este repositorio. Dos de ellos, además, no contienen
+ninguna instrucción de escritura: su salida está comentada o simplemente no
+existe. Hay un eslabón manual adicional sin documentar —añadir a mano una hoja
+\fn{Data} en Excel al resultado— que explica el sufijo \fn{\_dicc} de esos
+archivos.
+
+Consecuencia concreta: las tasas de intento de suicidio y de suicidio consumado,
+los kilómetros de vía por área y por habitante, y el índice de envejecimiento se
+publican sin que exista en el repositorio código capaz de reproducirlos desde la
+fuente.
+\end{hallazgo}
+
+\subsection{Validación externa limitada}
+
+\begin{hallazgo}[title={Solo una de once provincias tiene contraste externo}]
+El único informe publicado disponible como referencia es el de la provincia
+Bioenergética del Norte. El comparador valida 43 columnas contra él y las 43
+reproducen el informe. Para las otras diez provincias no hay contraste externo:
+su corrección descansa en que el código es el mismo y en los controles internos
+de este anexo. No es lo mismo y conviene decirlo así.
+\end{hallazgo}
+
+\subsection{Un indicador que la fuente publica mal}
+
+\begin{hallazgo}[title={Cobertura neta por encima del 100\,\%}]
+La cobertura neta educativa supera el 100\,\% en 284 de los 1\,750 registros
+municipio-año de la fuente, con un máximo de 186,97\,\%. Una cobertura
+\emph{neta} —matriculados en la edad teórica sobre población de esa edad— no
+puede exceder el 100\,\% por definición. El valor viene así de la fuente: o la
+serie corresponde en realidad a cobertura bruta, o el numerador de matrícula y
+el denominador de proyección poblacional no son consistentes.
+
+El flujo publica el dato sin corregirlo —corregirlo sería inventar— pero las
+figuras y los mapas de esa sección llevan una nota que lo advierte. La solución
+de fondo es verificar con el Ministerio de Educación Nacional qué serie es.
+\end{hallazgo}
+
+\subsection{Vacíos de cobertura}
+
+\cifraHojasConVacios{} hojas tienen al menos un municipio sin fila. En coca,
+EVOA, centrales de generación y áreas protegidas la ausencia es informativa: el
+fenómeno no existe en ese municipio. En catastro, gobierno digital y restitución
+de tierras es un vacío de la fuente. El caso más grande es el catastro del Área
+Metropolitana, que la fuente no cubre.
+
+\subsection{Documentación desactualizada}
+
+Dos piezas del repositorio contradicen la implementación vigente y conviene
+retirarlas o marcarlas: \ruta{02\_Code/04\_figuras/CATALOGO\_NOTAS.md} describe
+una decisión ya superada —gráficos nativos de Excel, sin ggplot2— y el catálogo
+\fn{catalogo\_figuras.xlsx} marca 78 figuras como «hecho» cuando el código R
+genera 56 por provincia más 10 mapas. Las cabeceras de varios scripts de tablas
+declaran rutas en \ruta{01\_Data/01\_Derived} para insumos que hoy viven en
+\ruta{01\_Data/00\_Inputs/curados}.
+
+% =============================================================================
+\section{Cómo reproducir todo}
+% =============================================================================
+
+\begin{verbatim}
+# 1. Dependencias (la primera vez)
+Rscript -e 'install.packages("renv"); renv::restore()'
+Rscript -e 'install.packages(c("sf", "ggrepel"))'   # cartografía
+
+# 2. Flujo completo: fuentes -> derivados -> tablas -> figuras -> mapas
+Rscript 02_Code/run_all.R
+
+# 3. Verificación
+Rscript 02_Code/99_checks/check_pipeline.R
+Rscript 02_Code/99_checks/comparar_referencia.R
+Rscript 02_Code/99_checks/auditoria_end_to_end.R
+Rscript 02_Code/99_checks/diccionario_indicadores.R
+
+# 4. Este anexo
+Rscript 02_Code/99_checks/generar_tablas_anexo.R
+cd 04_Docs && latexmk -pdf anexo_metodologico.tex
+\end{verbatim}
+
+\vspace{1em}
+\noindent
+\textcolor{tintatres}{\small
+Todos los CSV que respaldan las cifras de este documento están en
+\ruta{04\_Docs/auditoria/}. Cada uno se regenera con el comando de la
+sección~\ref{sec:trazabilidad} y puede compararse entre corridas.}
+
+% =============================================================================
+\appendix
+\clearpage
+\section{Esquema de las tablas derivadas}
+\label{ap:esquemas}
+% =============================================================================
+
+Las \cifraColumnasDerivadas{} columnas de las \cifraTablasDerivadas{} tablas
+derivadas, leídas de los propios archivos Parquet. «Distintos» es el número de
+valores diferentes que toma la columna —un indicador rápido de si es una llave,
+una categoría o una medida— y «Ejemplo» es un valor real, que dice más sobre la
+unidad y la escala que cualquier descripción.
+
+La misma información, en formato legible por máquina, está en
+
+\vspace{2pt}
+\noindent\hspace*{1em}\ruta{04\_Docs/auditoria/H4\_esquemas\_derivados.csv}
+\vspace{2pt}
+
+\vspace{6pt}
+{\scriptsize
+\input{tablas/T10_esquemas}
+}
+
+\end{document}

@@ -1,0 +1,13 @@
+# Binarios: nunca intentar merge/diff textual
+*.xlsx binary
+*.xls  binary
+*.xlsm binary
+*.dta  binary
+*.docx binary
+*.pdf  binary
+*.png  binary
+*.rds  binary
+*.shp  binary
+*.shx  binary
+*.dbf  binary
+*.zip  binary

@@ -1,0 +1,24 @@
+% Generado por 02_Code/99_checks/generar_tablas_anexo.R — no editar a mano.
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X l r}
+\toprule
+\textbf{Derivado} & \textbf{Script que lo produce} & \textbf{Consumidores} \\
+\midrule
+20250506 EDUCACION & educacion.R & 1 \\
+20260504\_\allowbreak{}SEGURIDAD\_\allowbreak{}SALUD\_\allowbreak{}DEFICT\_\allowbreak{}VIVIENDA & salud\_\allowbreak{}seguridad.R & 2 \\
+codigos\_\allowbreak{}provincias & crosswalk\_\allowbreak{}territorial.R & 1 \\
+ECV\_\allowbreak{}nbi\_\allowbreak{}pobreza & ecv.R & 2 \\
+ECV\_\allowbreak{}oficial\_\allowbreak{}agregados & ecv\_\allowbreak{}oficial\_\allowbreak{}agregados.R & 2 \\
+ECV\_\allowbreak{}raw & ecv.R & 0 \\
+estructura\_\allowbreak{}productiva & deyc.R & 0 \\
+imca\_\allowbreak{}2022 & deyc.R & 1 \\
+infraestructura\_\allowbreak{}internet\_\allowbreak{}2025 & infraestructura\_\allowbreak{}internet.R & 1 \\
+percepcion\_\allowbreak{}seguridad & percepcion\_\allowbreak{}seguridad.R & 1 \\
+poblacion\_\allowbreak{}municipal\_\allowbreak{}total\_\allowbreak{}2025 & poblacion\_\allowbreak{}municipal.R & 0 \\
+poblacion\_\allowbreak{}total\_\allowbreak{}2025 & poblacion\_\allowbreak{}municipal.R & 4 \\
+seguridad\_\allowbreak{}policia & seguridad\_\allowbreak{}policia.R & 1 \\
+subreg\_\allowbreak{}completo & crosswalk\_\allowbreak{}territorial.R & 1 \\
+uso\_\allowbreak{}del\_\allowbreak{}suelo\_\allowbreak{}pota & uso\_\allowbreak{}suelo.R & 1 \\
+\bottomrule
+\addlinespace[2pt]
+\multicolumn{3}{@{}p{\linewidth}@{}}{\footnotesize Todos los derivados se guardan en Parquet en 01\_Data/01\_Derived y se leen con leer\_derivado().} \\
+\end{tabularx}

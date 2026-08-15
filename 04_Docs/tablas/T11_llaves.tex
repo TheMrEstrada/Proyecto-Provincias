@@ -1,0 +1,14 @@
+% Generado por 02_Code/99_checks/generar_tablas_anexo.R — no editar a mano.
+\begin{tabularx}{\linewidth}{l l X >{\raggedright\arraybackslash}p{2.9cm} >{\raggedright\arraybackslash}p{3.5cm}}
+\toprule
+\textbf{Llave} & \textbf{Tipo} & \textbf{Dominio} & \textbf{Cardinalidad} & \textbf{Fuente de verdad} \\
+\midrule
+ind\_\allowbreak{}mpio & entero & 5001--5895 (DIVIPOLA de Antioquia) & 88 en las provincias; 125 en el departamento & códigos\_\allowbreak{}municipios\_\allowbreak{}clean.dta \\
+id\_\allowbreak{}provincia & entero & 1--11 & 11 & tabla PROVINCIAS de 00\_\allowbreak{}config.R \\
+nvl\_\allowbreak{}label & texto & MAYÚSCULAS sin tildes & 88 & códigos\_\allowbreak{}municipios\_\allowbreak{}clean.dta \\
+subregion & texto & nombre de subregión del municipio & 6 & MUNICIPIOS\_\allowbreak{}SUBREG\_\allowbreak{}PROV.xlsx \\
+subregion\_\allowbreak{}full & texto & subregión DANE de los 125 municipios & 9 & MUNICIPIOS\_\allowbreak{}SUBREG\_\allowbreak{}PROV.xlsx \\
+\bottomrule
+\addlinespace[2pt]
+\multicolumn{5}{@{}p{\linewidth}@{}}{\footnotesize Todo cruce entre fuentes se hace por ind\_mpio. Los nombres solo se usan cuando la fuente no trae código, y siempre contra el listado oficial.} \\
+\end{tabularx}

@@ -1,0 +1,331 @@
+"seccion","hoja","indicador","n_provincias","tiene_ficha","ficha_tecnica","familia_ficha","fuente_inventario","periodo_inventario","periodicidad_inventario","sentido_inventario","actualizable_2025","en_inventario"
+"01_Generalidades","distribucion_territorial","Área municipal (km²)",11,FALSE,,,,,,,,FALSE
+"01_Generalidades","distribucion_territorial","Participación en el área provincial",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","0 a 9",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","10 a 19",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","20 a 29",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","30 a 39",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","40 a 49",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","50 a 59",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","60 a 69",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","70 a 79",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","80 o más",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 0 a 9",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 10 a 19",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 20 a 29",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 30 a 39",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 40 a 49",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 50 a 59",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 60 a 69",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 70 a 79",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Hombres 80 o más",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 0 a 9",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 10 a 19",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 20 a 29",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 30 a 39",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 40 a 49",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 50 a 59",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 60 a 69",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 70 a 79",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Mujeres 80 o más",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Población femenina",11,FALSE,,,,,,,,FALSE
+"02_Demografia","estructura_edad","Población masculina",11,FALSE,,,,,,,,FALSE
+"02_Demografia","migracion","Tasa neta de migración - cabecera municipal",11,FALSE,,,,,,,,FALSE
+"02_Demografia","migracion","Tasa neta de migración - centros poblados y rural",11,FALSE,,,,,,,,FALSE
+"02_Demografia","migracion","Tasa neta de migración - total",11,FALSE,,,,,,,,FALSE
+"02_Demografia","natalidad_mortalidad","Índice de Envejecimiento",11,FALSE,,,"DANE Censo 2018 actualizaciones post covid","1985-2035","Anual","Negativo","NO",TRUE
+"02_Demografia","natalidad_mortalidad","Tasa de Mortalidad",11,FALSE,,,,,,,,FALSE
+"02_Demografia","natalidad_mortalidad","Tasa de Natalidad",11,FALSE,,,"Estadísticas Vitales - Seccional de Salud para Antioquia","2006-2023","Anual","Positivo",,TRUE
+"02_Demografia","poblacion","Densidad poblacional (hab/km²)",11,FALSE,,,,,,,,FALSE
+"02_Demografia","poblacion","Participación en el total provincial (%)",11,FALSE,,,,,,,,FALSE
+"02_Demografia","poblacion","Participación rural en el total provincial (%)",11,FALSE,,,,,,,,FALSE
+"02_Demografia","poblacion","Participación urbana en el total provincial (%)",11,FALSE,,,,,,,,FALSE
+"02_Demografia","poblacion","Población rural",11,FALSE,,,,,,,,FALSE
+"02_Demografia","poblacion","Población total",11,FALSE,,,,,,,,FALSE
+"02_Demografia","poblacion","Población urbana",11,FALSE,,,,,,,,FALSE
+"02_Demografia","poblacion","Porcentaje de población rural",11,FALSE,,,,,,,,FALSE
+"02_Demografia","poblacion","Porcentaje de población urbana",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","catastro","Avalúo catastral rural ($)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","catastro","Avalúo catastral total ($)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","catastro","Avalúo catastral urbano ($)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","catastro","Estado del catastro rural",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","catastro","Estado del catastro urbano",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","catastro","Proporción del avalúo catastral rural sobre el total",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","catastro","Proporción del avalúo catastral urbano sobre el total",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","deficit_vivienda","Déficit cualitativo de vivienda",11,TRUE,"Déficit cualitativo de vivienda1","Vivienda",,,,,,FALSE
+"03_Ordenamiento","deficit_vivienda","Déficit cuantitativo de vivienda",11,TRUE,"Déficit cuantitativo de vivienda1","Vivienda",,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Arquitectura",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Cultura y Apropiación",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Decisiones basadas en datos",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Estado Abierto",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Estrategias de Ciudades y Territorios Inteligentes",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Gobernanza",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Índice de Gobierno Digital",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Innovación Pública Digital",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Proyectos de Transformación Digital",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Seguridad y Privacidad de la Información",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Servicios Ciudadanos Digitales",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","gobierno_digital","Servicios y Procesos Inteligentes",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA adopción TIC",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA capacidades",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA dinamismo de los negocios",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA infraestructura",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA innovación",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA instituciones",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA mercado de bienes",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA mercado laboral",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA salud",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA sistema financiero",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA tamaño del mercado",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","imca","IMCA total",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","internet_2025","Líneas de acceso a internet fijo",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","internet_2025","Líneas de acceso a internet fijo por cada 1.000 habitantes",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","internet_2025","Líneas de acceso a internet fijo por fibra óptica",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","internet_2025","Proporción de líneas sobre fibra óptica",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de acueducto (agregado)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de acueducto (municipal)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de alcantarillado (agregado)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de alcantarillado (municipal)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de energía (agregado)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de energía (municipal)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de gas natural (agregado)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de gas natural (municipal)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de internet (agregado)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de internet (municipal)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de recolección de basuras (agregado)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","servicios_publicos","Cobertura de recolección de basuras (municipal)",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","tti_edsup","Tasa de tránsito inmediato a la educación superior",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","uso_suelo_rural","Predios con uso adecuado del suelo rural",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","vias_area","Km de vía primaria por km² del municipio",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","vias_area","Km de vía secundaria por km² del municipio",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","vias_area","Km de vía terciaria por km² del municipio",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","vias_habitantes","Km de vía primaria por cada 1.000 hab.",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","vias_habitantes","Km de vía secundaria por cada 1.000 hab.",11,FALSE,,,,,,,,FALSE
+"03_Ordenamiento","vias_habitantes","Km de vía terciaria por cada 1.000 hab.",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","icm","CTI",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","icm","EIS",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","icm","GPI",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","icm","ICM",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","icm","PCC",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","icm","SEG",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","icm","SOS",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","idf","Gestión",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","idf","IDF",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","idf","Rango",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","idf","Resultados",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","ley617","Gastos de funcionamiento",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","ley617","ICLD",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","ley617","Indicador Ley 617",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","ley617","Observación",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","mdm","Gestión",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","mdm","MDM",11,FALSE,,,,,,,,FALSE
+"04_Gobernabilidad","mdm","Resultados",11,FALSE,,,,,,,,FALSE
+"05_Economia","comparativo_pap_antioquia","Participación de la provincia en el total departamental",11,FALSE,,,,,,,,FALSE
+"05_Economia","comparativo_pap_antioquia","Visitantes extranjeros Antioquia",11,FALSE,,,,,,,,FALSE
+"05_Economia","comparativo_pap_antioquia","Visitantes extranjeros provincia",11,FALSE,,,,,,,,FALSE
+"05_Economia","densidad_empresarial","Densidad empresarial (empresas por cada 1.000 hab.)",11,FALSE,,,,,,,,FALSE
+"05_Economia","dependencia_economica","Índice de Dependencia Económica",11,TRUE,"Índice de dependencia económica","Demografía","DANE Censo 2018 actualizaciones post covid","1985-2035","Anual","Negativo","NO",TRUE
+"05_Economia","ecv_desocupacion_nini","Jóvenes que no estudian ni trabajan (NiNi) (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_desocupacion_nini","Jóvenes que no estudian ni trabajan (NiNi) (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_desocupacion_nini","Tasa de desocupación - total (agregado)",11,TRUE,"Tasa de desocupación","Fuerza laboral",,,,,,FALSE
+"05_Economia","ecv_desocupacion_nini","Tasa de desocupación - total (municipal)",11,TRUE,"Tasa de desocupación","Fuerza laboral",,,,,,FALSE
+"05_Economia","ecv_desocupacion_nini","Tasa de desocupación jóvenes (15-28) (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_desocupacion_nini","Tasa de desocupación jóvenes (15-28) (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini ingresos del hogar - rural (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini ingresos del hogar - rural (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini ingresos del hogar - total (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini ingresos del hogar - total (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini ingresos del hogar - urbano (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini ingresos del hogar - urbano (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini laboral - rural (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini laboral - rural (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini laboral - total (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini laboral - total (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini laboral - urbano (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_gini","Gini laboral - urbano (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ipm","Hogares en pobreza IPM - total (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ipm","Hogares en pobreza IPM - total (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ipm","Personas en pobreza IPM - total (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ipm","Personas en pobreza IPM - total (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de informalidad laboral - rural (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de informalidad laboral - rural (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de informalidad laboral - total (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de informalidad laboral - total (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de informalidad laboral - urbano (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de informalidad laboral - urbano (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de ocupación - rural (agregado)",11,TRUE,"Tasa de ocupación","Fuerza laboral",,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de ocupación - rural (municipal)",11,TRUE,"Tasa de ocupación","Fuerza laboral",,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de ocupación - total (agregado)",11,TRUE,"Tasa de ocupación","Fuerza laboral",,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de ocupación - total (municipal)",11,TRUE,"Tasa de ocupación","Fuerza laboral",,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de ocupación - urbano (agregado)",11,TRUE,"Tasa de ocupación","Fuerza laboral",,,,,,FALSE
+"05_Economia","ecv_ocupacion_informal","Tasa de ocupación - urbano (municipal)",11,TRUE,"Tasa de ocupación","Fuerza laboral",,,,,,FALSE
+"05_Economia","ecv_pobreza","Personas en pobreza por NBI - rural (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_pobreza","Personas en pobreza por NBI - rural (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_pobreza","Personas en pobreza por NBI - total (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_pobreza","Personas en pobreza por NBI - total (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_pobreza","Personas en pobreza por NBI - urbana (agregado)",11,FALSE,,,,,,,,FALSE
+"05_Economia","ecv_pobreza","Personas en pobreza por NBI - urbana (municipal)",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_centrales","Capacidad efectiva neta (MW)",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_centrales","Central / Planta",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_centrales","Empresa operadora",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_centrales","Estado",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_centrales","Participación en Antioquia",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_centrales","Participación en el SIN",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_centrales","Tecnología",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_participacion","Capacidad instalada (MW)",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_participacion","Participación en Antioquia",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_participacion","Participación en el SIN",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_tecnologia","Capacidad instalada (MW)",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_tecnologia","Participación en el SIN",11,FALSE,,,,,,,,FALSE
+"05_Economia","energia_tecnologia","Tecnología",11,FALSE,,,,,,,,FALSE
+"05_Economia","extranjeros_municipio","Visitantes extranjeros no residentes",11,FALSE,,,"SITA Observatorio de Turismo Sostenible de Antioquia - Gobernación de Antioquia","2015-2026","Mensual",,,TRUE
+"05_Economia","titulos_mineros","Número de títulos mineros",11,FALSE,,,,,,,,FALSE
+"05_Economia","titulos_mineros","Tipo de mineral",11,FALSE,,,,,,,,FALSE
+"05_Economia","turismo_instrumentos","Inventario turístico",11,FALSE,,,,,,,,FALSE
+"05_Economia","turismo_instrumentos","Mesa Local de Turismo",11,FALSE,,,,,,,,FALSE
+"05_Economia","turismo_instrumentos","Mesa Local de Turismo formalizada (constituida y reglamentada)",11,FALSE,,,,,,,,FALSE
+"05_Economia","turismo_instrumentos","Plan Local de Turismo",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Actividades artísticas y de entretenimiento",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Actividades financieras y de seguros",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Actividades inmobiliarias",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Actividades profesionales, científicas y técnicas",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Administración pública, educación y salud",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Agricultura, ganadería, caza, silvicultura y pesca",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Comercio, transporte y alojamiento",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Construcción",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Explotación de minas y canteras",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Industrias manufactureras",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Información y comunicaciones",11,FALSE,,,,,,,,FALSE
+"05_Economia","va_actividades","VA Suministro de electricidad, gas y agua",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","Participación del VA - primarias",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","Participación del VA - secundarias",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","Participación del VA - terciarias",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","Proporción del VA municipal sobre total departamental",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","Proporción del VA municipal sobre total provincial",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","VA actividades primarias (miles de millones $ constantes de 2015)",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","VA actividades secundarias (miles de millones $ constantes de 2015)",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","VA actividades terciarias (miles de millones $ constantes de 2015)",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","Valor agregado per cápita (pesos constantes de 2015)",11,FALSE,,,,,,,,FALSE
+"05_Economia","valor_agregado","Valor agregado total (miles de millones $ constantes de 2015)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","area_km2","Área municipal (km²)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_agricola","Participación del municipio en la producción de la provincia",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_agricola","Producción agrícola total de la provincia (t)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_agricola","Producción agrícola total del municipio (t)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_agricola","Producción de cultivos permanentes (t)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_agricola","Producción de cultivos transitorios (t)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_agricola","Proporción de cultivos permanentes",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_agricola","Proporción de cultivos transitorios",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_especies","Bovinos (%)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_especies","Búfalos (%)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_especies","Caprinos (%)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_especies","Equinos (%)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_especies","Ovinos (%)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","composicion_especies","Porcinos (%)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","inventario_pecuario","Bovinos",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","inventario_pecuario","Búfalos",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","inventario_pecuario","Caprinos",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","inventario_pecuario","Equinos",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","inventario_pecuario","Ovinos",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","inventario_pecuario","Porcinos",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","inventario_pecuario","Total especies pecuarias",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","participacion_municipal","Participación en el total provincial (%)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","participacion_municipal","Total especies pecuarias",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","principales_cultivos","Principal cultivo permanente",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","principales_cultivos","Principal cultivo transitorio",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","principales_cultivos","Producción total del cultivo permanente (t)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","principales_cultivos","Producción total del cultivo transitorio (t)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","rendimiento","Área cosechada total (ha)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","rendimiento","Producción total (t)",11,FALSE,,,,,,,,FALSE
+"06_Desarrollo_Rural","rendimiento","Rendimiento (t/ha)",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","desastres_selectos","Avenida torrencial",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","desastres_selectos","Emergencia más prevalente",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","desastres_selectos","Incendio de cobertura vegetal",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","desastres_selectos","Inundación",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","desastres_selectos","Movimiento en masa",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","desastres_selectos","Sequía",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","desastres_selectos","Sismo",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","detalle","Área sobre municipio (km²)",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","detalle","Categoría",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","detalle","Nombre Área Protegida",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","detalle","Participación del área protegida (%)",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","eventos_año","Número de eventos",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","eventos_tipo","Número de eventos",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","eventos_tipo","Tipo de evento",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","imrc","IMRC Déficit de lluvias",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","imrc","IMRC Exceso de lluvias",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","irca","IRCA",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","irca","IRCA rural",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","irca","IRCA urbano",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","irca","Nivel de riesgo",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","irca","Nivel riesgo rural",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","irca","Nivel riesgo urbano",11,FALSE,,,,,,,,FALSE
+"07_Ambiental","perdida_cobertura","Pérdida de cobertura arbórea 2001-2023 (%)",11,FALSE,,,,,,,,FALSE
+"08_Educacion","educacion","Cobertura neta",11,FALSE,,,,,,,,FALSE
+"08_Educacion","educacion","Tasa de deserción",11,TRUE,"Tasa de deserción Escolar","Educación",,,,,,FALSE
+"08_Educacion","educacion","Tasa de repitencia",11,FALSE,,,,,,,,FALSE
+"09_Salud","aseguramiento_sgsss","% afiliados régimen contributivo",11,FALSE,,,,,,,,FALSE
+"09_Salud","aseguramiento_sgsss","% afiliados régimen especial y de excepción",11,FALSE,,,,,,,,FALSE
+"09_Salud","aseguramiento_sgsss","% afiliados régimen subsidiado",11,FALSE,,,,,,,,FALSE
+"09_Salud","aseguramiento_sgsss","Afiliados al régimen contributivo",11,FALSE,,,,,,,,FALSE
+"09_Salud","aseguramiento_sgsss","Afiliados al régimen especial y de excepción",11,FALSE,,,,,,,,FALSE
+"09_Salud","aseguramiento_sgsss","Afiliados al régimen subsidiado",11,FALSE,,,,,,,,FALSE
+"09_Salud","bajo_peso","Nacidos con bajo peso al nacer (%)",11,FALSE,,,,,,,,FALSE
+"09_Salud","enfermedades_tropicales","Tasa de dengue por 100 mil hab.",11,FALSE,,,,,,,,FALSE
+"09_Salud","enfermedades_tropicales","Tasa de leishmaniasis por 100 mil hab. rurales",11,FALSE,,,,,,,,FALSE
+"09_Salud","enfermedades_tropicales","Tasa de malaria por 100 mil hab.",11,FALSE,,,,,,,,FALSE
+"09_Salud","mortalidad_infantil","Tasa de mortalidad infantil (x 1.000 nacidos vivos)",11,FALSE,,,,,,,,FALSE
+"09_Salud","suicidios","Tasa de intento de suicidio por 100 mil hab.",11,FALSE,,,,,,,,FALSE
+"09_Salud","suicidios","Tasa de suicidio consumado por 100 mil hab.",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","coca","Coca sobre área del municipio (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","coca","Coca sobre el total departamental de coca (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","coca","Hectáreas de coca (2023)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","delitos","Delitos sexuales por 100.000 hab.",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","delitos","Homicidios por 100.000 hab.",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","delitos","Hurtos por 100.000 hab.",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","delitos","Violencia intrafamiliar por 100.000 hab.",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","desaparecidos","Personas dadas por desaparecidas",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","desaparecidos","Proporción dentro de la provincia",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","evoa","Hectáreas con permisos",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","evoa","Hectáreas en tránsito",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","evoa","Hectáreas ilícita",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","evoa","Total EVOA (ha)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","irv","Categoría de riesgo",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","irv","Índice de Riesgo de Victimización",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P1A_barrio","Inseguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P1A_barrio","Muy inseguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P1A_barrio","Muy seguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P1A_barrio","N respuestas",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P1A_barrio","Periodo",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P1A_barrio","Seguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P2_cambio_barrio","Igual (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P2_cambio_barrio","Más seguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P2_cambio_barrio","Menos seguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P2_cambio_barrio","N respuestas",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P2_cambio_barrio","No sabe/No responde (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P2_cambio_barrio","Periodo",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P4A_municipio","Inseguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P4A_municipio","Muy inseguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P4A_municipio","Muy seguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P4A_municipio","N respuestas",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P4A_municipio","Periodo",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P4A_municipio","Seguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P6_cambio_municipio","Igual (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P6_cambio_municipio","Más seguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P6_cambio_municipio","Menos seguro (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P6_cambio_municipio","N respuestas",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P6_cambio_municipio","No sabe/No responde (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","P6_cambio_municipio","Periodo",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","proporcion_hechos","Hecho victimizante",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","proporcion_hechos","Proporción sobre el total (%)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","proporcion_hechos","Víctimas por ocurrencia",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","srtdaf","Número de predios",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","srtdaf","Número de solicitudes",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","srtdaf","Número de titulares",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","tasas","Número de solicitudes",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","tasas","Población (2025)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","tasas","Tasa de solicitudes (por 1.000 hab.)",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","total_victimas","Eventos",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","total_victimas","Sujetos de atención",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","total_victimas","Víctimas por declaración",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","total_victimas","Víctimas por ocurrencia",11,FALSE,,,,,,,,FALSE
+"10_Seguridad","total_victimas","Víctimas por ubicación",11,FALSE,,,,,,,,FALSE

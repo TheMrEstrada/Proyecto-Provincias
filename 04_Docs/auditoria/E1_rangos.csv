@@ -1,0 +1,15 @@
+"provincia","seccion","hoja","columna","problema","minimo","maximo","n_afectadas"
+"Agroindustrial del Occidente","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.5611,1.239,6
+"Bioenergética del Norte de Antioquia","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.5594,1.257,18
+"Del Río Grande","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.7065,1.1421,20
+"Del Río Grande","08_Educacion","_mapa08_cobertura_neta","Cobertura neta","proporción fuera de [0,1]",0.8145,1.1217,1
+"Turística y Agroecológica","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.6772,1.443,11
+"Agua, Bosques y Turismo","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.5785,1.566,50
+"Agua, Bosques y Turismo","08_Educacion","_mapa08_cobertura_neta","Cobertura neta","proporción fuera de [0,1]",0.773,1.0878,1
+"Cartama","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.5315,1.159,9
+"San Juan","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.5796,1.123,4
+"Minero Agroecológica","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.5579,1.2373,21
+"Minero Agroecológica","08_Educacion","_mapa08_cobertura_neta","Cobertura neta","proporción fuera de [0,1]",0.6879,1.1233,1
+"Penderisco y Sinifana","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.5259,1.0067,1
+"Área Metropolitana","08_Educacion","educacion","Cobertura neta","proporción fuera de [0,1]",0.633,1.2853,37
+"Área Metropolitana","08_Educacion","_mapa08_cobertura_neta","Cobertura neta","proporción fuera de [0,1]",0.7763,1.2255,3

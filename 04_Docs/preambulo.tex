@@ -1,0 +1,149 @@
+% =============================================================================
+% preambulo.tex — Formato del anexo metodológico
+%
+% Deliberadamente sobrio: es un documento de referencia técnica, para consultar
+% y para auditar, no una pieza de divulgación. Los colores son los del sistema
+% visual del proyecto (02_Code/04_figuras/DISENO.md) para que el anexo y las
+% figuras del informe se lean como una sola familia.
+% =============================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noquoting,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage[a4paper,margin=2.5cm,headheight=14pt]{geometry}
+
+% Una ruta larga sin espacios no se puede partir y TeX prefiere desbordar la
+% caja antes que estirar la línea. Con este margen de emergencia estira.
+\emergencystretch=3em
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[most]{tcolorbox}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+
+% --- Colores del sistema visual (DISENO.md §2) -------------------------------
+\definecolor{azulmarino}{HTML}{4458A6}
+\definecolor{baya}{HTML}{C24A49}
+\definecolor{verdeselva}{HTML}{159449}
+\definecolor{tintauno}{HTML}{292E38}
+\definecolor{tintados}{HTML}{595E66}
+\definecolor{tintatres}{HTML}{888C94}
+\definecolor{grilla}{HTML}{DCDEE1}
+\definecolor{zafreclaro}{HTML}{A1B4DB}
+
+\hypersetup{colorlinks=true, linkcolor=azulmarino, urlcolor=azulmarino,
+            citecolor=azulmarino}
+
+% --- Títulos ------------------------------------------------------------------
+\titleformat{\section}{\normalfont\Large\bfseries\color{tintauno}}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{tintauno}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\color{tintados}}{\thesubsubsection}{1em}{}
+\titlespacing*{\section}{0pt}{2.2ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+
+% --- Encabezado y pie ---------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{tintatres} Proyecto Provincias · Anexo metodológico}
+\fancyhead[R]{\footnotesize\color{tintatres}\nouppercase{\leftmark}}
+\fancyfoot[C]{\footnotesize\color{tintatres}\thepage}
+
+% --- Tablas -------------------------------------------------------------------
+\renewcommand{\arraystretch}{1.15}
+\captionsetup{font=small, labelfont={bf,color=tintados},
+              textfont={color=tintados}, justification=raggedright,
+              singlelinecheck=false}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+% --- Cajas --------------------------------------------------------------------
+% Tres roles, y solo tres: una regla que el pipeline aplica, un hallazgo de la
+% auditoría y una advertencia sobre el dato. Más tipos de caja y el lector deja
+% de distinguirlas.
+
+\newtcolorbox{regla}[1][]{
+  enhanced, breakable, colback=white, colframe=azulmarino,
+  boxrule=0pt, leftrule=2.5pt, arc=0pt, outer arc=0pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  colbacktitle=white, fonttitle=\bfseries\small, coltitle=azulmarino,
+  title={Regla del pipeline}, #1}
+
+\newtcolorbox{hallazgo}[1][]{
+  enhanced, breakable, colback=white, colframe=baya,
+  boxrule=0pt, leftrule=2.5pt, arc=0pt, outer arc=0pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  colbacktitle=white, fonttitle=\bfseries\small, coltitle=baya,
+  title={Hallazgo de la auditoría}, #1}
+
+\newtcolorbox{advertencia}[1][]{
+  enhanced, breakable, colback=grilla!30, colframe=grilla,
+  boxrule=0.4pt, arc=1pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  colbacktitle=grilla!30, fonttitle=\bfseries\small, coltitle=tintados,
+  title={Advertencia sobre el dato}, #1}
+
+% --- Diagramas ----------------------------------------------------------------
+% Los estilos del DAG se declaran aquí una sola vez. Cada tipo de nodo
+% corresponde a una etapa del flujo y cada tipo de arista a una forma de
+% dependencia; los .tex generados solo referencian estos nombres, nunca colores
+% ni tamaños sueltos. La leyenda del documento (§2.2) describe exactamente esta
+% tabla de estilos: si aquí cambia un color, allí cambia la leyenda.
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds, shapes.geometric}
+
+\tikzset{
+  % --- Nodos, uno por etapa del flujo ---
+  nodobase/.style={
+    draw, rounded corners=1.5pt, line width=0.5pt,
+    font=\scriptsize, inner sep=2.6pt, align=left,
+    minimum height=4.6mm, anchor=west},
+  nodofuente/.style={nodobase, draw=tintatres, fill=grilla!35, text=tintauno},
+  nodoscript/.style={nodobase, draw=azulmarino, fill=azulmarino!8, text=tintauno},
+  nododerivado/.style={nodobase, draw=zafreclaro, fill=zafreclaro!25, text=tintauno},
+  nodorecurso/.style={nodobase, draw=tintatres, fill=white, text=tintauno},
+  nodoseccion/.style={nodobase, draw=azulmarino, fill=azulmarino!15, text=tintauno},
+  nodosalida/.style={nodobase, draw=verdeselva, fill=verdeselva!10, text=tintauno},
+  % --- Aristas ---
+  flujo/.style={-{Stealth[length=1.4mm, width=1.1mm]},
+                draw=tintatres, line width=0.28pt, opacity=0.75},
+  flujoexcepcion/.style={-{Stealth[length=1.4mm, width=1.1mm]},
+                draw=baya, line width=0.34pt, densely dashed, opacity=0.9},
+  % --- Etapas del diagrama de arquitectura ---
+  % `text width` fijo: sin él, una etiqueta larga ensancha la caja hasta
+  % solaparse con la vecina y las flechas quedan sin sitio donde dibujarse.
+  cajabase/.style={rounded corners=2pt, line width=0.6pt, align=center,
+                font=\footnotesize, text width=2.9cm, inner sep=4pt,
+                minimum height=1.15cm, text=tintauno},
+  etapa/.style={cajabase, draw=azulmarino, fill=azulmarino!8},
+  almacen/.style={cajabase, draw=tintatres, fill=grilla!40},
+  salida/.style={cajabase, draw=verdeselva, fill=verdeselva!10},
+  paso/.style={-{Stealth[length=2mm, width=1.6mm]}, draw=azulmarino,
+               line width=0.8pt},
+  control/.style={-{Stealth[length=2mm, width=1.6mm]}, draw=baya,
+               line width=0.7pt, densely dashed},
+}
+
+% --- Atajos -------------------------------------------------------------------
+\newcommand{\ruta}[1]{\texttt{\small #1}}
+\newcommand{\fn}[1]{\texttt{\small #1}}
+% Muestra de estilo para la leyenda de §2.2: dibuja el propio nodo o la propia
+% arista, para que la leyenda no pueda desincronizarse de lo que declara.
+\newcommand{\muestranodo}[1]{%
+  \raisebox{-0.6mm}{\begin{tikzpicture}[baseline]
+    \node[#1, minimum width=9mm, minimum height=3.4mm] at (0,0) {};
+  \end{tikzpicture}}}
+\newcommand{\muestraarista}[1]{%
+  \raisebox{0.4mm}{\begin{tikzpicture}[baseline]
+    \draw[#1] (0,0) -- (0.9,0);
+  \end{tikzpicture}}}

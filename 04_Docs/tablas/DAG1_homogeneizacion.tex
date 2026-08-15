@@ -1,0 +1,44 @@
+% Generado por 02_Code/99_checks/generar_tablas_anexo.R — no editar a mano.
+\begin{tikzpicture}[x=1cm, y=1cm]
+\node[nodoscript, text width=5.2cm] (i1) at (0,-1.440) {crosswalk\_\allowbreak{}territorial.R};
+\node[nodoscript, text width=5.2cm] (i2) at (0,-2.160) {deyc.R};
+\node[nodoscript, text width=5.2cm] (i3) at (0,-2.880) {ecv\_\allowbreak{}oficial\_\allowbreak{}agregados.R};
+\node[nodoscript, text width=5.2cm] (i4) at (0,-3.600) {ecv.R};
+\node[nodoscript, text width=5.2cm] (i5) at (0,-4.320) {educacion.R};
+\node[nodoscript, text width=5.2cm] (i6) at (0,-5.040) {infraestructura\_\allowbreak{}internet.R};
+\node[nodoscript, text width=5.2cm] (i7) at (0,-5.760) {percepcion\_\allowbreak{}seguridad.R};
+\node[nodoscript, text width=5.2cm] (i8) at (0,-6.480) {poblacion\_\allowbreak{}municipal.R};
+\node[nodoscript, text width=5.2cm] (i9) at (0,-7.200) {salud\_\allowbreak{}seguridad.R};
+\node[nodoscript, text width=5.2cm] (i10) at (0,-7.920) {seguridad\_\allowbreak{}policia.R};
+\node[nodoscript, text width=5.2cm] (i11) at (0,-8.640) {uso\_\allowbreak{}suelo.R};
+\node[nododerivado, text width=6.8cm] (d1) at (8.8,-0.000) {codigos\_\allowbreak{}provincias};
+\node[nododerivado, text width=6.8cm] (d2) at (8.8,-0.720) {subreg\_\allowbreak{}completo};
+\node[nododerivado, text width=6.8cm] (d3) at (8.8,-1.440) {estructura\_\allowbreak{}productiva};
+\node[nododerivado, text width=6.8cm] (d4) at (8.8,-2.160) {imca\_\allowbreak{}2022};
+\node[nododerivado, text width=6.8cm] (d5) at (8.8,-2.880) {ECV\_\allowbreak{}oficial\_\allowbreak{}agregados};
+\node[nododerivado, text width=6.8cm] (d6) at (8.8,-3.600) {ECV\_\allowbreak{}nbi\_\allowbreak{}pobreza};
+\node[nododerivado, text width=6.8cm] (d7) at (8.8,-4.320) {ECV\_\allowbreak{}raw};
+\node[nododerivado, text width=6.8cm] (d8) at (8.8,-5.040) {20250506 EDUCACION};
+\node[nododerivado, text width=6.8cm] (d9) at (8.8,-5.760) {infraestructura\_\allowbreak{}internet\_\allowbreak{}2025};
+\node[nododerivado, text width=6.8cm] (d10) at (8.8,-6.480) {percepcion\_\allowbreak{}seguridad};
+\node[nododerivado, text width=6.8cm] (d11) at (8.8,-7.200) {poblacion\_\allowbreak{}municipal\_\allowbreak{}total\_\allowbreak{}2025};
+\node[nododerivado, text width=6.8cm] (d12) at (8.8,-7.920) {poblacion\_\allowbreak{}total\_\allowbreak{}2025};
+\node[nododerivado, text width=6.8cm] (d13) at (8.8,-8.640) {20260504\_\allowbreak{}SEGURIDAD\_\allowbreak{}SALUD\_\allowbreak{}DEFICT\_\allowbreak{}VIVIENDA};
+\node[nododerivado, text width=6.8cm] (d14) at (8.8,-9.360) {seguridad\_\allowbreak{}policia};
+\node[nododerivado, text width=6.8cm] (d15) at (8.8,-10.080) {uso\_\allowbreak{}del\_\allowbreak{}suelo\_\allowbreak{}pota};
+\draw[flujo] (i1.east) -- (d1.west);
+\draw[flujo] (i1.east) -- (d2.west);
+\draw[flujo] (i2.east) -- (d3.west);
+\draw[flujo] (i2.east) -- (d4.west);
+\draw[flujo] (i3.east) -- (d5.west);
+\draw[flujo] (i4.east) -- (d7.west);
+\draw[flujo] (i4.east) -- (d6.west);
+\draw[flujo] (i5.east) -- (d8.west);
+\draw[flujo] (i6.east) -- (d9.west);
+\draw[flujo] (i7.east) -- (d10.west);
+\draw[flujo] (i8.east) -- (d12.west);
+\draw[flujo] (i8.east) -- (d11.west);
+\draw[flujo] (i9.east) -- (d13.west);
+\draw[flujo] (i10.east) -- (d14.west);
+\draw[flujo] (i11.east) -- (d15.west);
+\end{tikzpicture}

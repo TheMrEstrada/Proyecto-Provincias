@@ -1,0 +1,24 @@
+% Generado por 02_Code/99_checks/generar_tablas_anexo.R — no editar a mano.
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{4.9cm} r r >{\raggedright\arraybackslash}p{3.0cm} X}
+\toprule
+\textbf{Tabla} & \textbf{Filas} & \textbf{Cols.} & \textbf{Llave detectada} & \textbf{Granularidad} \\
+\midrule
+20250506 EDUCACION & 125 & 18 & ind\_\allowbreak{}mpio & una fila por municipio \\
+20260504\_\allowbreak{}SEGURIDAD\_\allowbreak{}SALUD\_\allowbreak{}DEFICT\_\allowbreak{}VIVIENDA & 125 & 36 & ind\_\allowbreak{}mpio & una fila por municipio \\
+codigos\_\allowbreak{}provincias & 88 & 6 & ind\_\allowbreak{}mpio & una fila por municipio \\
+ECV\_\allowbreak{}nbi\_\allowbreak{}pobreza & 125 & 131 & ind\_\allowbreak{}mpio & una fila por municipio \\
+ECV\_\allowbreak{}oficial\_\allowbreak{}agregados & 16 & 51 & key & una fila por territorio \\
+ECV\_\allowbreak{}raw & 99250 & 26 & Indicador + Municipio & una fila por indicador × municipio \\
+estructura\_\allowbreak{}productiva & 135 & 8 & ind\_\allowbreak{}mpio & una fila por municipio \\
+imca\_\allowbreak{}2022 & 134 & 14 & ind\_\allowbreak{}mpio & una fila por municipio \\
+infraestructura\_\allowbreak{}internet\_\allowbreak{}2025 & 124190 & 23 & sin llave única & no determinada \\
+percepcion\_\allowbreak{}seguridad & 23216 & 8 & sin llave única & no determinada \\
+poblacion\_\allowbreak{}municipal\_\allowbreak{}total\_\allowbreak{}2025 & 1123 & 95 & ind\_\allowbreak{}mpio & una fila por municipio \\
+poblacion\_\allowbreak{}total\_\allowbreak{}2025 & 375 & 9 & ind\_\allowbreak{}mpio + area\_\allowbreak{}geo & una fila por municipio × área geográfica \\
+seguridad\_\allowbreak{}policia & 1000 & 20 & ind\_\allowbreak{}mpio + delito + anio & una fila por municipio × delito × año \\
+subreg\_\allowbreak{}completo & 125 & 2 & ind\_\allowbreak{}mpio & una fila por municipio \\
+uso\_\allowbreak{}del\_\allowbreak{}suelo\_\allowbreak{}pota & 88 & 17 & codmpio & una fila por municipio \\
+\bottomrule
+\addlinespace[2pt]
+\multicolumn{5}{@{}p{\linewidth}@{}}{\footnotesize La llave no se declara: se busca en cada corrida probando combinaciones de columnas hasta encontrar la más pequeña sin repeticiones. Así deja de ser una promesa y pasa a ser una propiedad verificada.} \\
+\end{tabularx}
