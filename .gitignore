@@ -66,10 +66,3 @@ Thumbs.db
 #   Rscript 02_Code/05_documento/generar_borrador.R
 # Lo que el equipo redacte va en su copia de trabajo, no aquí.
 04_Docs/borradores/*/*.docx
-
-# --- Salidas del pipeline (se regeneran con: Rscript 02_Code/run_all.R) ---
-# 144 MB de tablas y figuras que cambian en cada corrida. No se versionan: el
-# pipeline las rehace en unos minutos y el repositorio no carga con binarios
-# que se reescriben enteros cada vez.
-03_Outputs/*/
-!03_Outputs/README.md
