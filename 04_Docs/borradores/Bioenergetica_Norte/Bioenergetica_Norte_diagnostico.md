@@ -2,7 +2,7 @@
 title: "Diagnóstico Integral Territorial — Provincia Bioenergética del Norte de Antioquia"
 subtitle: "Contexto departamental y provincial extendido"
 author: "Proyecto Provincias · Planes Estratégicos Provinciales de Antioquia"
-date: "10 de agosto de 2026"
+date: "18 de agosto de 2026"
 lang: es
 ---
 
@@ -59,13 +59,13 @@ En el contexto departamental, la Provincia representa el 12,0 % de la superficie
 
 *Fuente: Gobernación de Antioquia, Anuario Estadístico. Cálculos propios.*
 
-![1. Localización](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/01_Generalidades/figuras/mapa_00_localizacion.png)
+![1. Localización](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/01_Generalidades/figuras/mapa_00_localizacion.png)
 
 
-![2. Área](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/01_Generalidades/figuras/mapa_01_area.png)
+![2. Área](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/01_Generalidades/figuras/mapa_01_area.png)
 
 
-![3. Distribución territorial](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/01_Generalidades/figuras/fig_01_distribucion_territorial.png)
+![3. Distribución territorial](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/01_Generalidades/figuras/fig_01_distribucion_territorial.png)
 
 
 ### Demografía
@@ -111,22 +111,22 @@ La tasa neta de migración de la ECV 2023 va de 0,00 a 2,51 entre los municipios
 
 *Fuente: DANE, proyecciones de población 2018-2042. Cálculos propios.*
 
-![4. Densidad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/mapa_02_densidad.png)
+![4. Densidad](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/mapa_02_densidad.png)
 
 
-![5. Población municipio](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_01_poblacion_municipio.png)
+![5. Población municipio](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_01_poblacion_municipio.png)
 
 
-![6. Composicion urbana rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_02_composicion_urbana_rural.png)
+![6. Composicion urbana rural](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_02_composicion_urbana_rural.png)
 
 
-![7. Densidad poblacional](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_03_densidad_poblacional.png)
+![7. Densidad poblacional](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_03_densidad_poblacional.png)
 
 
-![8. Pirámide poblacional](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_04_piramide_poblacional.png)
+![8. Pirámide poblacional](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_04_piramide_poblacional.png)
 
 
-![9. Indice envejecimiento](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_05_indice_envejecimiento.png)
+![9. Indice envejecimiento](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/02_Demografia/figuras/fig_05_indice_envejecimiento.png)
 
 
 ### Ordenamiento del Territorio
@@ -194,49 +194,49 @@ En servicios domiciliarios, el promedio municipal de la Provincia es de 86,2 % e
 
 *Fuente: DANE, déficit habitacional 2023. Cálculos propios.*
 
-![10. Déficit vivienda](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/mapa_03_deficit_vivienda.png)
+![10. Déficit vivienda](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/mapa_03_deficit_vivienda.png)
 
 
-![11. Uso suelo rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_01_uso_suelo_rural.png)
+![11. Uso suelo rural](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_01_uso_suelo_rural.png)
 
 
-![12. Catastro avalúo rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_02_catastro_avaluo_rural.png)
+![12. Catastro avalúo rural](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_02_catastro_avaluo_rural.png)
 
 
-![13. Vías área](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_03_vias_area.png)
+![13. Vías área](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_03_vias_area.png)
 
 
-![14. Vías habitantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_04_vias_habitantes.png)
+![14. Vías habitantes](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_04_vias_habitantes.png)
 
 
-![15. Déficit cuantitativo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_05_deficit_cuantitativo.png)
+![15. Déficit cuantitativo](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_05_deficit_cuantitativo.png)
 
 
-![16. Déficit cualitativo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_06_deficit_cualitativo.png)
+![16. Déficit cualitativo](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_06_deficit_cualitativo.png)
 
 
-![17. Servicios públicos](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_07_servicios_publicos.png)
+![17. Servicios públicos](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_07_servicios_publicos.png)
 
 
-![18. IMCA dimensiones](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_08_imca_dimensiones.png)
+![18. IMCA dimensiones](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_08_imca_dimensiones.png)
 
 
-![19. IMCA adopcion tic](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_09_imca_adopcion_tic.png)
+![19. IMCA adopcion tic](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_09_imca_adopcion_tic.png)
 
 
-![20. Gobierno digital](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_10_gobierno_digital.png)
+![20. Gobierno digital](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_10_gobierno_digital.png)
 
 
-![21. Gobierno digital componentes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_11_gobierno_digital_componentes.png)
+![21. Gobierno digital componentes](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_11_gobierno_digital_componentes.png)
 
 
-![22. Tti edsup](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_12_tti_edsup.png)
+![22. Tti edsup](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_12_tti_edsup.png)
 
 
-![23. Internet 1000hab](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_13_internet_1000hab.png)
+![23. Internet 1000hab](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_13_internet_1000hab.png)
 
 
-![24. Internet fibra](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_14_internet_fibra.png)
+![24. Internet fibra](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/03_Ordenamiento/figuras/fig_14_internet_fibra.png)
 
 
 ### Gobernabilidad y capacidades territoriales
@@ -265,19 +265,19 @@ Desagregado por dimensiones, el punto más fuerte de la Provincia es equidad e i
 
 > **Verificar con el equipo** — la evolución del ICM en la serie disponible: si la Provincia converge o diverge respecto del departamento, que es una lectura de tendencia y no de nivel.
 
-![25. Mdm](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_01_mdm.png)
+![25. Mdm](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_01_mdm.png)
 
 
-![26. Idf](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_02_idf.png)
+![26. Idf](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_02_idf.png)
 
 
-![27. Ley617](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_03_ley617.png)
+![27. Ley617](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_03_ley617.png)
 
 
-![28. Icm](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_04_icm.png)
+![28. Icm](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_04_icm.png)
 
 
-![29. Icm dimensiones](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_05_icm_dimensiones.png)
+![29. Icm dimensiones](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/04_Gobernabilidad/figuras/fig_05_icm_dimensiones.png)
 
 
 ### Economía y desarrollo
@@ -328,52 +328,52 @@ En instrumentos de planificación turística, 5 de los 13 municipios cuentan con
 
 > **Verificar con el equipo** — qué atractivos concretos tiene la Provincia y en qué estado están sus inventarios turísticos, y si el turismo aparece como Hecho Provincial en la versión preliminar del Plan.
 
-![30. Va per cápita](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/mapa_05_va_percapita.png)
+![30. Va per cápita](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/mapa_05_va_percapita.png)
 
 
-![31. Pobreza NBI](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_01_pobreza_nbi.png)
+![31. Pobreza NBI](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_01_pobreza_nbi.png)
 
 
-![32. Pobreza IPM](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_02_pobreza_ipm.png)
+![32. Pobreza IPM](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_02_pobreza_ipm.png)
 
 
-![33. Gini hogar laboral](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_03_gini_hogar_laboral.png)
+![33. Gini hogar laboral](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_03_gini_hogar_laboral.png)
 
 
-![34. Ocupación informalidad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_04_ocupacion_informalidad.png)
+![34. Ocupación informalidad](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_04_ocupacion_informalidad.png)
 
 
-![35. Desocupación total jovenes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_05_desocupacion_total_jovenes.png)
+![35. Desocupación total jovenes](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_05_desocupacion_total_jovenes.png)
 
 
-![36. Jovenes NiNi](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_06_jovenes_nini.png)
+![36. Jovenes NiNi](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_06_jovenes_nini.png)
 
 
-![37. Dependencia económica](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_07_dependencia_economica.png)
+![37. Dependencia económica](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_07_dependencia_economica.png)
 
 
-![38. Densidad empresarial](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_08_densidad_empresarial.png)
+![38. Densidad empresarial](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_08_densidad_empresarial.png)
 
 
-![39. Valor agregado per capita](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_09_valor_agregado_per_capita.png)
+![39. Valor agregado per capita](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_09_valor_agregado_per_capita.png)
 
 
-![40. Peso relativo valor agregado](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_10_peso_relativo_valor_agregado.png)
+![40. Peso relativo valor agregado](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_10_peso_relativo_valor_agregado.png)
 
 
-![41. Composicion valor agregado](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_11_composicion_valor_agregado.png)
+![41. Composicion valor agregado](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_11_composicion_valor_agregado.png)
 
 
-![42. Valor agregado actividades](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_12_valor_agregado_actividades.png)
+![42. Valor agregado actividades](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_12_valor_agregado_actividades.png)
 
 
-![43. Títulos mineros](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_13_titulos_mineros.png)
+![43. Títulos mineros](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_13_titulos_mineros.png)
 
 
-![44. Visitantes extranjeros](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_14_visitantes_extranjeros.png)
+![44. Visitantes extranjeros](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_14_visitantes_extranjeros.png)
 
 
-![45. Participación visitantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_15_participacion_visitantes.png)
+![45. Participación visitantes](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/05_Economia/figuras/fig_15_participacion_visitantes.png)
 
 
 ### Desarrollo Rural
@@ -390,19 +390,19 @@ El rendimiento agregado —producción total sobre área cosechada— es mayor e
 
 > **Verificar con el equipo** — el régimen de tenencia de la tierra, el acceso a asistencia técnica y los canales de comercialización de los principales productos. El inventario dice qué se produce y cuánto; no dice quién lo produce ni en qué condiciones lo vende.
 
-![46. Participación pecuaria](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_01_participacion_pecuaria.png)
+![46. Participación pecuaria](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_01_participacion_pecuaria.png)
 
 
-![47. Composicion especies](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_02_composicion_especies.png)
+![47. Composicion especies](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_02_composicion_especies.png)
 
 
-![48. Composicion agrícola](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_03_composicion_agricola.png)
+![48. Composicion agrícola](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_03_composicion_agricola.png)
 
 
-![49. Participación producción](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_04_participacion_produccion.png)
+![49. Participación producción](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_04_participacion_produccion.png)
 
 
-![50. Rendimiento agrícola](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_05_rendimiento_agricola.png)
+![50. Rendimiento agrícola](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/06_Desarrollo_Rural/figuras/fig_05_rendimiento_agricola.png)
 
 
 ### Ambiental
@@ -429,28 +429,28 @@ El registro de emergencias muestra la exposición efectiva, no solo la potencial
 
 > **Verificar con el equipo** — qué explica la pérdida de cobertura en los municipios donde se concentra —frontera agropecuaria, minería, cultivos de uso ilícito, infraestructura— y si existen procesos de restauración en curso.
 
-![51. Pérdida cobertura](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/mapa_07_perdida_cobertura.png)
+![51. Pérdida cobertura](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/mapa_07_perdida_cobertura.png)
 
 
-![52. Areas protegidas](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_01_areas_protegidas.png)
+![52. Areas protegidas](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_01_areas_protegidas.png)
 
 
-![53. IRCA](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_02_irca.png)
+![53. IRCA](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_02_irca.png)
 
 
-![54. IRCA evolucion](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_03_irca_evolucion.png)
+![54. IRCA evolucion](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_03_irca_evolucion.png)
 
 
-![55. Pérdida cobertura](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_04_perdida_cobertura.png)
+![55. Pérdida cobertura](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_04_perdida_cobertura.png)
 
 
-![56. Desastres tipo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_05_desastres_tipo.png)
+![56. Desastres tipo](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_05_desastres_tipo.png)
 
 
-![57. Eventos anio](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_06_eventos_anio.png)
+![57. Eventos anio](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_06_eventos_anio.png)
 
 
-![58. IMRC](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_07_imrc.png)
+![58. IMRC](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/07_Ambiental/figuras/fig_07_imrc.png)
 
 
 ### Educación
@@ -476,7 +476,7 @@ En el mapa, los 3 municipios con los valores más bajos forman sin vecindad entr
 | Carolina del Príncipe | 84,3 % | 2,4 % | 12,8 % |
 | Guadalupe | 69,6 % | 2,0 % | 6,9 % |
 | Gómez Plata | 63,2 % | 5,0 % | 9,6 % |
-| Ituango | 64,2 % | 3,9 % | 5,9 % |
+| Ituango | 64,2 % | 3,8 % | 5,9 % |
 | San Andrés de Cuerquía | 70,1 % | 3,9 % | 8,9 % |
 | San José de la Montaña | 57,2 % | 1,0 % | 4,4 % |
 | Toledo | 87,3 % | 3,2 % | 9,9 % |
@@ -488,16 +488,16 @@ En el mapa, los 3 municipios con los valores más bajos forman sin vecindad entr
 
 *Fuente: Ministerio de Educación Nacional. Cálculos propios.*
 
-![59. Cobertura neta](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/08_Educacion/figuras/mapa_08_cobertura_neta.png)
+![59. Cobertura neta](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/08_Educacion/figuras/mapa_08_cobertura_neta.png)
 
 
-![60. Cobertura neta](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/08_Educacion/figuras/fig_01_cobertura_neta.png)
+![60. Cobertura neta](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/08_Educacion/figuras/fig_01_cobertura_neta.png)
 
 
-![61. Deserción escolar](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/08_Educacion/figuras/fig_02_desercion_escolar.png)
+![61. Deserción escolar](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/08_Educacion/figuras/fig_02_desercion_escolar.png)
 
 
-![62. Repitencia escolar](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/08_Educacion/figuras/fig_03_repitencia_escolar.png)
+![62. Repitencia escolar](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/08_Educacion/figuras/fig_03_repitencia_escolar.png)
 
 
 ### Salud
@@ -539,19 +539,19 @@ En salud mental, la tasa de intento de suicidio de la Provincia es de 77,89 por 
 
 *Fuente: Gobernación de Antioquia, estadísticas vitales. Cálculos propios.*
 
-![63. Mortalidad infantil](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/mapa_09_mortalidad_infantil.png)
+![63. Mortalidad infantil](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/mapa_09_mortalidad_infantil.png)
 
 
-![64. Aseguramiento SGSSS](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/fig_01_aseguramiento_sgsss.png)
+![64. Aseguramiento SGSSS](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/fig_01_aseguramiento_sgsss.png)
 
 
-![65. Bajo peso](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/fig_02_bajo_peso.png)
+![65. Bajo peso](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/fig_02_bajo_peso.png)
 
 
-![66. Enfermedades vectores](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/fig_03_enfermedades_vectores.png)
+![66. Enfermedades vectores](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/fig_03_enfermedades_vectores.png)
 
 
-![67. Suicidios](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/fig_04_suicidios.png)
+![67. Suicidios](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/09_Salud/figuras/fig_04_suicidios.png)
 
 
 ### Seguridad, Paz y Derechos Humanos
@@ -613,34 +613,34 @@ La encuesta de percepción de seguridad complementa este panorama con la mirada 
 
 > **Verificar con el equipo** — qué organizaciones sociales y de víctimas operan en la Provincia y qué mecanismos de protección existen para líderes sociales, que es información de campo y no estadística.
 
-![68. Homicidios departamento](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/mapa_10_homicidios_dpto.png)
+![68. Homicidios](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/mapa_10_homicidios.png)
 
 
-![69. Homicidios](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/mapa_10_homicidios.png)
+![69. Homicidios departamento](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/mapa_10_homicidios_dpto.png)
 
 
-![70. Percepción seguridad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_01_percepcion_seguridad.png)
+![70. Percepción seguridad](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_01_percepcion_seguridad.png)
 
 
-![71. Restitución tierras](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_02_restitucion_tierras.png)
+![71. Restitución tierras](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_02_restitucion_tierras.png)
 
 
-![72. Personas desaparecidas](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_03_personas_desaparecidas.png)
+![72. Personas desaparecidas](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_03_personas_desaparecidas.png)
 
 
-![73. Víctimas ocurrencia](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_04_victimas_ocurrencia.png)
+![73. Víctimas ocurrencia](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_04_victimas_ocurrencia.png)
 
 
-![74. Hechos victimizantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_05_hechos_victimizantes.png)
+![74. Hechos victimizantes](D:/LAURA/Trabajo/EAFIT/Proyectos/Provincias/git/Proyecto-Provincias-nuevo/03_Outputs/Bioenergetica_Norte/10_Seguridad/figuras/fig_05_hechos_victimizantes.png)
 
 
 ## La Provincia en el sistema provincial
 
-La Provincia Bioenergética del Norte de Antioquia es una de las once Provincias Administrativas y de Planificación de Antioquia. En conjunto, esas once agrupan 88 de los 125 municipios del departamento, el 78,9 % de su población y el 54,5 % de su territorio; los 37 municipios restantes no pertenecen a ningún esquema asociativo.
+La Provincia Bioenergética del Norte de Antioquia es una de las once Provincias Administrativas y de Planificación de Antioquia. En conjunto, esas once agrupan 88 de los 125 municipios del departamento, el 11,4 % de su población y el 32,1 % de su territorio; los 37 municipios restantes no pertenecen a ningún esquema asociativo.
 
-Dentro de ese sistema, esta Provincia ocupa el puesto 3 de 11 en población y el 1 de 11 en extensión, con 13 municipios. Tomando su puesto mediano en los 26 indicadores comparables, se sitúa en el lugar 10 de 11 del conjunto.
+Dentro de ese sistema, esta Provincia ocupa el puesto 2 de 11 en población y el 1 de 11 en extensión, con 13 municipios. Tomando su puesto mediano en los 26 indicadores comparables, se sitúa en el lugar 4 de 11 del conjunto.
 
-Su posición no es uniforme. Donde mejor se sitúa es en IRCA (riesgo de calidad del agua), puesto 2, Mortalidad infantil (x 1.000 n.v.), puesto 2 y Hurtos por 100.000 hab., puesto 2. Donde peor, en Internet fijo por 1.000 hab., puesto 11, IMCA total, puesto 11 y Homicidios por 100.000 hab., puesto 10. Esa asimetría es lo que distingue a esta Provincia de sus pares y lo que el Plan Estratégico debería tener en cuenta al priorizar: hay dimensiones en las que puede aportar experiencia al sistema y otras en las que le conviene aprender de él.
+Su posición no es uniforme. Donde mejor se sitúa es en IRCA (riesgo de calidad del agua), puesto 1, Índice de dependencia económica, puesto 2 y Deserción escolar, puesto 2. Donde peor, en Internet fijo por 1.000 hab., puesto 6, IMCA total, puesto 6 y Índice de Ciudades Modernas, puesto 6. Esa asimetría es lo que distingue a esta Provincia de sus pares y lo que el Plan Estratégico debería tener en cuenta al priorizar: hay dimensiones en las que puede aportar experiencia al sistema y otras en las que le conviene aprender de él.
 
 El documento comparativo del proyecto —«Las once provincias de Antioquia, comparadas»— desarrolla esta lectura para todo el sistema y recoge las figuras que la sostienen.
 
