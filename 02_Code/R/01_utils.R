@@ -191,7 +191,10 @@ agregar_totales <- function(datos, universo = NULL, prov, columnas,
         promedio = mean(x, na.rm = TRUE),
         mediana = stats::median(x, na.rm = TRUE),
         promedio_ponderado = {
-          w <- suppressWarnings(as.numeric(d[[pesos]]))
+          # `pesos` admite un nombre de columna, o una lista columna -> peso,
+          # igual que `como` admite un método o una lista columna -> método.
+          col_peso <- if (is.list(pesos)) pesos[[cl]] else pesos
+          w <- suppressWarnings(as.numeric(d[[col_peso]]))
           ok <- !is.na(x) & !is.na(w)
           if (any(ok)) stats::weighted.mean(x[ok], w[ok]) else NA_real_
         },

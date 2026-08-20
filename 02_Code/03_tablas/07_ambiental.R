@@ -14,7 +14,8 @@
 #   imrc                Índice Municipal de Riesgo de Desastres ajustado por
 #                       capacidades (exceso y déficit de lluvias), con los
 #                       promedios provincial y departamental
-#   perdida_cobertura   pérdida de cobertura arbórea 2001-2023 por municipio
+#   perdida_cobertura   pérdida de cobertura arbórea 2001-2023 por municipio,
+#                       como porcentaje de la cobertura de 2000
 #
 # INPUTS:  01_Data/01_Derived/AREAPROTEGIDA_PROVINCIAS.xlsx (hoja "Hoja1")
 #          01_Data/01_Derived/IRCA_PROVINCIAS.xlsx          (hoja "Data")
@@ -169,7 +170,10 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
     con_territorio()
 }
 
-#' Pérdida de cobertura arbórea 2001-2023 (fracción del área con cobertura).
+#' Pérdida de cobertura arbórea 2001-2023, como fracción de la cobertura que el
+#' municipio tenía en 2000 (Global Forest Watch, dosel > 30 %). NO es una
+#' fracción del área del municipio: recalcularla así difiere del valor publicado
+#' en 119 de los 124 municipios (F-4-002).
 .perdida_cobertura <- function() {
   d <- leer_excel(entrada("Pérdida de cobertura árborea.xlsx"),
                   hoja = "Pérdida cobertura árborea")
@@ -503,6 +507,13 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
       municipio  = "Municipio",
       subregion  = "Subregión",
       provincia  = "Provincia",
+      # El rótulo de la columna se deja como está. No afirma nada falso —dice
+      # «%», no «% del área»— y renombrarla rompería en SILENCIO a sus tres
+      # lectores, que la buscan por el nombre exacto: la prosa de la sección
+      # (05_documento/R/secciones.R:1043), el panel comparativo
+      # (06_comparativo/panel_provincial.R:135, que devuelve NA sin avisar si no
+      # la encuentra) y comparar_referencia.R:308. Precisarla es una mejora que
+      # va con el ajuste de la prosa, no aquí.
       perdida_ca = "Pérdida de cobertura arbórea 2001-2023 (%)"
     ),
     formatos = c(perdida_ca = "0.0%")

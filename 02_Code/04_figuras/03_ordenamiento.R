@@ -524,6 +524,11 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
   base <- .solo_municipios(tabla)
   if (nrow(base) == 0) return(invisible(NULL))
 
+  # El periodo lo declara la hoja, no esta figura: la cifra es de un solo
+  # trimestre y los subtítulos decían «2025» a secas (F-2-049). Ver el attr
+  # que fija .hoja_internet() en 03_tablas/03_ordenamiento.R.
+  periodo <- attr(tabla, "periodo") %||% "2025"
+
   # --- fig 13: líneas por cada 1.000 habitantes ------------------------------
   d1 <- base |>
     dplyr::filter(!is.na(.data$internet_1000hab)) |>
@@ -540,9 +545,11 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
       titulo = sprintf("%s tiene %s líneas de internet fijo por cada 1.000 habitantes, el mayor acceso de la provincia",
                        lider1$categoria, num_co(lider1$valor, dec = 0)),
       subtitulo = sprintf(
-        "Líneas de acceso a internet fijo por cada 1.000 habitantes, 2025 · municipios de la provincia %s",
-        prov$etiqueta),
-      fuente = "MinTIC – Comisión de Regulación de Comunicaciones (CRC), 2025. Cálculos propios."
+        "Líneas de acceso a internet fijo por cada 1.000 habitantes, %s · municipios de la provincia %s",
+        periodo, prov$etiqueta),
+      fuente = "MinTIC – Comisión de Regulación de Comunicaciones (CRC), 2025. Cálculos propios.",
+      nota = paste("Se cuentan los accesos activos del último trimestre, en los",
+                   "cuatro paquetes de servicio que incluyen internet fijo.")
     )
   if (!is.null(ref1)) p1 <- .aire_referencia(p1)
 
@@ -572,10 +579,15 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
     textos_fig(
       titulo = titulo2,
       subtitulo = sprintf(
-        "Porcentaje de líneas de internet fijo sobre fibra óptica, 2025 · municipios de la provincia %s",
-        prov$etiqueta),
+        "Porcentaje de líneas de internet fijo sobre fibra óptica, %s · municipios de la provincia %s",
+        periodo, prov$etiqueta),
       fuente = "MinTIC – Comisión de Regulación de Comunicaciones (CRC), 2025. Cálculos propios.",
-      nota = "El valor provincial es el promedio simple de las proporciones municipales"
+      # Desde la corrección 3 la fila provincial ya no es el promedio simple.
+      nota = paste("El valor provincial es el total de líneas de fibra sobre el",
+                   "total de líneas de la provincia, no el promedio de los",
+                   "municipios. Se cuentan los accesos activos del último",
+                   "trimestre, en los cuatro paquetes de servicio que incluyen",
+                   "internet fijo.")
     )
   if (!is.null(ref2)) p2 <- .aire_referencia(p2)
 

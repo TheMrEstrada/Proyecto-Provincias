@@ -294,17 +294,20 @@ seccion_ordenamiento <- function(prov, ctx) {
                             "catastro")
       if (!is.null(cat)) {
         m <- solo_municipios(cat)
-        rural <- .num(m[["Proporción del avalúo catastral rural sobre el total"]])
+        # La fila de provincia publica la proporción calculada sobre las sumas
+        # de avalúo; promediar las proporciones municipales daba otra cifra
+        # —56,0 % frente a 53,2 % en Del Río Grande— (F-2-049).
+        rural_prov <- valor_agregado(
+          cat, "Proporción del avalúo catastral rural sobre el total", "provincia")
         est <- table(as.character(m[["Estado del catastro rural"]]))
         est <- sort(est[!is.na(names(est)) & names(est) != ""], decreasing = TRUE)
         sin_dato <- sum(is.na(.num(m[["Avalúo catastral total ($)"]])))
         p <- .p(p, sprintf(paste(
           "El catastro es la base sobre la que descansan el impuesto predial y",
           "cualquier política de suelo. En la Provincia, el avalúo rural",
-          "representa en promedio el %s del avalúo catastral total de cada",
-          "municipio, lo que confirma por la vía fiscal la ruralidad descrita",
-          "en la sección demográfica.%s%s"),
-          pct_co(mean(rural, na.rm = TRUE) * 100, dec = 1),
+          "representa el %s del avalúo catastral total, lo que confirma por la",
+          "vía fiscal la ruralidad descrita en la sección demográfica.%s%s"),
+          .fpct(rural_prov),
           if (length(est)) sprintf(
             " El estado más frecuente del catastro rural es «%s», en %d municipios.",
             names(est)[1], as.integer(est[1])) else "",
@@ -367,18 +370,20 @@ seccion_ordenamiento <- function(prov, ctx) {
         col <- "Líneas de acceso a internet fijo por cada 1.000 habitantes"
         alto <- extremos(d, col, 2, TRUE, .f1)
         bajo <- extremos(d, col, 2, FALSE, .f1)
-        m <- solo_municipios(d)
-        fib <- .num(m[["Proporción de líneas sobre fibra óptica"]])
+        # La fila de provincia publica el total de líneas de fibra sobre el
+        # total de líneas; promediar las proporciones municipales daba 66,0 %
+        # frente al 75,8 % de su propia tabla en Del Río Grande (F-2-049).
+        fib_prov <- valor_agregado(d, "Proporción de líneas sobre fibra óptica",
+                                   "provincia")
         p <- .p(p, sprintf(paste(
           "El acceso a internet fijo describe la brecha digital interna de la",
           "Provincia. Medido en líneas por cada mil habitantes, es mayor en %s",
           "y menor en %s.%s"),
           alto$texto, bajo$texto,
-          if (any(!is.na(fib))) sprintf(paste(
+          if (!is.na(fib_prov)) sprintf(paste(
             " La fibra óptica, que es la tecnología que sostiene un uso",
-            "intensivo, representa en promedio el %s de las líneas de la",
-            "Provincia."),
-            pct_co(mean(fib, na.rm = TRUE) * 100, dec = 1)) else ""))
+            "intensivo, representa el %s de las líneas de la Provincia."),
+            .fpct(fib_prov)) else ""))
       }
       if (!is.null(g)) {
         pos_g <- posicion(g, "Índice de Gobierno Digital")
@@ -483,23 +488,29 @@ seccion_ordenamiento <- function(prov, ctx) {
             frase_contiguidad(prov, d, "Déficit cualitativo de vivienda", 3, TRUE)))
       }
       if (!is.null(s)) {
-        cobs <- c("Cobertura de acueducto (municipal)",
-                  "Cobertura de alcantarillado (municipal)",
-                  "Cobertura de energía (municipal)")
+        # La hoja publica cada cobertura DOS veces: «(municipal)» por municipio
+        # y «(agregado)» con el agregado ponderado en la fila de provincia. Se
+        # lee la que la hoja ya publicó en vez de promediar los municipios: el
+        # promedio simple sobrepondera a los pequeños, que son los de peor
+        # cobertura, y daba una cifra distinta de la de su propia tabla
+        # —en Del Río Grande, 87,3 % frente a 88,8 % en acueducto— (F-2-049).
+        cobs <- c("Cobertura de acueducto (agregado)",
+                  "Cobertura de alcantarillado (agregado)",
+                  "Cobertura de energía (agregado)")
         cobs <- cobs[cobs %in% names(s)]
         if (length(cobs)) {
-          m <- solo_municipios(s)
-          medias <- vapply(cobs, function(cl) mean(.num(m[[cl]]), na.rm = TRUE),
-                           numeric(1))
-          etiqueta <- gsub(" \\(municipal\\)$", "", names(medias))
+          valores <- vapply(cobs, function(cl) valor_agregado(s, cl, "provincia"),
+                            numeric(1))
+          etiqueta <- gsub(" \\(agregado\\)$", "", names(valores))
           etiqueta <- tolower(gsub("^Cobertura de ", "", etiqueta))
-          p <- .p(p, sprintf(paste(
-            "En servicios domiciliarios, el promedio municipal de la Provincia",
-            "es de %s. La distancia entre la cobertura de energía y la de",
+          hay <- !is.na(valores)
+          if (any(hay)) p <- .p(p, sprintf(paste(
+            "En servicios domiciliarios, la cobertura de la Provincia es de %s.",
+            "La distancia entre la cobertura de energía y la de",
             "alcantarillado es el indicador más elocuente de la ruralidad: la",
             "red eléctrica llegó, la de saneamiento no, y esa diferencia",
             "explica buena parte del déficit cualitativo descrito arriba."),
-            y_lista(sprintf("%s en %s", .fpct(medias), etiqueta))))
+            y_lista(sprintf("%s en %s", .fpct(valores[hay]), etiqueta[hay]))))
         }
       }
       .p(p, verificar(

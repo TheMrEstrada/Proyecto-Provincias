@@ -56,6 +56,21 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
 }
 
 #' Población municipal total (área geográfica "Total") de los años pedidos.
+#'
+#' NOTA SOBRE LA SERIE DE POBLACIÓN (F-2-018, decidido el 2026-08-20).
+#' Este bloque pondera con POBLACION MUNICIPAL.xlsx, que NO es la serie con la
+#' que se publica la población del informe: la cabecera de 02_demografia.R la
+#' declara descartada porque difiere entre −3 % y +10 % por municipio.
+#'
+#' Las secciones 03 y 09 sí se pasaron al PPED (derivados poblacion_anual y
+#' poblacion_total_2025). Esta NO, y la razón es de datos: el PPED cubre
+#' 2018-2042 y el valor agregado se publica desde 2015, así que repuntarla dejaría esos años sin
+#' población y sin indicador. POBLACION MUNICIPAL.xlsx cubre 1985-2035.
+#'
+#' Se cierra el día que se consiga la retroproyección del DANE 1985-2017 de la
+#' vigencia del PPED: se añade como segundo insumo de poblacion_municipal.R y
+#' poblacion_anual pasa a cubrir el rango completo. Entonces esta función lee el
+#' derivado, como ya hacen .poblacion_peso() y .pesos_poblacion().
 .poblacion <- function(anios) {
   if (is.null(.cache_eco$poblacion)) {
     pm <- leer_excel(entrada("POBLACION MUNICIPAL.xlsx"), hoja = "Total_Municipios")

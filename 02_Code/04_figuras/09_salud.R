@@ -34,6 +34,41 @@ FUENTE_ASEGURAMIENTO <- paste(
   "(corte diciembre de 2025)."
 )
 
+# El titular de la figura de vectores. Las tres enfermedades no comparten
+# denominador, así que no se suman ni se rankean entre sí: se nombra al
+# municipio que encabeza cada una. Si el mismo los encabeza todos la frase se
+# colapsa, y si la provincia no registra casos no se nombra a nadie.
+VECTORES_CON_ARTICULO <- c(dengue = "el dengue", malaria = "la malaria",
+                           leishmaniasis = "la leishmaniasis")
+
+.unir_y <- function(x) {
+  if (length(x) < 2L) return(paste(x, collapse = ""))
+  paste(paste(x[-length(x)], collapse = ", "), "y", x[length(x)])
+}
+
+.titular_vectores <- function(lideres, provincia) {
+  n_total <- length(lideres)
+  lideres <- lideres[!is.na(lideres)]
+  if (length(lideres) == 0L) {
+    return(sprintf(
+      "La provincia %s no registra casos de enfermedades transmitidas por vectores",
+      provincia))
+  }
+  nombres <- VECTORES_CON_ARTICULO[names(lideres)]
+  ms <- unique(unname(lideres))
+  if (length(ms) == 1L) {
+    if (length(lideres) == n_total) {
+      return(sprintf(
+        "%s encabeza las tres enfermedades transmitidas por vectores de la provincia",
+        ms))
+    }
+    return(sprintf("%s encabeza %s en la provincia", ms, .unir_y(nombres)))
+  }
+  partes <- vapply(ms, function(m) .unir_y(nombres[lideres == m]), character(1))
+  paste(c(sprintf("%s encabeza %s", ms[1], partes[1]),
+          sprintf("%s, %s", ms[-1], partes[-1])), collapse = "; ")
+}
+
 figuras_salud <- function(prov, tabla) {
   message("== figuras 09 Salud — ", prov$etiqueta, " ==")
   destino <- dir_figuras(prov, "09_Salud")
@@ -162,7 +197,27 @@ figuras_salud <- function(prov, tabla) {
   vec <- solo_municipios(tabla$enfermedades_tropicales)
   enfermedades <- c(dengue = "Dengue", malaria = "Malaria",
                     leishmaniasis = "Leishmaniasis")
-  carga <- rowSums(vec[, names(enfermedades)], na.rm = TRUE)
+  # Las tres tasas NO se suman: el dengue y la malaria se miden sobre población
+  # total y la leishmaniasis sobre población RURAL, de modo que el total sería un
+  # número sin significado en el que la leishmaniasis pesa de más por tener el
+  # denominador más pequeño. Es la misma regla que ya aplica la prosa de esta
+  # sección (05_documento/R/secciones.R): cada enfermedad se reporta con su
+  # denominador y no se rankean entre sí. En consecuencia:
+  #   - el titular nombra al municipio que encabeza CADA enfermedad;
+  #   - el orden vertical usa la posición promedio dentro de cada enfermedad,
+  #     que es adimensional, y se publica como columna (regla 11).
+  tasas  <- vec[, names(enfermedades), drop = FALSE]
+  rangos <- sapply(tasas, rank, na.last = "keep")
+  dim(rangos) <- c(nrow(vec), ncol(tasas))
+  orden  <- rowMeans(rangos, na.rm = TRUE)
+  orden[is.na(orden)] <- 0
+  vec$posicion_promedio <- round(orden, 2)
+
+  lideres <- vapply(names(enfermedades), function(v) {
+    x <- tasas[[v]]
+    if (all(is.na(x)) || max(x, na.rm = TRUE) <= 0) NA_character_
+    else vec$municipio[which.max(x)]
+  }, character(1))
 
   d3 <- vec |>
     dplyr::select(municipio, dplyr::all_of(names(enfermedades))) |>
@@ -170,10 +225,8 @@ figuras_salud <- function(prov, tabla) {
     dplyr::mutate(
       enfermedad = factor(.data$enfermedad, levels = names(enfermedades),
                           labels = unname(enfermedades)),
-      municipio  = factor(.data$municipio, levels = vec$municipio[order(carga)])
+      municipio  = factor(.data$municipio, levels = vec$municipio[order(orden)])
     )
-
-  peor_vec <- vec[which.max(carga), ]
 
   p3 <- ggplot2::ggplot(d3, ggplot2::aes(x = .data$tasa, y = .data$municipio,
                                          fill = .data$enfermedad)) +
@@ -192,14 +245,12 @@ figuras_salud <- function(prov, tabla) {
       panel.spacing.x = grid::unit(0.35, "cm")
     ) +
     textos_fig(
-      titulo = sprintf(
-        "%s soporta la mayor carga de enfermedades transmitidas por vectores de la provincia",
-        peor_vec$municipio
-      ),
+      titulo = .titular_vectores(lideres, prov$etiqueta),
       subtitulo = sprintf(
         paste("Casos por cada 100.000 habitantes (leishmaniasis: por cada 100.000",
               "habitantes rurales), 2023. Municipios de la provincia %s.",
-              "Cada panel tiene su propia escala."),
+              "Cada panel tiene su propia escala; los municipios se ordenan por",
+              "su posición promedio en las tres enfermedades."),
         prov$etiqueta
       ),
       fuente = FUENTE_SALUD,
@@ -208,7 +259,7 @@ figuras_salud <- function(prov, tabla) {
 
   guardar_fig(p3, "fig_03_enfermedades_vectores", destino, n_barras = n)
   escribir_datos_figura(
-    vec[, c("municipio", names(enfermedades))], archivo, "fig_03"
+    vec[, c("municipio", names(enfermedades), "posicion_promedio")], archivo, "fig_03"
   )
 
   # --- fig 04: intento de suicidio y suicidio consumado ---------------------

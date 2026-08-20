@@ -33,6 +33,31 @@ pedírselos al equipo. Sin ellos, las partes del pipeline que los usan no corren
 
 Están listados en `.gitignore` para que nadie los suba por accidente.
 
+### Procedencia de `EMPAQUETAMIENTO_FIJO_3.csv`
+
+Este archivo no está en el repositorio y su formato **ha cambiado entre
+entregas**, así que la exportación con la que se generó el derivado no se puede
+reconstruir después. Quien lo reemplace anota aquí la nueva entrega.
+
+| | |
+|---|---|
+| Fecha de descarga | *(pendiente de anotar)* |
+| URL | *(pendiente de anotar)* |
+| Tamaño | 717,8 MB |
+| MD5 | `054920641ffb57543d41c22fe18f1c7e` |
+| Separador | punto y coma (`;`) |
+| Encabezados | MAYÚSCULAS |
+| Filas | 3.572.367 (todo el país) |
+| Columnas | 22 |
+| Periodos | los cuatro trimestres de 2025 |
+| Filas de Antioquia 2025 | 124.190 |
+
+La entrega anterior —la que produjo el derivado versionado por primera vez—
+venía separada por **comas**, con los encabezados en **minúscula** y con una
+columna más (`period`), que el `.do` de Stata generaba con `yq(anno, trimestre)`.
+Por eso `infraestructura_internet.R` detecta el separador y normaliza los
+nombres en vez de suponerlos.
+
 ---
 
 ## Estructura

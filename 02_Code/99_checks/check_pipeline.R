@@ -88,28 +88,53 @@ for (x in inesperadas) err("insumo citado que no existe: ", x)
 
 # --- 3. Nombres de archivo ----------------------------------------------------
 titulo("3. Nombres de archivo (unicode y mayúsculas)")
-rastreados <- system2("git", c("-C", shQuote(RUTAS$raiz), "ls-files"),
-                      stdout = TRUE, stderr = FALSE)
-nfd <- rastreados[rastreados != stringi::stri_trans_nfc(rastreados)]
-for (x in nfd) err("nombre en forma descompuesta (NFD): ", x)
-dup <- rastreados[duplicated(tolower(rastreados)) |
-                    duplicated(tolower(rastreados), fromLast = TRUE)]
-for (x in dup) err("colisión que solo difiere en mayúsculas: ", x)
-cat(sprintf("  %d archivos rastreados; %d en NFD; %d colisiones\n",
-            length(rastreados), length(nfd), length(dup)))
+# git es opcional para este script: solo esta comprobación lo necesita, porque
+# pregunta por los archivos RASTREADOS. Sin él, system2("git", ...) lanza un
+# error y R aborta la revisión entera, de modo que los controles 4 en adelante
+# no llegan a correr. Es el caso de una máquina con git instalado pero fuera del
+# PATH que ve R, que es lo normal en Windows (F-5-003).
+GIT <- Sys.which("git")
+HAY_GIT <- nzchar(GIT)
+# `rastreados` queda definido siempre: la comprobación 4 también lo usa.
+rastreados <- if (HAY_GIT) {
+  system2(GIT, c("-C", shQuote(RUTAS$raiz), "ls-files"),
+          stdout = TRUE, stderr = FALSE)
+} else character(0)
+
+if (!HAY_GIT) {
+  cat("  omitida: git no está en el PATH que ve R\n")
+  avi("git no está en el PATH que ve R: se omiten las comprobaciones 3 y 4, ",
+      "que preguntan por los archivos rastreados. Las demás sí corren. Para ",
+      "incluirlas, añada la carpeta de git.exe al PATH o corra este script ",
+      "desde una terminal que ya lo tenga.")
+} else {
+  nfd <- rastreados[rastreados != stringi::stri_trans_nfc(rastreados)]
+  for (x in nfd) err("nombre en forma descompuesta (NFD): ", x)
+  dup <- rastreados[duplicated(tolower(rastreados)) |
+                      duplicated(tolower(rastreados), fromLast = TRUE)]
+  for (x in dup) err("colisión que solo difiere en mayúsculas: ", x)
+  cat(sprintf("  %d archivos rastreados; %d en NFD; %d colisiones\n",
+              length(rastreados), length(nfd), length(dup)))
+}
 
 # --- 4. Carpetas retiradas ----------------------------------------------------
 titulo("4. Carpetas retiradas en la reestructuración")
 RETIRADAS <- c("01_Data/00_Inputs/POTA", "01_Data/00_Inputs/Fichas",
                "02_Code/Tablas_Diagnostico/Figuras R")
-for (d in RETIRADAS) {
-  reaparecidos <- rastreados[startsWith(rastreados, paste0(d, "/"))]
-  if (length(reaparecidos)) {
-    err("reaparecieron ", length(reaparecidos), " archivos en ", d,
-        " — reubíquelos según MIGRATION.md")
+if (!HAY_GIT) {
+  # Sin la lista de archivos rastreados esta comprobación no puede concluir
+  # nada. Se omite en vez de imprimir un «OK» que no ha comprobado nada.
+  cat("  omitida: necesita la lista de archivos rastreados por git\n")
+} else {
+  for (d in RETIRADAS) {
+    reaparecidos <- rastreados[startsWith(rastreados, paste0(d, "/"))]
+    if (length(reaparecidos)) {
+      err("reaparecieron ", length(reaparecidos), " archivos en ", d,
+          " — reubíquelos según MIGRATION.md")
+    }
   }
+  cat("  OK — ninguna reapareció\n")
 }
-cat("  OK — ninguna reapareció\n")
 
 # --- 5. Secciones ------------------------------------------------------------
 titulo("5. Estado de las secciones")

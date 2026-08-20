@@ -109,7 +109,10 @@ ESPECIES_PECUARIAS <- c(
 }
 
 #' Inventario pecuario de TODOS los municipios de Antioquia (125), por año.
-#' Una especie sin registro en un municipio-año queda en 0, como en el .do.
+#' Una especie sin registro en un municipio-año queda en 0, como en el .do, pero
+#' solo si la hoja de esa especie cubre el año: si su cobertura cae por debajo de
+#' la mitad de su propio máximo, el año no es comparable y el valor queda vacío
+#' (regla 5 del anexo, «cero no es lo mismo que vacío»).
 .universo_pecuario <- function() {
   ruta <- entrada("curados", "PECUARIO_PROVINCIAS.xlsx")
   partes <- list(
@@ -124,9 +127,25 @@ ESPECIES_PECUARIAS <- c(
   faltantes <- setdiff(names(ESPECIES_PECUARIAS), names(d))
   for (v in faltantes) d[[v]] <- 0
 
+  # El porcino de 2019 trae 24 municipios de 125, y los 101 restantes no son
+  # municipios sin cerdos: en 2020 declaran hasta 118.604 cabezas. El búfalo, en
+  # cambio, cubre entre 61 y 82 todos los años, y ahí el cero sí es correcto: la
+  # hoja solo lista los municipios que tienen. El umbral separa los dos casos.
+  COBERTURA_MIN <- 0.5
+  for (v in names(ESPECIES_PECUARIAS)) {
+    cob   <- tapply(!is.na(d[[v]]), d$anio, sum)
+    malos <- names(cob)[cob < COBERTURA_MIN * max(cob)]
+    ok    <- !(as.character(d$anio) %in% malos)
+    d[[v]][ok] <- dplyr::coalesce(d[[v]][ok], 0)
+    if (length(malos)) {
+      message("  [pecuario] ", v, ": cobertura insuficiente en ",
+              paste(malos, collapse = ", "), " (",
+              paste(cob[malos], collapse = ", "), " de ", max(cob),
+              " municipios); se deja vacío en vez de cero")
+    }
+  }
+
   d |>
-    dplyr::mutate(dplyr::across(dplyr::all_of(names(ESPECIES_PECUARIAS)),
-                                \(x) dplyr::coalesce(x, 0))) |>
     dplyr::mutate(
       total_especies = rowSums(dplyr::pick(dplyr::all_of(names(ESPECIES_PECUARIAS))))
     ) |>

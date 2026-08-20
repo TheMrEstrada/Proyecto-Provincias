@@ -106,6 +106,10 @@ correr_provincia <- function(id = NULL, secciones = NULL) {
   # Van al final y aparte de las secciones: cada mapa lee la tabla .xlsx que la
   # sección acaba de escribir, así que necesita que todas hayan corrido. Solo
   # se generan si se pidió la provincia completa.
+  #
+  # El mapa departamental de homicidios es la excepción: no sale de las hojas de
+  # esta provincia sino del derivado de policía, porque necesita el departamento
+  # entero. Ver mapa_departamental_homicidios() en 04_figuras/00_mapas.R.
   if (identical(lista, SECCIONES)) {
     source(file.path(RUTAS$codigo, "04_figuras", "00_mapas.R"), encoding = "UTF-8")
     r_mapas <- tryCatch(mapas_provincia(prov), error = function(e) e)
@@ -114,7 +118,8 @@ correr_provincia <- function(id = NULL, secciones = NULL) {
       estado  = if (inherits(r_mapas, "error")) "ERROR"
                 else if (is.null(r_mapas)) "OMITIDO" else "OK",
       detalle = if (inherits(r_mapas, "error")) conditionMessage(r_mapas)
-                else if (is.null(r_mapas)) "falta el paquete sf"
+                else if (is.null(r_mapas))
+                  paste("falta", paste(FALTAN_MAPAS, collapse = " y "))
                 else paste(length(r_mapas), "mapas"),
       stringsAsFactors = FALSE
     ))

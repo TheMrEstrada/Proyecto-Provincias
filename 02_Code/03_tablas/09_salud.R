@@ -14,7 +14,8 @@
 #            (bajo_peso, dengue, malaria, leishmaniasis)
 #          01_Data/01_Derived/suicidios_e_intentos_medias_dicc.dta
 #            (TIS_total, TS_total)
-#          01_Data/00_Inputs/POBLACION MUNICIPAL.xlsx   (peso poblacional 2025)
+#          01_Data/01_Derived/poblacion_total_2025.dta  (peso poblacional 2025,
+#            total y rural; serie PPED)
 #          01_Data/00_Inputs/NATALIDAD.xlsx             (nacidos vivos por año)
 #          01_Data/00_Inputs/MORTALIDAD_INFANTIL.xlsx   (tasa por municipio y año)
 #          01_Data/00_Inputs/ASEGURAMIENTO_MUNICIPIOS.xlsx
@@ -106,22 +107,33 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
 
 # --- Insumos compartidos ------------------------------------------------------
 
-#' Población total municipal 2025 de TODO el departamento: es el ponderador de
-#' las tasas por 100 mil habitantes.
+#' Población municipal 2025 de TODO el departamento, en dos ponderadores:
+#' `pob_peso` (total) para las tasas por 100 mil habitantes, y `pob_rural`
+#' (centros poblados y rural disperso) para las que se miden sobre población
+#' rural, como la leishmaniasis.
 .pesos_poblacion <- function() {
-  d <- leer_excel(entrada("POBLACION MUNICIPAL.xlsx"), hoja = 1)
-  c_cod  <- col_req(d, "DPMP")
-  c_ano  <- col_req(d, "AÑO")
-  c_area <- col_req(d, "ÁREA GEOGRÁFICA")
-  c_pob  <- col_req(d, "Total General")
+  # SALE DEL PPED, no de POBLACION MUNICIPAL.xlsx. Esta sección ponderaba con la
+  # serie que 02_demografia.R declara descartada mientras la sección 10 del
+  # MISMO informe publicaba la otra: Yarumal pesaba 44.770 aquí y se imprimía
+  # con 41.884 allí (F-2-018).
+  d <- leer_derivado("poblacion_total_2025")
 
-  d |>
-    dplyr::filter(a_numero(.data[[c_ano]]) == 2025, .data[[c_area]] == "Total") |>
-    dplyr::transmute(
-      ind_mpio = as.integer(a_numero(.data[[c_cod]])),
-      pob_peso = a_numero(.data[[c_pob]])
-    ) |>
-    dplyr::filter(!is.na(.data$ind_mpio))
+  por_area <- function(area, nombre) {
+    x <- d |>
+      dplyr::filter(.data$area_geo == area) |>
+      dplyr::transmute(
+        ind_mpio = as.integer(a_numero(.data$ind_mpio)),
+        peso     = as.numeric(.data$Total)
+      ) |>
+      dplyr::filter(!is.na(.data$ind_mpio))
+    stats::setNames(x, c("ind_mpio", nombre))
+  }
+
+  dplyr::left_join(
+    por_area("Total", "pob_peso"),
+    por_area("Centros Poblados y Rural Disperso", "pob_rural"),
+    by = "ind_mpio"
+  )
 }
 
 #' Nacidos vivos por municipio y año (2020-2024): es el ponderador de los
@@ -219,16 +231,20 @@ ETIQUETAS_TERRITORIO <- c(
     filtrar_provincia(prov) |>
     dplyr::left_join(pesos, by = "ind_mpio") |>
     dplyr::arrange(.data$nvl_label) |>
-    dplyr::select(ind_mpio, municipio, subregion, provincia, pob_peso,
+    dplyr::select(ind_mpio, municipio, subregion, provincia, pob_peso, pob_rural,
                   dplyr::all_of(columnas))
 
-  # Ponderador = POBLACIÓN (son tasas por 100 mil habitantes).
+  # Dengue y malaria son tasas por 100 mil habitantes y se ponderan por
+  # población total. La leishmaniasis se mide sobre POBLACIÓN RURAL (así lo
+  # declaran el diccionario del insumo y el Anexo 1, y así se rotula la hoja
+  # más abajo), de modo que su agregado se pondera por población rural.
   tabla <- agregar_totales(
     municipios, universo = NULL, prov = prov, columnas = columnas,
     como = stats::setNames(as.list(rep("promedio_ponderado", length(columnas))), columnas),
-    pesos = "pob_peso"
+    pesos = list(dengue = "pob_peso", malaria = "pob_peso",
+                 leishmaniasis = "pob_rural")
   ) |>
-    .marcar_ponderado("por población") |>
+    .marcar_ponderado("por población; leishmaniasis por población rural") |>
     dplyr::select(ind_mpio, municipio, subregion, provincia,
                   dplyr::all_of(columnas), tipo_fila)
 

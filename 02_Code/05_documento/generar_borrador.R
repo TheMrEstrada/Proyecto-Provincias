@@ -66,7 +66,7 @@ PLANTILLA <- file.path(RUTAS$codigo, "05_documento", "plantilla_estilos.docx")
 .completar_estilos <- function(ruta_styles) {
   ref <- tempfile(fileext = ".docx")
   ok <- tryCatch({
-    system2("pandoc", c("--print-default-data-file", "reference.docx"),
+    system2(.ruta_pandoc(), c("--print-default-data-file", "reference.docx"),
             stdout = ref)
     file.exists(ref) && file.size(ref) > 0
   }, error = function(e) FALSE)
@@ -113,7 +113,8 @@ PLANTILLA <- file.path(RUTAS$codigo, "05_documento", "plantilla_estilos.docx")
 construir_plantilla <- function(forzar = FALSE) {
   if (file.exists(PLANTILLA) && !forzar) return(invisible(PLANTILLA))
   if (!file.exists(ANEXO1)) {
-    message("  [plantilla] No está el Anexo 1: pandoc usará sus estilos por defecto.")
+    warning("No está el Anexo 1: los .docx saldrán sin el estilo Table y las ",
+            "tablas perderán la rejilla.", call. = FALSE)
     return(invisible(NULL))
   }
 
@@ -173,10 +174,23 @@ construir_plantilla <- function(forzar = FALSE) {
 #' El número se lleva la cuenta por documento, como en el informe.
 .contador <- new.env(parent = emptyenv())
 
+#' La ruta de la imagen, relativa a la raíz del proyecto.
+#'
+#' Escrita en absoluto, la referencia solo funciona en la máquina que generó el
+#' documento: eran ~825 rutas /Users/... en los doce entregables. Y el
+#' --resource-path que ya se pasa no lo arreglaba, porque pandoc solo lo aplica
+#' a rutas RELATIVAS; con absolutas es inerte y pandoc aborta sin escribir nada.
+#' Emitiéndolas relativas, ese --resource-path empieza a hacer su trabajo.
+.ruta_relativa <- function(ruta) {
+  sub(paste0(RUTAS$raiz, "/"), "", ruta, fixed = TRUE)
+}
+
 .figura <- function(ruta, titulo, fuente_txt = NULL) {
   if (!file.exists(ruta)) return(character(0))
   .contador$fig <- (.contador$fig %||% 0) + 1
-  c(sprintf("![%s. %s](%s)", .contador$fig, titulo, ruta),
+  # Entre <> por si la ruta trae espacios: es la forma que CommonMark define
+  # para destinos de enlace y pandoc la entiende.
+  c(sprintf("![%s. %s](<%s>)", .contador$fig, titulo, .ruta_relativa(ruta)),
     "",
     if (!is.null(fuente_txt)) sprintf("*%s*", fuente(fuente_txt)) else NULL,
     "")
@@ -507,7 +521,49 @@ markdown_provincia <- function(prov) {
 
 # --- Conversión a Word --------------------------------------------------------
 
-.hay_pandoc <- function() nzchar(Sys.which("pandoc"))
+#' Ruta al ejecutable de pandoc, o "" si no aparece por ningún lado.
+#'
+#' Se busca primero en el PATH y después en RSTUDIO_PANDOC. RStudio trae su
+#' propia copia de pandoc y NO la publica en el PATH, así que en una máquina con
+#' RStudio —el caso normal de este proyecto— Sys.which("pandoc") decía que no
+#' había pandoc cuando sí lo había, y los once informes salían solo en Markdown
+#' (F-5-004). Verificado en Windows el 2026-08-20.
+.ruta_pandoc <- function() {
+  p <- unname(Sys.which("pandoc"))
+  if (nzchar(p)) return(p)
+  dir <- Sys.getenv("RSTUDIO_PANDOC", unset = "")
+  if (nzchar(dir)) {
+    exe <- file.path(dir, if (.Platform$OS.type == "windows") "pandoc.exe" else "pandoc")
+    if (file.exists(exe)) return(exe)
+  }
+  ""
+}
+
+.hay_pandoc <- function() nzchar(.ruta_pandoc())
+
+#' Por qué NO sirve el .docx que pandoc acaba de intentar producir.
+#'
+#' Devuelve character(0) si está bien, o el motivo. Son tres cosas que
+#' file.exists() no ve:
+#'   - pandoc devolvió error;
+#'   - el archivo quedó vacío;
+#'   - pandoc terminó BIEN pero no encontró alguna imagen y la sustituyó por su
+#'     descripción. Ese caso sale con estado 0 y produce un .docx sin ninguna
+#'     figura; es el único modo de fallo que queda vivo al emitir las rutas en
+#'     relativo, y el estado de salida no lo delata.
+#'
+#' La usan este generador y el del comparativo, que comparten el bloque.
+.falla_pandoc <- function(salida, docx) {
+  estado <- attr(salida, "status") %||% 0L
+  if (estado != 0L)         return(sprintf("pandoc devolvió %d", estado))
+  if (!file.exists(docx))   return("no se creó el archivo")
+  if (file.size(docx) == 0) return("el archivo quedó vacío")
+  perdidas <- grep("Could not fetch resource", salida, value = TRUE)
+  if (length(perdidas))
+    return(sprintf("%d imagen(es) no se encontraron: el .docx saldría sin ellas",
+                   length(perdidas)))
+  character(0)
+}
 
 generar_borrador <- function(id) {
   prov <- provincia(id)
@@ -526,17 +582,22 @@ generar_borrador <- function(id) {
   args <- c(shQuote(md), "-o", shQuote(docx),
             "--from", "markdown+pipe_tables+yaml_metadata_block",
             "--toc", "--toc-depth=3",
-            # Las rutas de las imágenes son absolutas, pero se declara la raíz
-            # por si el borrador se regenera desde otro directorio.
+            # Las rutas de las imágenes son relativas a la raíz, así que este
+            # --resource-path es lo que permite resolverlas desde donde sea.
             "--resource-path", shQuote(RUTAS$raiz))
   # El propio Anexo 1 hace de plantilla: así los once borradores heredan los
   # estilos del informe entregado en vez de los de Word por defecto.
   if (file.exists(PLANTILLA)) {
     args <- c(args, "--reference-doc", shQuote(PLANTILLA))
   }
-  salida <- suppressWarnings(system2("pandoc", args, stdout = TRUE, stderr = TRUE))
-  if (!file.exists(docx)) {
-    message("  [borrador] ", prov$etiqueta, " — FALLÓ pandoc:\n    ",
+  # pandoc no escribe nada si falla: sin este unlink, el .docx de una corrida
+  # anterior pasaría la comprobación y se anunciaría como recién hecho.
+  unlink(docx)
+  salida <- suppressWarnings(system2(.ruta_pandoc(), args, stdout = TRUE, stderr = TRUE))
+  mal <- .falla_pandoc(salida, docx)
+  if (length(mal)) {
+    unlink(docx)   # que el disco no contradiga al log
+    message("  [borrador] ", prov$etiqueta, " — FALLÓ pandoc: ", mal, "\n    ",
             paste(utils::head(salida, 5), collapse = "\n    "))
     return(invisible(md))
   }
@@ -550,8 +611,10 @@ generar_borradores <- function(ids = PROVINCIAS$id) {
   message("== Borradores provinciales ==")
   construir_plantilla()
   if (!.hay_pandoc()) {
-    message("  pandoc no está instalado: se generará solo el Markdown.\n",
-            "  Instálelo con  brew install pandoc")
+    warning("no se encuentra pandoc: se generará solo el Markdown y ningún ",
+            ".docx. Instálelo desde https://pandoc.org/installing.html, o corra ",
+            "esto desde RStudio, que trae su propia copia (RSTUDIO_PANDOC).",
+            call. = FALSE)
   }
   invisible(lapply(ids, generar_borrador))
 }

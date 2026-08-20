@@ -8,6 +8,14 @@
 #   01_Data/01_Derived/poblacion_total_2025.dta
 #     Antioquia 2025 por área geográfica: 125 municipios × 3 filas
 #     (Total / Cabecera Municipal / Centros Poblados y Rural Disperso).
+#   01_Data/01_Derived/poblacion_anual.dta
+#     Antioquia, TODOS los años del PPED, por área geográfica. Es el ponderador
+#     poblacional de las secciones que no ponderan con 2025.
+#   01_Data/01_Derived/poblacion_edad_2025.dta
+#     Antioquia 2025, área Total: población por sexo y por grupos decenales,
+#     que es lo que publica la hoja "estructura_edad" de la sección 02, más los
+#     grupos 0-14 y 65+ con los que la misma sección calcula el índice de
+#     envejecimiento.
 #   01_Data/01_Derived/poblacion_municipal_total_2025.dta
 #     Una fila por municipio del país con estructura etaria, IDE e índice de
 #     envejecimiento, en total / rural / cabecera y como proporción del total.
@@ -111,6 +119,33 @@ if (nrow(poblacion_total_2025) == 0) {
   stop("Ningún municipio con cod_dpto = \"05\" (Antioquia) en ", basename(ruta),
        ".", call. = FALSE)
 }
+
+# --- 1b. poblacion_anual.dta (Antioquia, todos los años del PPED) -------------
+# Lo mismo que poblacion_total_2025 pero SIN filtrar el año. Existe porque los
+# ponderadores de varias secciones no son de 2025: la 03 pondera con 2022 y
+# 2024, la 04 con la serie del ICM y la 05 con la del valor agregado. Hasta
+# ahora esas secciones leían POBLACION MUNICIPAL.xlsx —la serie que la cabecera
+# de 02_demografia.R declara descartada porque no reproduce el Anexo 1—, de modo
+# que el informe ponderaba con una población y publicaba otra (F-2-018).
+#
+# poblacion_total_2025 NO se toca: su cabecera advierte que es la serie con la
+# que se publicó el informe y que tiene tres lectores. Este derivado es aparte.
+poblacion_anual <- pped |>
+  dplyr::filter(.data$cod_dpto == "05") |>
+  dplyr::transmute(
+    ind_mpio  = a_numero(.data$ind_mpio),
+    nvl_label = .data$nvl_label,
+    anio      = as.integer(.data$año),
+    area_geo  = .data$area_geo,
+    Total     = a_numero(.data[[c_total]]),
+    Hombres   = a_numero(.data[[c_hombres]]),
+    Mujeres   = a_numero(.data[[c_mujeres]])
+  )
+
+.anios_pped <- range(poblacion_anual$anio, na.rm = TRUE)
+message("  poblacion_anual: ", .anios_pped[1], "-", .anios_pped[2],
+        " (", length(unique(poblacion_anual$anio)), " años x ",
+        length(unique(poblacion_anual$ind_mpio)), " municipios)")
 
 # --- 2. Grupos etarios --------------------------------------------------------
 # Los encabezados de la fuente son "Hombres 0 años", "Hombres 1 año", ...,
@@ -267,7 +302,72 @@ poblacion_municipal <- datos_general |>
   dplyr::arrange(.data$ind_mpio) |>
   dplyr::mutate(ind_mpio = a_numero(.data$ind_mpio))
 
+# --- Estructura por sexo y grupos decenales (Antioquia, área Total) ----------
+# La sección 02 publica la población por sexo y por décadas. Hasta ahora la tomaba
+# de POBLACION MUNICIPAL.xlsx, que es OTRA serie: la hoja de estructura de edad
+# contradecía a la de población del mismo libro (Yarumal 44.770 frente a 41.884).
+# Se construye aquí desde el PPED —la serie con la que se publicó el informe—
+# sumando las edades simples que la fuente ya trae.
+DECENIOS <- list(
+  edad_0_9    = list(edades =  0:9,  cien = FALSE),
+  edad_10_19  = list(edades = 10:19, cien = FALSE),
+  edad_20_29  = list(edades = 20:29, cien = FALSE),
+  edad_30_39  = list(edades = 30:39, cien = FALSE),
+  edad_40_49  = list(edades = 40:49, cien = FALSE),
+  edad_50_59  = list(edades = 50:59, cien = FALSE),
+  edad_60_69  = list(edades = 60:69, cien = FALSE),
+  edad_70_79  = list(edades = 70:79, cien = FALSE),
+  edad_80_mas = list(edades = 80:99, cien = TRUE)
+)
+
+# Los dos grupos del índice de envejecimiento estándar: 65 y más sobre 0 a 14.
+# No son decenales, así que van aparte, pero salen del mismo PPED y del mismo
+# .total_grupo() que los de arriba.
+#
+# POR QUÉ ESTÁN AQUÍ. Hasta ahora el índice que publicaba la sección 02 se leía
+# de un curado hecho a mano cuya fórmula no está en el repositorio, y que además
+# parte de una estructura de edad distinta de la del PPED: la población total
+# coincide en los 125 municipios, pero el reparto por edad no, y el curado
+# describe una población sistemáticamente más envejecida (F-2-015). Publicando
+# los dos grupos aquí, el índice pasa a tener fórmula escrita en código y a
+# describir la misma población que la pirámide.
+GRUPOS_ENVEJECIMIENTO <- list(
+  edad_0_14   = list(edades =  0:14, cien = FALSE),
+  edad_65_mas = list(edades = 65:99, cien = TRUE)
+)
+
+poblacion_edad_2025 <- pob_2025 |>
+  dplyr::transmute(
+    ind_mpio  = a_numero(.data$ind_mpio),
+    nvl_label = .data$nvl_label,
+    cod_dpto  = .data$cod_dpto,
+    area_geo  = .data$area_geo,
+    pob_masc  = a_numero(.data[[c_hombres]]),
+    pob_fem   = a_numero(.data[[c_mujeres]])
+  )
+
+for (g in names(DECENIOS)) {
+  edades <- DECENIOS[[g]]$edades
+  cien   <- DECENIOS[[g]]$cien
+  poblacion_edad_2025[[g]] <- .total_grupo("T", edades, cien)
+  poblacion_edad_2025[[sub("^edad", "h_edad", g)]] <- .total_grupo("H", edades, cien)
+  poblacion_edad_2025[[sub("^edad", "m_edad", g)]] <- .total_grupo("M", edades, cien)
+}
+
+# Los dos grupos del índice solo se publican en total: la sección no lo abre por
+# sexo y añadir seis columnas que nadie lee no ayuda a nadie.
+for (g in names(GRUPOS_ENVEJECIMIENTO)) {
+  poblacion_edad_2025[[g]] <- .total_grupo(
+    "T", GRUPOS_ENVEJECIMIENTO[[g]]$edades, GRUPOS_ENVEJECIMIENTO[[g]]$cien)
+}
+
+poblacion_edad_2025 <- poblacion_edad_2025 |>
+  dplyr::filter(.data$cod_dpto == "05", .data$area_geo == AREA_TOTAL) |>
+  dplyr::select(-"cod_dpto", -"area_geo")
+
 escribir_derivado(poblacion_total_2025, "poblacion_total_2025")
+escribir_derivado(poblacion_anual, "poblacion_anual")
+escribir_derivado(poblacion_edad_2025, "poblacion_edad_2025")
 escribir_derivado(poblacion_municipal, "poblacion_municipal_total_2025")
 
 message("  poblacion_total_2025.dta: ", nrow(poblacion_total_2025),

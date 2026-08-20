@@ -361,19 +361,29 @@ generar_comparativo <- function() {
   md <- file.path(DIR_COMP, "Comparativo_provincias.md")
   writeLines(markdown_comparativo(panel), md, useBytes = TRUE)
 
-  if (!nzchar(Sys.which("pandoc"))) {
-    message("  [comparativo] solo Markdown (falta pandoc)")
+  # .hay_pandoc() y .ruta_pandoc() vienen de generar_borrador.R, que este
+  # archivo ya sourcea: también encuentran la copia que trae RStudio.
+  if (!.hay_pandoc()) {
+    warning("no se encuentra pandoc: el comparativo queda solo en Markdown.",
+            call. = FALSE)
     return(invisible(md))
   }
   docx <- file.path(DIR_COMP, "Comparativo_provincias.docx")
   args <- c(shQuote(md), "-o", shQuote(docx),
             "--from", "markdown+pipe_tables+yaml_metadata_block",
             "--toc", "--toc-depth=2",
+            # Las rutas de las imágenes son relativas a la raíz, así que este
+            # --resource-path es lo que permite resolverlas desde donde sea.
             "--resource-path", shQuote(RUTAS$raiz))
   if (file.exists(PLANTILLA)) args <- c(args, "--reference-doc", shQuote(PLANTILLA))
-  salida <- suppressWarnings(system2("pandoc", args, stdout = TRUE, stderr = TRUE))
-  if (!file.exists(docx)) {
-    message("  [comparativo] FALLÓ pandoc:\n    ",
+  # Mismo guarda que en generar_borrador.R, de donde viene .falla_pandoc():
+  # sin el unlink, un .docx de una corrida anterior se anuncia como nuevo.
+  unlink(docx)
+  salida <- suppressWarnings(system2(.ruta_pandoc(), args, stdout = TRUE, stderr = TRUE))
+  mal <- .falla_pandoc(salida, docx)
+  if (length(mal)) {
+    unlink(docx)
+    message("  [comparativo] FALLÓ pandoc: ", mal, "\n    ",
             paste(utils::head(salida, 5), collapse = "\n    "))
     return(invisible(md))
   }

@@ -245,9 +245,13 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
         "%s es el municipio más envejecido de la provincia, con %s adultos mayores por cada 100 menores de 15 años",
         mayor$municipio, num_co(mayor$I_enve_T, 0)
       ),
+      # El valor provincial ya no es un promedio ponderado de los índices
+      # municipales sino la razón entre las sumas, que es lo que manda la regla
+      # 6 para una razón entre dos conteos (F-2-015).
       subtitulo = sprintf(
         paste("Índice de envejecimiento (población de 65 años o más por cada 100",
-              "menores de 15), 2025 · Provincia %s (promedio ponderado por población: %s)"),
+              "menores de 15), 2025 · Provincia %s (sobre las sumas de la",
+              "provincia: %s)"),
         prov$etiqueta, num_co(ref, 1)
       ),
       fuente = .FUENTE_DANE

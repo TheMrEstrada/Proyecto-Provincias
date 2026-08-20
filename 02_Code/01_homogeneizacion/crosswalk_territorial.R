@@ -37,6 +37,28 @@ message("== crosswalk territorial ==")
 
 # --- Insumos ------------------------------------------------------------------
 mpios <- leer_excel(entrada("MUNICIPIOS_SUBREG_PROV.xlsx"))
+
+# Dos municipios que el listado deja sin esquema asociativo y que sí pertenecen
+# a una provincia por ordenanza departamental. Se corrige aquí y no en el Excel
+# porque la regla 2 del anexo prohíbe editar 00_Inputs a mano: una corrección
+# hecha en el archivo se perdería sin aviso en la próxima entrega de la fuente.
+# Solo rellena celdas VACÍAS, de modo que en cuanto el listado venga corregido
+# de origen estas líneas dejan de tener efecto y se pueden retirar.
+mpios <- mpios |>
+  dplyr::mutate(
+    sin_esquema = is.na(`Esquema asociativo`) |
+      stringr::str_squish(`Esquema asociativo`) == "",
+    # Santa Fe de Antioquia (05042) — Ordenanza 47 del 16 de diciembre de 2024
+    `Esquema asociativo` = ifelse(
+      sin_esquema & as.integer(DPMP) == 5042L,
+      "PROVINCIA TURISTICA Y AGROECOLOGICA", `Esquema asociativo`),
+    # Amalfi (05031) — Ordenanza 7 del 21 de marzo de 2025
+    `Esquema asociativo` = ifelse(
+      sin_esquema & as.integer(DPMP) == 5031L,
+      "PROVINCIA MINERO AGROECOLOGICA", `Esquema asociativo`)
+  ) |>
+  dplyr::select(-"sin_esquema")
+
 codigos <- haven::read_dta(entrada("códigos_municipios_clean.dta")) |>
   dplyr::mutate(
     ind_mpio = as.integer(ind_mpio),
@@ -105,13 +127,19 @@ crosswalk <- crosswalk |>
   dplyr::arrange(ind_mpio)
 
 # --- Verificaciones -----------------------------------------------------------
-esperado <- 88L
+# El universo lo define la fuente, no una constante escrita a mano: si el listado
+# incorpora un municipio, el esperado cambia con él. Y así una pérdida en el cruce
+# deja de ser invisible: el conteo de la fuente ya no coincide.
+con_esquema <- !is.na(mpios$`Esquema asociativo`) &
+  stringr::str_squish(mpios$`Esquema asociativo`) != ""
+esperado <- sum(con_esquema)
 if (nrow(crosswalk) != esperado) {
-  perdidos <- setdiff(
-    normalizar_municipio(mpios$MPIO[stringr::str_squish(mpios$`Esquema asociativo`) != ""]),
-    crosswalk$nvl_label
-  )
-  stop("El crosswalk quedó con ", nrow(crosswalk), " municipios y se esperaban ", esperado, ".\n",
+  # las mismas dos correcciones de nombre que se aplican arriba al cruzar
+  claves <- normalizar_municipio(mpios$MPIO[con_esquema])
+  claves <- ifelse(claves == "CAROLINA", "CAROLINA DEL PRINCIPE", claves)
+  claves <- ifelse(claves == "SAN VICENTE", "SAN VICENTE FERRER", claves)
+  perdidos <- setdiff(claves, crosswalk$nvl_label)
+  stop("El crosswalk quedó con ", nrow(crosswalk), " municipios y la fuente asigna ", esperado, ".\n",
        "Municipios sin código DANE: ", paste(perdidos, collapse = ", "), call. = FALSE)
 }
 stopifnot(

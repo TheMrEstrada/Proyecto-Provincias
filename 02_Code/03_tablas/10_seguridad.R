@@ -268,8 +268,17 @@ DELITOS <- c(
   n_sexuales   = "delitos_sexuales"
 )
 ANIO_DELITOS <- 2025
+COLUMNAS_DELITOS <- c(names(DELITOS), "pob")
 
-.hoja_delitos <- function(prov, archivo) {
+#' Los conteos de delitos y la población de TODOS los municipios del
+#' departamento, antes de filtrar por provincia.
+#'
+#' Está extraído de `.hoja_delitos()` porque tiene un segundo lector: el mapa
+#' departamental de homicidios (`04_figuras/00_mapas.R`). Ese mapa necesita el
+#' departamento entero y antes lo armaba leyendo el .xlsx de las once
+#' provincias, de modo que su contenido dependía de cuántas hubiera corrido
+#' (F-2-035). Leyendo de aquí no depende de nada más que del derivado.
+universo_delitos <- function() {
   policia <- leer_derivado("seguridad_policia")
   policia <- policia[policia$anio == ANIO_DELITOS, , drop = FALSE]
   col_total <- col_req(policia, paste0("total_", ANIO_DELITOS))
@@ -284,32 +293,47 @@ ANIO_DELITOS <- 2025
     if (is.null(acumulado)) d else dplyr::full_join(acumulado, d, by = "ind_mpio")
   }, .init = NULL)
 
-  columnas <- c(names(DELITOS), "pob")
-  universo <- conteos |>
+  conteos |>
     dplyr::inner_join(.poblacion_2025(), by = "ind_mpio") |>
     con_territorio() |>
     dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
-                  "id_provincia", "subregion_full", dplyr::all_of(columnas))
+                  "id_provincia", "subregion_full",
+                  dplyr::all_of(COLUMNAS_DELITOS))
+}
+
+#' Las cuatro tasas por 100.000 habitantes, a partir de los conteos.
+#'
+#' La fórmula vive AQUÍ y en ningún otro sitio. La regla 1 del anexo dice que la
+#' figura no recalcula, y su razón es que dos implementaciones de la misma
+#' cuenta terminan discrepando. El mapa departamental usa esta misma función, de
+#' modo que no puede publicar una cifra distinta de la de la hoja.
+tasas_delitos <- function(d) {
+  dplyr::mutate(
+    d,
+    hurtos                  = .data$n_hurtos     / .data$pob * 1e5,
+    homicidios              = .data$n_homicidios / .data$pob * 1e5,
+    violencia_intrafamiliar = .data$n_violencia  / .data$pob * 1e5,
+    delitos_sexuales        = .data$n_sexuales   / .data$pob * 1e5
+  )
+}
+
+.hoja_delitos <- function(prov, archivo) {
+  universo <- universo_delitos()
 
   detalle <- universo |>
     filtrar_provincia(prov) |>
     dplyr::arrange(.data$municipio) |>
     dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
-                  dplyr::all_of(columnas))
+                  dplyr::all_of(COLUMNAS_DELITOS))
 
   subreg_dom <- subregion_dominante(prov)
 
   # Se agregan los CONTEOS y la población; la tasa se calcula después, así que
   # municipios y agregados usan la misma fórmula.
   tabla <- agregar_totales(detalle, universo = universo, prov = prov,
-                           columnas = columnas, como = "suma") |>
+                           columnas = COLUMNAS_DELITOS, como = "suma") |>
     .rotular_agregados(prov, subreg_dom) |>
-    dplyr::mutate(
-      hurtos                  = .data$n_hurtos     / .data$pob * 1e5,
-      homicidios              = .data$n_homicidios / .data$pob * 1e5,
-      violencia_intrafamiliar = .data$n_violencia  / .data$pob * 1e5,
-      delitos_sexuales        = .data$n_sexuales   / .data$pob * 1e5
-    ) |>
+    tasas_delitos() |>
     .ordenar_filas(.data$municipio) |>
     dplyr::select("ind_mpio", "municipio", "subregion", "hurtos", "homicidios",
                   "violencia_intrafamiliar", "delitos_sexuales", "pob", "tipo_fila")
