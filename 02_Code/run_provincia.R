@@ -113,8 +113,13 @@ correr_provincia <- function(id = NULL, secciones = NULL) {
       seccion = "Mapas",
       estado  = if (inherits(r_mapas, "error")) "ERROR"
                 else if (is.null(r_mapas)) "OMITIDO" else "OK",
+      # "falta el paquete sf" describía solo la mitad de la condición real:
+      # sin ggrepel los mapas también se omiten desde la corrección F-1-010
+      # (antes se dibujaban igual, con las etiquetas encabalgadas y sin
+      # aviso). Hallazgo de Pablo, adoptado también aquí.
       detalle = if (inherits(r_mapas, "error")) conditionMessage(r_mapas)
-                else if (is.null(r_mapas)) "falta el paquete sf"
+                else if (is.null(r_mapas))
+                  paste("falta", paste(FALTAN_MAPAS, collapse = " y "))
                 else paste(length(r_mapas), "mapas"),
       stringsAsFactors = FALSE
     ))

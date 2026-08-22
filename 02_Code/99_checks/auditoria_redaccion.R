@@ -257,7 +257,7 @@ ANIOS <- 1990:2100
   carpeta <- file.path(RUTAS$outputs, prov$carpeta)
   r <- c(100,                                   # escala de los índices 0-100
          nrow(crosswalk_subregiones()),         # 125 municipios de Antioquia
-         nrow(crosswalk_provincias()),          # 88 en alguna provincia
+         nrow(crosswalk_provincias()),          # 90 en alguna provincia
          nrow(crosswalk_subregiones()) - nrow(crosswalk_provincias()),
          nrow(PROVINCIAS))
   if (!dir.exists(carpeta)) return(unique(r))

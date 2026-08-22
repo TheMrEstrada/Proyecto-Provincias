@@ -7,7 +7,8 @@
 #   mapa_02_densidad            densidad poblacional (hab/km²)
 #   mapa_03_deficit_vivienda    déficit cuantitativo de vivienda
 #   mapa_05_va_percapita        valor agregado per cápita
-#   mapa_07_perdida_cobertura   pérdida de cobertura arbórea 2001-2023
+#   mapa_07_perdida_cobertura   pérdida de cobertura arbórea 2001-2023, como
+#                               porcentaje de la cobertura de 2000
 #   mapa_08_cobertura_neta      cobertura neta educativa
 #   mapa_09_mortalidad_infantil tasa de mortalidad infantil
 #   mapa_10_homicidios          homicidios por 100.000 habitantes
@@ -190,12 +191,22 @@ mapas_provincia <- function(prov) {
   if (!is.null(d)) {
     p <- mapa_coropletico(
       d, `Pérdida de cobertura arbórea 2001-2023 (%)`, prov,
-      titulo_leyenda = "% del área",
+      # NO es un porcentaje del área del municipio. Global Forest Watch mide
+      # la pérdida contra una línea base: la cobertura arbórea del año 2000.
+      # Este mapa rotulaba «% del área», y recalcularlo así difiere del valor
+      # publicado en 119 de los 124 municipios —Medellín daría 6,6 % y se
+      # publica 10,0 %— mientras que la figura 4 de esta misma sección ya lo
+      # rotulaba bien. Hallazgo de Pablo (F-4-002), adoptado también aquí.
+      titulo_leyenda = "% de la cobertura\narbórea de 2000",
       formato = function(x) pct_co(x * 100, dec = 0)) +
       .textos_mapa(
         titulo = "La pérdida de cobertura arbórea se concentra en unos pocos municipios",
-        subtitulo = "Porcentaje del área con pérdida de cobertura arbórea, 2001-2023",
-        fuente = "Global Forest Watch. Cálculos propios."
+        subtitulo = paste("Pérdida acumulada 2001-2023, como porcentaje de la",
+                          "cobertura arbórea que el municipio tenía en 2000"),
+        fuente = "Global Forest Watch. Cálculos propios.",
+        nota = paste("Cobertura arbórea: superficie con más del 30 % de dosel en",
+                     "el año 2000, según Global Forest Watch. Incluye",
+                     "plantaciones y cultivos arbóreos.")
       )
     .emitir(p, "mapa_07_perdida_cobertura", prov, "07_Ambiental",
             "ambiental.xlsx", d,
@@ -268,12 +279,28 @@ mapas_provincia <- function(prov) {
     # El mismo indicador en todo el departamento: dice si la provincia es un
     # caso aparte o parte de un patrón regional. Es la lectura que ninguna
     # tabla provincial puede dar.
-    todos <- do.call(rbind, lapply(PROVINCIAS$id, function(i) {
-      x <- .hoja_de(provincia(i), "10_Seguridad", "seguridad.xlsx", "delitos")
-      if (is.null(x)) NULL else
-        x[, c("Código DANE", "Municipio", "Homicidios por 100.000 hab.")]
-    }))
+    #
+    # EXCEPCIÓN A "DE DÓNDE SALEN LAS CIFRAS" (ver cabecera del archivo): este
+    # mapa necesita las ONCE provincias a la vez, y leerlas de los .xlsx en
+    # disco daba un mapa incompleto en diez de los once informes — cuando
+    # corre la provincia k, en disco solo existen las hojas de 1..k, así que
+    # solo la última corrida obtenía el mapa completo (comprobado: 6, 19, 24,
+    # 31... filas, un incremento exacto por cada corrida). No se cumple la
+    # regla leyendo la hoja; se cumple su espíritu reutilizando la MISMA
+    # fórmula que la hoja usa (universo_delitos() + tasas_delitos() de
+    # 03_tablas/10_seguridad.R), sin leer nada de 03_Outputs. El mapa no
+    # recalcula con su propia lógica: reutiliza la de la tabla. Hallazgo de
+    # Pablo (F-2-035), adoptado también aquí.
+    todos <- universo_delitos() |>
+      dplyr::filter(!is.na(.data$id_provincia)) |>
+      tasas_delitos() |>
+      dplyr::transmute(
+        `Código DANE`                 = .data$ind_mpio,
+        Municipio                     = .data$municipio,
+        `Homicidios por 100.000 hab.` = .data$homicidios
+      )
     if (!is.null(todos) && nrow(todos)) {
+      cargados <- nrow(todos)
       p <- mapa_departamental(
         todos, `Homicidios por 100.000 hab.`, prov = prov,
         titulo_leyenda = "por 100.000\nhabitantes",
@@ -284,8 +311,9 @@ mapas_provincia <- function(prov) {
             "Homicidios por cada 100.000 habitantes; %s va delineada en rojo",
             prov$etiqueta),
           fuente = "Policía Nacional, SIEDCO. Cálculos propios.",
-          nota = paste("Solo se colorean los municipios que pertenecen a alguna",
-                       "de las once provincias; el resto queda en gris.")
+          nota = sprintf(paste("Se colorean los %s municipios que pertenecen a alguna",
+                               "de las once provincias; el resto queda en gris."),
+                        num_co(cargados, 0))
         )
       .emitir(p, "mapa_10_homicidios_dpto", prov, "10_Seguridad",
               "seguridad.xlsx", todos,

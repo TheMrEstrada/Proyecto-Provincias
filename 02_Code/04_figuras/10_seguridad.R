@@ -10,6 +10,9 @@
 #                                     dadas por desaparecidas
 #   fig_04_victimas_ocurrencia      — victimizaciones registradas por municipio
 #   fig_05_hechos_victimizantes     — composición por hecho victimizante
+#   fig_06_reparacion_colectiva     — sujetos de reparación colectiva
+#                                     reconocidos por municipio, por fase del
+#                                     Plan Integral de Reparación Colectiva
 #
 # Son datos sensibles (víctimas, desapariciones): los títulos describen lo que
 # muestran los datos y evitan cualquier lectura dramatizada.
@@ -31,6 +34,19 @@ FUENTE_URT       <- paste("Unidad de Restitución de Tierras (URT), acumulado a 
                           "DANE, proyecciones de población 2025.")
 FUENTE_ENCUESTA  <- paste("Gobernación de Antioquia, encuesta de percepción",
                           "ciudadana 2018-2025.")
+FUENTE_UARIV_SRC <- paste("Unidad para las Víctimas (UARIV), visor de Sujetos",
+                          "de Reparación Colectiva (corte más reciente publicado).")
+
+# Las 7 fases del Plan Integral de Reparación Colectiva (PIRC), en orden: una
+# rampa secuencial (no la paleta categórica) porque es una progresión, no
+# categorías sin relación entre sí.
+FASES_PIRC_ORDEN <- c("IDENTIFICACIÓN", "CARACTERIZACIÓN DEL DAÑO",
+                      "DIAGNÓSTICO DEL DAÑO", "DISEÑO Y FORMULACIÓN",
+                      "ALISTAMIENTO", "IMPLEMENTACIÓN", "IMPLEMENTADO")
+COLOR_FASES_PIRC <- stats::setNames(
+  grDevices::colorRampPalette(PALETA_SECUENCIAL)(length(FASES_PIRC_ORDEN)),
+  FASES_PIRC_ORDEN
+)
 
 # Nombres cortos de los hechos victimizantes: los del RUV no caben en el eje.
 # Se emparejan sin tildes ni mayúsculas para no depender de cómo los escriba
@@ -346,6 +362,62 @@ NOTA_VICTIMIZACIONES <- paste(
   )
 }
 
+.fig_reparacion_colectiva <- function(prov, tabla, destino, archivo) {
+  d <- tabla$reparacion_colectiva_sujetos
+  if (is.null(d) || nrow(d) == 0) {
+    message("  [aviso] Sin sujetos de reparación colectiva en la provincia: se omite fig_06.")
+    return(invisible(NULL))
+  }
+
+  conteo <- d |>
+    dplyr::mutate(estado_fase = factor(as.character(.data$estado_fase),
+                                       levels = FASES_PIRC_ORDEN)) |>
+    dplyr::count(.data$municipio, .data$estado_fase, name = "n") |>
+    tidyr::complete(.data$municipio, estado_fase = FASES_PIRC_ORDEN, fill = list(n = 0))
+
+  orden_mpio <- conteo |>
+    dplyr::group_by(.data$municipio) |>
+    dplyr::summarise(total = sum(.data$n), .groups = "drop") |>
+    dplyr::arrange(.data$total)
+  conteo$municipio <- factor(conteo$municipio, levels = orden_mpio$municipio)
+
+  lider <- orden_mpio[which.max(orden_mpio$total), ]
+  n_implementado <- sum(d$estado_fase == "IMPLEMENTADO", na.rm = TRUE)
+
+  p <- ggplot2::ggplot(conteo, ggplot2::aes(x = .data$n, y = .data$municipio,
+                                            fill = .data$estado_fase)) +
+    ggplot2::geom_col(width = 0.68) +
+    ggplot2::scale_fill_manual(values = COLOR_FASES_PIRC, name = NULL,
+                               breaks = FASES_PIRC_ORDEN,
+                               guide = ggplot2::guide_legend(nrow = 2)) +
+    ggplot2::scale_x_continuous(expand = ggplot2::expansion(mult = c(0, 0.06)),
+                                breaks = scales::breaks_pretty(n = 4)) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    theme_provincias(grilla = "x") +
+    ggplot2::theme(legend.position = "bottom") +
+    textos_fig(
+      titulo = sprintf(
+        "%s tiene el mayor número de sujetos de reparación colectiva reconocidos: %s",
+        lider$municipio, num_co(lider$total, 0)
+      ),
+      subtitulo = sprintf(
+        paste("Sujetos de reparación colectiva reconocidos, por fase del Plan",
+              "Integral de Reparación Colectiva (PIRC). Municipios de la",
+              "provincia %s. %s de %s sujetos ya completaron la implementación."),
+        prov$etiqueta, num_co(n_implementado, 0), num_co(nrow(d), 0)
+      ),
+      fuente = FUENTE_UARIV_SRC,
+      nota = paste("Un municipio puede tener varios sujetos reconocidos, cada uno con su",
+                   "propio plan y su propia fase; no se promedian entre sí.",
+                   "Cálculos propios.")
+    )
+
+  guardar_fig(p, "fig_06_reparacion_colectiva", destino, n_barras = nrow(orden_mpio))
+  escribir_datos_figura(
+    dplyr::select(conteo, "municipio", "estado_fase", "n"), archivo, "fig_06"
+  )
+}
+
 # --- Orquestador de las figuras de la sección ---------------------------------
 
 figuras_seguridad <- function(prov, tabla) {
@@ -359,6 +431,7 @@ figuras_seguridad <- function(prov, tabla) {
   .fig_desaparecidos(prov, tabla, destino, archivo)
   .fig_victimas(prov, tabla, destino, archivo)
   .fig_hechos(prov, tabla, destino, archivo)
+  .fig_reparacion_colectiva(prov, tabla, destino, archivo)
 
   invisible(destino)
 }

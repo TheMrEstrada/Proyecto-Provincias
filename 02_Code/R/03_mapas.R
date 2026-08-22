@@ -22,13 +22,25 @@
 # ETAPA DEL PIPELINE: infraestructura (lo carga 00_config.R)
 # =============================================================================
 
-# `sf` es la única dependencia que añade este módulo. Se carga solo si está: un
-# clon sin sf debe seguir generando tablas y figuras no cartográficas.
-HAY_CARTOGRAFIA <- requireNamespace("sf", quietly = TRUE)
+# Los dos paquetes que añade este módulo. Se cargan solo si están: un clon sin
+# ellos debe seguir generando tablas y figuras no cartográficas.
+#
+# La lista NO se escribe aquí: es PAQUETES_MAPAS, que 00_config.R ya declara
+# como «sin estos dos paquetes el pipeline (...) omite los mapas con un aviso».
+# Antes solo se comprobaba `sf`, y sin `ggrepel` el mapa se generaba igual, sin
+# separar las etiquetas ni ponerles halo, y sin decir nada: en Bioenergética del
+# Norte «Angostura» y «Guadalupe» salían una encima de otra. DISENO.md §5 exige
+# las dos cosas y declara esta misma condición de omisión. Hallazgo de Pablo
+# (F-1-010), adoptado también aquí.
+FALTAN_MAPAS <- PAQUETES_MAPAS[
+  !vapply(PAQUETES_MAPAS, requireNamespace, logical(1), quietly = TRUE)]
+HAY_CARTOGRAFIA <- length(FALTAN_MAPAS) == 0L
 
 if (!HAY_CARTOGRAFIA) {
-  message("[mapas] El paquete 'sf' no está instalado: los mapas se omitirán. ",
-          "Instálelo con  install.packages(\"sf\")  para generarlos.")
+  message("[mapas] Falta ", paste(FALTAN_MAPAS, collapse = " y "),
+          ": los mapas se omitirán. Instálelo(s) con\n",
+          "        install.packages(c(\"", paste(FALTAN_MAPAS, collapse = "\", \""),
+          "\"))")
 }
 
 .cache_mapas <- new.env(parent = emptyenv())
@@ -116,31 +128,29 @@ theme_mapa <- function() {
 
 # Con 13 municipios apiñados, las etiquetas en el centroide se montan unas sobre
 # otras y el mapa deja de leerse. `ggrepel` las separa y traza el hilo hasta su
-# polígono. Es una dependencia opcional: sin ella se rotula en el centroide, que
-# es peor pero sigue siendo un mapa.
-HAY_REPEL <- requireNamespace("ggrepel", quietly = TRUE)
+# polígono. Ya no hace falta comprobarlo aquí: HAY_CARTOGRAFIA (arriba) exige
+# los DOS paquetes de PAQUETES_MAPAS antes de dibujar ningún mapa, así que
+# ggrepel está garantizado cuando .capa_etiquetas() se llama. Se conserva
+# HAY_REPEL solo para figuras_comparativas.R, que no es un mapa y sí se
+# dibuja sin ggrepel (con aviso). Hallazgo de Pablo (F-1-010), adoptado
+# también aquí.
+HAY_REPEL <- !("ggrepel" %in% FALTAN_MAPAS)
 
-#' Capa de etiquetas de municipio, separadas si `ggrepel` está disponible.
+#' Capa de etiquetas de municipio, separadas por ggrepel.
 #'
 #' @param color color del texto.
 #' @param halo TRUE dibuja un contorno del color de la superficie alrededor de
 #'   cada letra, para que el nombre se lea sobre cualquier tono de la rampa.
 .capa_etiquetas <- function(et, color = COLOR$tinta_1, halo = TRUE) {
   aes_txt <- ggplot2::aes(x = .data$x, y = .data$y, label = .data$etiqueta)
-  if (HAY_REPEL) {
-    ggrepel::geom_text_repel(
-      data = et, mapping = aes_txt,
-      size = PT$fuente / .pt, family = FUENTE, color = color,
-      bg.color = if (halo) COLOR$superficie else NA, bg.r = 0.12,
-      min.segment.length = 0.2, segment.size = 0.25,
-      segment.color = COLOR$tinta_3, box.padding = 0.18,
-      max.overlaps = Inf, seed = 1
-    )
-  } else {
-    ggplot2::geom_text(
-      data = et, mapping = aes_txt,
-      size = PT$fuente / .pt, family = FUENTE, color = color)
-  }
+  ggrepel::geom_text_repel(
+    data = et, mapping = aes_txt,
+    size = PT$fuente / .pt, family = FUENTE, color = color,
+    bg.color = if (halo) COLOR$superficie else NA, bg.r = 0.12,
+    min.segment.length = 0.2, segment.size = 0.25,
+    segment.color = COLOR$tinta_3, box.padding = 0.18,
+    max.overlaps = Inf, seed = 1
+  )
 }
 
 # --- Mapa coroplético ---------------------------------------------------------

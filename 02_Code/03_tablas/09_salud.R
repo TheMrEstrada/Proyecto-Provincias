@@ -2,18 +2,27 @@
 # 09_salud.R — Sección 9: Salud
 #
 # TABLAS (hojas del .xlsx de la sección):
-#   bajo_peso               % de nacidos con bajo peso al nacer
+#   bajo_peso_2024           % de nacidos con bajo peso al nacer, corte 2024
+#                           (reemplaza la hoja "bajo_peso" del tablero curado,
+#                           que quedaba en 2023p sin que nada lo justificara)
 #   enfermedades_tropicales tasas de dengue, malaria y leishmaniasis por 100 mil
-#                           habitantes
+#                           habitantes (tablero curado, media móvil 2021-2023)
+#   enfermedades_tropicales_2024  lo mismo, crudo 2022-2024 + media móvil (ver NOTA)
 #   suicidios               tasas de intento de suicidio y de suicidio consumado
-#                           por 100 mil habitantes
+#                           por 100 mil habitantes, media móvil 2021-2023
+#   suicidios_2022_2024     lo mismo, casos crudos 2022-2024 + media móvil (ver NOTA)
 #   aseguramiento_sgsss     afiliados al SGSSS por régimen y su composición
 #   mortalidad_infantil     tasa por 1.000 nacidos vivos, serie 2020-2024
+#   mortalidad_infantil_promedio  la misma tasa, un solo promedio 2020-2024
 #
 # INPUTS:  01_Data/01_Derived/20260504_SEGURIDAD_SALUD_DEFICT_VIVIENDA.dta
-#            (bajo_peso, dengue, malaria, leishmaniasis)
+#            (dengue, malaria, leishmaniasis — hoja enfermedades_tropicales)
+#          01_Data/01_Derived/salud_actualizada_2024.parquet
+#            (bajo_peso_2024, dengue/malaria/leishmaniasis 2022-2024)
 #          01_Data/01_Derived/suicidios_e_intentos_medias_dicc.dta
 #            (TIS_total, TS_total)
+#          01_Data/01_Derived/suicidios_actualizado_2022_2024.parquet
+#            (casos crudos de suicidio consumado e intento, 2022-2024)
 #          01_Data/00_Inputs/POBLACION MUNICIPAL.xlsx   (peso poblacional 2025)
 #          01_Data/00_Inputs/NATALIDAD.xlsx             (nacidos vivos por año)
 #          01_Data/00_Inputs/MORTALIDAD_INFANTIL.xlsx   (tasa por municipio y año)
@@ -32,6 +41,26 @@
 #     (correcto; corregido 2026-08-06, antes se ponderaba por poblacion).
 #   Es decir: el denominador del indicador manda cuál es el ponderador. Un
 #   indicador medido POR NACIMIENTO no se pondera por población.
+#
+# NOTA — SALUD 2024 (hojas *_2024 y mortalidad_infantil_promedio):
+#   El tablero curado 20260504_SEGURIDAD_SALUD_DEFICT_VIVIENDA usaba el corte
+#   2023p para bajo_peso y una media móvil 2021-2023 para dengue/malaria/
+#   leishmaniasis, sin que ningún script lo derive (ver LIMITACIÓN en
+#   01_homogeneizacion/salud_seguridad.R). INVENTARIO_VARIABLES.xlsx confirma
+#   la metodología (bajo_peso sin ajuste; los tres vectores con media móvil
+#   trianual por ser tasas volátiles con población pequeña) — el problema no
+#   era el método, era el año. 01_homogeneizacion/salud_actualizada_2024.R
+#   trae el mismo método con el corte más reciente (2024 y 2022-2024).
+#   bajo_peso_2024 YA REEMPLAZÓ la hoja "bajo_peso" del tablero curado (no
+#   tiene sentido conservar dos cortes de un dato de un solo año). Los
+#   vectores sí quedan en paralelo: enfermedades_tropicales (2021-2023, del
+#   tablero curado) y enfermedades_tropicales_2024 (2022-2024, con el crudo
+#   de cada año visible para poder auditar la media móvil), porque a
+#   diferencia de bajo_peso aquí interesa poder comparar ambas ventanas.
+#   mortalidad_infantil_promedio es distinta: la serie por año ya reproduce
+#   la fuente exactamente (confirmado contra MORTALIDAD_INFANTIL.xlsx), así
+#   que aquí solo se agrega un promedio 2020-2024 ponderado por nacidos vivos
+#   de cada año — no hay nada que corregir, es una vista adicional.
 # =============================================================================
 
 if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.", call. = FALSE)
@@ -106,22 +135,35 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
 
 # --- Insumos compartidos ------------------------------------------------------
 
-#' Población total municipal 2025 de TODO el departamento: es el ponderador de
-#' las tasas por 100 mil habitantes.
+#' Población municipal 2025, total y rural: ponderadores de las tasas por
+#' 100 mil habitantes (pob_peso) y de la leishmaniasis, que se mide sobre
+#' población RURAL (pob_rural) — ver .hoja_enfermedades_tropicales(). Misma
+#' fuente y mismo año para las dos series, para no mezclar vintages.
+#' Hallazgo de Pablo (F-2-027 y F-2-018), adoptado también aquí.
+#'
+#' Lee el derivado poblacion_total_2025 (serie PPED), NO POBLACION
+#' MUNICIPAL.xlsx: esa es la serie que la cabecera de 02_demografia.R declara
+#' descartada porque no reproduce el Anexo 1 (Yarumal 44.770 vs. 41.884
+#' publicados). Antes esta función ponderaba con una población y la sección
+#' 10 del mismo informe imprimía otra para el mismo municipio.
 .pesos_poblacion <- function() {
-  d <- leer_excel(entrada("POBLACION MUNICIPAL.xlsx"), hoja = 1)
-  c_cod  <- col_req(d, "DPMP")
-  c_ano  <- col_req(d, "AÑO")
-  c_area <- col_req(d, "ÁREA GEOGRÁFICA")
-  c_pob  <- col_req(d, "Total General")
+  d <- leer_derivado("poblacion_total_2025")
+  c_cod  <- col_req(d, "ind_mpio")
+  c_area <- col_req(d, "area_geo")
+  c_pob  <- col_req(d, "Total")
 
-  d |>
-    dplyr::filter(a_numero(.data[[c_ano]]) == 2025, .data[[c_area]] == "Total") |>
-    dplyr::transmute(
-      ind_mpio = as.integer(a_numero(.data[[c_cod]])),
-      pob_peso = a_numero(.data[[c_pob]])
-    ) |>
-    dplyr::filter(!is.na(.data$ind_mpio))
+  por_area <- function(area, nombre) {
+    x <- d |>
+      dplyr::filter(.data[[c_area]] == area) |>
+      dplyr::transmute(ind_mpio = as.integer(a_numero(.data[[c_cod]])),
+                       peso     = a_numero(.data[[c_pob]])) |>
+      dplyr::filter(!is.na(.data$ind_mpio))
+    stats::setNames(x, c("ind_mpio", nombre))
+  }
+
+  dplyr::left_join(por_area("Total", "pob_peso"),
+                   por_area("Centros Poblados y Rural Disperso", "pob_rural"),
+                   by = "ind_mpio")
 }
 
 #' Nacidos vivos por municipio y año (2020-2024): es el ponderador de los
@@ -163,15 +205,16 @@ ETIQUETAS_TERRITORIO <- c(
   provincia = "Provincia"
 )
 
-# --- Hoja 1: bajo peso al nacer ----------------------------------------------
+# --- Hoja 1: bajo peso al nacer, 2024 (ver NOTA — SALUD 2024) ---------------
+# Reemplaza la hoja que salía del tablero curado (corte 2023p, sin ajuste
+# metodológico): mismo indicador, mismo método, corte más reciente.
 
-.hoja_bajo_peso <- function(prov, archivo, nacimientos) {
-  salud <- leer_derivado("20260504_SEGURIDAD_SALUD_DEFICT_VIVIENDA")
+.hoja_bajo_peso_2024 <- function(prov, archivo, nacimientos) {
+  salud <- leer_derivado("salud_actualizada_2024")
 
-  # El indicador viene en puntos porcentuales; se guarda como proporción.
   universo <- data.frame(
-    ind_mpio  = as.integer(salud$ind_mpio),
-    bajo_peso = as.numeric(salud$bajo_peso) / 100
+    ind_mpio       = as.integer(salud$ind_mpio),
+    bajo_peso_2024 = as.numeric(salud$bajo_peso_2024)
   ) |>
     dplyr::left_join(nacimientos[, c("ind_mpio", "nac2024")], by = "ind_mpio") |>
     con_territorio()
@@ -179,23 +222,22 @@ ETIQUETAS_TERRITORIO <- c(
   municipios <- universo |>
     filtrar_provincia(prov) |>
     dplyr::arrange(.data$nvl_label) |>
-    dplyr::select(ind_mpio, municipio, subregion, provincia, nac2024, bajo_peso)
+    dplyr::select(ind_mpio, municipio, subregion, provincia, nac2024, bajo_peso_2024)
 
-  # Ponderador = NACIMIENTOS (el bajo peso es % de nacimientos, no de población).
   tabla <- agregar_totales(
     municipios, universo = universo, prov = prov,
-    columnas = "bajo_peso", como = list(bajo_peso = "promedio_ponderado"),
+    columnas = "bajo_peso_2024", como = list(bajo_peso_2024 = "promedio_ponderado"),
     pesos = "nac2024"
   ) |>
     .marcar_ponderado("por nacimientos") |>
     .provincia_de_totales() |>
-    dplyr::select(ind_mpio, municipio, subregion, provincia, bajo_peso, tipo_fila)
+    dplyr::select(ind_mpio, municipio, subregion, provincia, bajo_peso_2024, tipo_fila)
 
   escribir_hoja(
-    dplyr::select(tabla, -tipo_fila), archivo, "bajo_peso",
+    dplyr::select(tabla, -tipo_fila), archivo, "bajo_peso_2024",
     etiquetas = c(ETIQUETAS_TERRITORIO,
-                  bajo_peso = "Nacidos con bajo peso al nacer (%)"),
-    formatos = c(bajo_peso = "0.0%")
+                  bajo_peso_2024 = "Nacidos con bajo peso al nacer, 2024 (%)"),
+    formatos = c(bajo_peso_2024 = "0.0%")
   )
 
   tabla
@@ -219,16 +261,21 @@ ETIQUETAS_TERRITORIO <- c(
     filtrar_provincia(prov) |>
     dplyr::left_join(pesos, by = "ind_mpio") |>
     dplyr::arrange(.data$nvl_label) |>
-    dplyr::select(ind_mpio, municipio, subregion, provincia, pob_peso,
+    dplyr::select(ind_mpio, municipio, subregion, provincia, pob_peso, pob_rural,
                   dplyr::all_of(columnas))
 
-  # Ponderador = POBLACIÓN (son tasas por 100 mil habitantes).
+  # Ponderador = POBLACIÓN (son tasas por 100 mil habitantes) — EXCEPTO
+  # leishmaniasis, que se mide sobre población RURAL (etiqueta de la hoja,
+  # abajo) y por tanto se pondera por población rural, no total. Hallazgo de
+  # Pablo (F-2-027): el peso venía siendo el mismo para las tres, así que el
+  # error en leishmaniasis iba y venía con lo urbana que fuera la provincia.
   tabla <- agregar_totales(
     municipios, universo = NULL, prov = prov, columnas = columnas,
     como = stats::setNames(as.list(rep("promedio_ponderado", length(columnas))), columnas),
-    pesos = "pob_peso"
+    pesos = list(dengue = "pob_peso", malaria = "pob_peso",
+                 leishmaniasis = "pob_rural")
   ) |>
-    .marcar_ponderado("por población") |>
+    .marcar_ponderado("por población; leishmaniasis por población rural") |>
     dplyr::select(ind_mpio, municipio, subregion, provincia,
                   dplyr::all_of(columnas), tipo_fila)
 
@@ -241,6 +288,73 @@ ETIQUETAS_TERRITORIO <- c(
                   malaria       = "Tasa de malaria por 100 mil hab.",
                   leishmaniasis = "Tasa de leishmaniasis por 100 mil hab. rurales"),
     formatos = stats::setNames(rep("#,##0.00", length(columnas)), columnas)
+  )
+
+  tabla
+}
+
+# --- Hoja 2b: vectores, media móvil 2022-2024 (NUEVA, ver NOTA — SALUD 2024) -
+# Se conserva el dato crudo de cada año, no solo el promedio, para que la
+# media móvil se pueda auditar cifra por cifra.
+
+.hoja_enfermedades_tropicales_2024 <- function(prov, archivo, pesos) {
+  salud <- leer_derivado("salud_actualizada_2024")
+  columnas_anio <- c(
+    "dengue_2022", "dengue_2023", "dengue_2024",
+    "malaria_2022", "malaria_2023", "malaria_2024",
+    "leishmaniasis_2022", "leishmaniasis_2023", "leishmaniasis_2024"
+  )
+
+  municipios <- salud[, c("ind_mpio", columnas_anio)] |>
+    dplyr::mutate(ind_mpio = as.integer(.data$ind_mpio)) |>
+    con_territorio() |>
+    filtrar_provincia(prov) |>
+    dplyr::left_join(pesos, by = "ind_mpio") |>
+    dplyr::arrange(.data$nvl_label) |>
+    dplyr::select(ind_mpio, municipio, subregion, provincia, pob_peso, pob_rural,
+                  dplyr::all_of(columnas_anio))
+
+  # Leishmaniasis se pondera por población RURAL, no total — mismo hallazgo
+  # de Pablo (F-2-027) que en la hoja de vectores 2021-2023, ver arriba.
+  pesos_col <- stats::setNames(
+    as.list(ifelse(stringr::str_starts(columnas_anio, "leishmaniasis"),
+                   "pob_rural", "pob_peso")),
+    columnas_anio
+  )
+  tabla <- agregar_totales(
+    municipios, universo = NULL, prov = prov, columnas = columnas_anio,
+    como = stats::setNames(as.list(rep("promedio_ponderado", length(columnas_anio))), columnas_anio),
+    pesos = pesos_col
+  ) |>
+    dplyr::mutate(
+      dengue_2022_2024        = (.data$dengue_2022 + .data$dengue_2023 + .data$dengue_2024) / 3,
+      malaria_2022_2024       = (.data$malaria_2022 + .data$malaria_2023 + .data$malaria_2024) / 3,
+      leishmaniasis_2022_2024 = (.data$leishmaniasis_2022 + .data$leishmaniasis_2023 + .data$leishmaniasis_2024) / 3
+    ) |>
+    .marcar_ponderado("por población; leishmaniasis por población rural") |>
+    dplyr::select(ind_mpio, municipio, subregion, provincia,
+                  dplyr::all_of(columnas_anio),
+                  dengue_2022_2024, malaria_2022_2024, leishmaniasis_2022_2024,
+                  tipo_fila)
+
+  columnas_todas <- c(columnas_anio, "dengue_2022_2024", "malaria_2022_2024",
+                      "leishmaniasis_2022_2024")
+  escribir_hoja(
+    dplyr::select(tabla, -tipo_fila), archivo, "enfermedades_tropicales_2024",
+    etiquetas = c(ETIQUETAS_TERRITORIO,
+                  dengue_2022 = "Dengue 2022 (tasa x 100 mil hab.)",
+                  dengue_2023 = "Dengue 2023 (tasa x 100 mil hab.)",
+                  dengue_2024 = "Dengue 2024 (tasa x 100 mil hab.)",
+                  dengue_2022_2024 = "Dengue, media móvil 2022-2024 (tasa x 100 mil hab.)",
+                  malaria_2022 = "Malaria 2022 (tasa x 100 mil hab.)",
+                  malaria_2023 = "Malaria 2023 (tasa x 100 mil hab.)",
+                  malaria_2024 = "Malaria 2024 (tasa x 100 mil hab.)",
+                  malaria_2022_2024 = "Malaria, media móvil 2022-2024 (tasa x 100 mil hab.)",
+                  leishmaniasis_2022 = "Leishmaniasis 2022 (tasa x pob. rural)",
+                  leishmaniasis_2023 = "Leishmaniasis 2023 (tasa x pob. rural)",
+                  leishmaniasis_2024 = "Leishmaniasis 2024 (tasa x pob. rural)",
+                  leishmaniasis_2022_2024 = "Leishmaniasis, media móvil 2022-2024 (tasa x pob. rural)"),
+    formatos = stats::setNames(rep("#,##0.00", length(columnas_todas)), columnas_todas)
   )
 
   tabla
@@ -284,6 +398,89 @@ ETIQUETAS_TERRITORIO <- c(
                   tis_total = "Tasa de intento de suicidio por 100 mil hab.",
                   ts_total  = "Tasa de suicidio consumado por 100 mil hab."),
     formatos = c(tis_total = "#,##0.00", ts_total = "#,##0.00")
+  )
+
+  tabla
+}
+
+# --- Hoja 3b: suicidio consumado e intento, 2022-2024 (NUEVA) ---------------
+# Réplica de la hoja "suicidios" con el mismo método (Σcasos / Σpoblación x
+# 100 mil), pero con la ventana 2022-2024 en vez de 2021-2023: las fuentes
+# disponibles (ver 01_homogeneizacion/suicidios_actualizado_2022_2024.R) solo
+# traen un año a la vez, así que la tasa de cada año se calcula aquí mismo con
+# la misma población 2025 (no hay serie anual sin el insumo PPED prohibido) y
+# el promedio de los tres años es, por construcción, Σcasos/(3·pob)x100mil —
+# la misma fórmula. Se conservan los casos crudos de cada año para poder
+# auditar el promedio cifra por cifra (mismo criterio que
+# .hoja_enfermedades_tropicales_2024()). Es DELIBERADAMENTE un derivado
+# aparte: "suicidios" (2021-2023) no se toca.
+
+.hoja_suicidios_2022_2024 <- function(prov, archivo, pesos) {
+  base <- leer_derivado("suicidios_actualizado_2022_2024")
+  cols_casos <- c("suicidios_casos_2022", "suicidios_casos_2023", "suicidios_casos_2024",
+                  "intentos_casos_2022", "intentos_casos_2023", "intentos_casos_2024")
+
+  universo <- base |>
+    dplyr::mutate(ind_mpio = as.integer(.data$ind_mpio),
+                  dplyr::across(dplyr::all_of(cols_casos), as.numeric)) |>
+    dplyr::left_join(pesos, by = "ind_mpio") |>
+    con_territorio() |>
+    dplyr::mutate(
+      ts_2022  = .data$suicidios_casos_2022 / .data$pob_peso * 1e5,
+      ts_2023  = .data$suicidios_casos_2023 / .data$pob_peso * 1e5,
+      ts_2024  = .data$suicidios_casos_2024 / .data$pob_peso * 1e5,
+      tis_2022 = .data$intentos_casos_2022  / .data$pob_peso * 1e5,
+      tis_2023 = .data$intentos_casos_2023  / .data$pob_peso * 1e5,
+      tis_2024 = .data$intentos_casos_2024  / .data$pob_peso * 1e5
+    )
+
+  columnas <- c("ts_2022", "ts_2023", "ts_2024", "tis_2022", "tis_2023", "tis_2024")
+
+  municipios <- universo |>
+    filtrar_provincia(prov) |>
+    dplyr::arrange(.data$nvl_label) |>
+    dplyr::select(ind_mpio, municipio, subregion, provincia, pob_peso,
+                  dplyr::all_of(cols_casos), dplyr::all_of(columnas))
+
+  # Ponderador = POBLACIÓN (son tasas por 100 mil habitantes), la misma para
+  # los tres años: el promedio ponderado se reduce a Σcasos/(3·Σpob)x100mil,
+  # que es la fórmula del tablero curado con la población constante que hay
+  # disponible (ver cabecera de esta hoja).
+  tabla <- agregar_totales(
+    municipios, universo = universo, prov = prov, columnas = columnas,
+    como = stats::setNames(as.list(rep("promedio_ponderado", length(columnas))), columnas),
+    pesos = "pob_peso"
+  ) |>
+    dplyr::mutate(
+      ts_total_2022_2024  = (.data$ts_2022 + .data$ts_2023 + .data$ts_2024) / 3,
+      tis_total_2022_2024 = (.data$tis_2022 + .data$tis_2023 + .data$tis_2024) / 3
+    ) |>
+    .marcar_ponderado("por población 2025, misma base los tres años") |>
+    .provincia_de_totales() |>
+    dplyr::select(ind_mpio, municipio, subregion, provincia,
+                  dplyr::all_of(cols_casos), dplyr::all_of(columnas),
+                  ts_total_2022_2024, tis_total_2022_2024, tipo_fila)
+
+  escribir_hoja(
+    dplyr::select(tabla, -tipo_fila), archivo, "suicidios_2022_2024",
+    etiquetas = c(ETIQUETAS_TERRITORIO,
+                  suicidios_casos_2022 = "Suicidios consumados, casos 2022 (DANE)",
+                  suicidios_casos_2023 = "Suicidios consumados, casos 2023 (DANE)",
+                  suicidios_casos_2024 = "Suicidios consumados, casos 2024 (DANE)",
+                  intentos_casos_2022  = "Intentos de suicidio, casos 2022 (SIVIGILA, residencia)",
+                  intentos_casos_2023  = "Intentos de suicidio, casos 2023 (SIVIGILA, residencia)",
+                  intentos_casos_2024  = "Intentos de suicidio, casos 2024 (SIVIGILA, residencia)",
+                  ts_2022  = "Tasa de suicidio consumado 2022 (x 100 mil hab.)",
+                  ts_2023  = "Tasa de suicidio consumado 2023 (x 100 mil hab.)",
+                  ts_2024  = "Tasa de suicidio consumado 2024 (x 100 mil hab.)",
+                  tis_2022 = "Tasa de intento de suicidio 2022 (x 100 mil hab.)",
+                  tis_2023 = "Tasa de intento de suicidio 2023 (x 100 mil hab.)",
+                  tis_2024 = "Tasa de intento de suicidio 2024 (x 100 mil hab.)",
+                  ts_total_2022_2024  = "Tasa de suicidio consumado, media móvil 2022-2024 (x 100 mil hab.)",
+                  tis_total_2022_2024 = "Tasa de intento de suicidio, media móvil 2022-2024 (x 100 mil hab.)"),
+    formatos = stats::setNames(
+      rep("#,##0.00", length(columnas) + 2), c(columnas, "ts_total_2022_2024", "tis_total_2022_2024")
+    )
   )
 
   tabla
@@ -421,6 +618,63 @@ ETIQUETAS_TERRITORIO <- c(
   tabla
 }
 
+# --- Hoja 5b: mortalidad infantil, promedio 2020-2024 (NUEVA) ---------------
+# La serie por año (hoja 5) ya reproduce MORTALIDAD_INFANTIL.xlsx exactamente;
+# esto no corrige nada, solo agrega el promedio del período completo,
+# ponderado por los nacidos vivos de cada año (Σcasos / Σnacidos x 1.000).
+
+.hoja_mortalidad_infantil_promedio <- function(prov, archivo, nacimientos, anios = 2020:2024) {
+  casos <- .leer_matriz_anios(
+    entrada("MORTALIDAD_INFANTIL.xlsx"), "INFANTIL",
+    fila_anio = 4, fila_sub = 5, patron_sub = "^casos",
+    anios = anios, fila_datos = 6, prefijo = "casos"
+  ) |>
+    tidyr::pivot_longer(cols = -"ind_mpio", names_to = "anio", values_to = "casos") |>
+    dplyr::mutate(anio = as.integer(stringr::str_remove(.data$anio, "^casos")))
+
+  nac_largo <- nacimientos |>
+    tidyr::pivot_longer(cols = -"ind_mpio", names_to = "anio", values_to = "nac") |>
+    dplyr::mutate(anio = as.integer(stringr::str_remove(.data$anio, "^nac")))
+
+  universo <- casos |>
+    dplyr::left_join(nac_largo, by = c("ind_mpio", "anio")) |>
+    dplyr::group_by(.data$ind_mpio) |>
+    dplyr::summarise(
+      nac_total = sum(.data$nac, na.rm = TRUE),
+      tasa_mort_infantil_prom = sum(.data$casos, na.rm = TRUE) /
+        sum(.data$nac, na.rm = TRUE) * 1000,
+      .groups = "drop"
+    ) |>
+    con_territorio()
+
+  municipios <- universo |>
+    filtrar_provincia(prov) |>
+    dplyr::arrange(.data$nvl_label) |>
+    dplyr::select(ind_mpio, municipio, subregion, provincia, nac_total,
+                  tasa_mort_infantil_prom)
+
+  tabla <- agregar_totales(
+    municipios, universo = universo, prov = prov,
+    columnas = "tasa_mort_infantil_prom",
+    como = list(tasa_mort_infantil_prom = "promedio_ponderado"), pesos = "nac_total"
+  ) |>
+    .marcar_ponderado(paste0("por nacidos vivos ", min(anios), "-", max(anios))) |>
+    .provincia_de_totales() |>
+    dplyr::select(ind_mpio, municipio, subregion, provincia,
+                  tasa_mort_infantil_prom, tipo_fila)
+
+  escribir_hoja(
+    dplyr::select(tabla, -tipo_fila), archivo, "mortalidad_infantil_promedio",
+    etiquetas = c(ETIQUETAS_TERRITORIO,
+                  tasa_mort_infantil_prom = paste0(
+                    "Tasa de mortalidad infantil, promedio ", min(anios), "-",
+                    max(anios), " (x 1.000 nacidos vivos)")),
+    formatos = c(tasa_mort_infantil_prom = "#,##0.00")
+  )
+
+  tabla
+}
+
 # --- Punto de entrada ---------------------------------------------------------
 
 tabla_salud <- function(prov) {
@@ -433,11 +687,14 @@ tabla_salud <- function(prov) {
   nacimientos <- .nacidos_vivos()
 
   resultado <- list(
-    bajo_peso               = .hoja_bajo_peso(prov, archivo, nacimientos),
-    enfermedades_tropicales = .hoja_enfermedades_tropicales(prov, archivo, pesos),
-    suicidios               = .hoja_suicidios(prov, archivo, pesos),
-    aseguramiento_sgsss     = .hoja_aseguramiento(prov, archivo),
-    mortalidad_infantil     = .hoja_mortalidad_infantil(prov, archivo, nacimientos)
+    bajo_peso_2024                = .hoja_bajo_peso_2024(prov, archivo, nacimientos),
+    enfermedades_tropicales      = .hoja_enfermedades_tropicales(prov, archivo, pesos),
+    enfermedades_tropicales_2024 = .hoja_enfermedades_tropicales_2024(prov, archivo, pesos),
+    suicidios                    = .hoja_suicidios(prov, archivo, pesos),
+    suicidios_2022_2024          = .hoja_suicidios_2022_2024(prov, archivo, pesos),
+    aseguramiento_sgsss          = .hoja_aseguramiento(prov, archivo),
+    mortalidad_infantil          = .hoja_mortalidad_infantil(prov, archivo, nacimientos),
+    mortalidad_infantil_promedio = .hoja_mortalidad_infantil_promedio(prov, archivo, nacimientos)
   )
 
   message("  09 Salud: ", length(resultado), " hojas en ", basename(archivo))

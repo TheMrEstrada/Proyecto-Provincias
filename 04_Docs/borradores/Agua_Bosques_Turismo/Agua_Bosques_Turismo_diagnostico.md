@@ -2,7 +2,7 @@
 title: "Diagnóstico Integral Territorial — Provincia Agua, Bosques y Turismo"
 subtitle: "Contexto departamental y provincial extendido"
 author: "Proyecto Provincias · Planes Estratégicos Provinciales de Antioquia"
-date: "10 de agosto de 2026"
+date: "21 de agosto de 2026"
 lang: es
 ---
 
@@ -27,6 +27,12 @@ La Provincia Administrativa y de Planificación Agua, Bosques y Turismo está co
 Los municipios que la integran son Alejandría, Cocorná, Concepción, Granada, Guatapé, Marinilla, Peñol, San Carlos, San Francisco, San Luis, San Rafael y San Vicente Ferrer.
 
 ### Generalidades –contexto departamental y provincial-
+
+| **En resumen — Generalidades** |
+|:---|
+| 12 municipios · 3.174 km² |
+| Población 2025: 224.539 hab. (44,0 % rural) |
+
 
 La Provincia Agua, Bosques y Turismo se extiende sobre 3.174 km² distribuidos entre sus 12 municipios. La superficie está concentrada: San Carlos y San Luis reúnen el 36 % del territorio provincial, mientras que Guatapé (83 km²) y Marinilla (115 km²) registran las menores extensiones. La razón entre el municipio más extenso y el más pequeño es de 8,6 a 1, una brecha muy amplia en términos de la escala a la que cada administración municipal debe operar.
 
@@ -58,16 +64,22 @@ En el contexto departamental, la Provincia representa el 5,1 % de la superficie 
 
 *Fuente: Gobernación de Antioquia, Anuario Estadístico. Cálculos propios.*
 
-![1. Localización](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/01_Generalidades/figuras/mapa_00_localizacion.png)
+![1. Localización](<03_Outputs/Agua_Bosques_Turismo/01_Generalidades/figuras/mapa_00_localizacion.png>)
 
 
-![2. Área](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/01_Generalidades/figuras/mapa_01_area.png)
+![2. Área](<03_Outputs/Agua_Bosques_Turismo/01_Generalidades/figuras/mapa_01_area.png>)
 
 
-![3. Distribución territorial](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/01_Generalidades/figuras/fig_01_distribucion_territorial.png)
+![3. Distribución territorial](<03_Outputs/Agua_Bosques_Turismo/01_Generalidades/figuras/fig_01_distribucion_territorial.png>)
 
 
 ### Demografía
+
+| **En resumen — Demografía** |
+|:---|
+| Población total de la provincia: 224.539 hab. |
+| Mayor densidad poblacional: Marinilla (647,6) |
+
 
 La Provincia Agua, Bosques y Turismo reúne una población proyectada de 224.539 habitantes para 2025, repartida de forma desigual entre sus 12 municipios. La distribución está concentrada: Marinilla y San Vicente Ferrer concentran el 44 % del total provincial, mientras que Concepción (5.112 hab.), Alejandría (5.285 hab.) y San Francisco (6.058 hab.) registran los menores tamaños. Solo 3 de los 12 municipios superan el promedio provincial de 18.712 habitantes, lo que indica que la media no describe al municipio típico de la Provincia.
 
@@ -79,7 +91,7 @@ La estructura por edad da la medida de esa transición. Los menores de veinte a�
 
 El Índice de Dependencia Económica resume las dos puntas de la pirámide: cuántas personas en edades dependientes —menores de quince y mayores de sesenta y cuatro— hay por cada cien en edad de trabajar. En la Provincia es de 52,1, y alcanza sus valores más altos en San Francisco (70,8) y Granada (64,7), por encima del departamento (44,7), con una diferencia de 17 %. Es la cifra que traduce la estructura demográfica en carga efectiva sobre la población productiva.
 
-La dinámica vital muestra una Provincia que envejece. Concepción (38,5), Guatapé (36,2) y Alejandría (34,9) presentan los índices de envejecimiento más altos —adultos mayores por cada cien menores de quince años—. La Provincia registra un índice de 31,4, en un nivel prácticamente igual al de la subregión (32,7), y en un nivel prácticamente igual al del departamento (32,1).
+La dinámica vital muestra una Provincia que envejece. Concepción (39,2), Cocorná (34,8) y Peñol (34,5) presentan los índices de envejecimiento más altos —adultos mayores por cada cien menores de quince años—. La Provincia registra un índice de 30,9, en un nivel prácticamente igual al de la subregión (31,5), y en un nivel prácticamente igual al del departamento (31,7).
 
 La natalidad, de 9,11 nacimientos por cada mil habitantes, se sitúa por encima del departamento (8,64), con una diferencia de 5 %. Un territorio que envejece y con natalidad contenida tiene una ventana de planificación distinta: la presión se desplaza de la infraestructura educativa hacia los servicios de salud y cuidado, y el relevo generacional de la actividad productiva rural deja de estar garantizado.
 
@@ -109,25 +121,31 @@ La tasa neta de migración de la ECV 2023 va de 0,00 a 10,31 entre los municipio
 
 *Fuente: DANE, proyecciones de población 2018-2042. Cálculos propios.*
 
-![4. Densidad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/mapa_02_densidad.png)
+![4. Densidad](<03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/mapa_02_densidad.png>)
 
 
-![5. Población municipio](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_01_poblacion_municipio.png)
+![5. Población municipio](<03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_01_poblacion_municipio.png>)
 
 
-![6. Composicion urbana rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_02_composicion_urbana_rural.png)
+![6. Composicion urbana rural](<03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_02_composicion_urbana_rural.png>)
 
 
-![7. Densidad poblacional](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_03_densidad_poblacional.png)
+![7. Densidad poblacional](<03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_03_densidad_poblacional.png>)
 
 
-![8. Pirámide poblacional](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_04_piramide_poblacional.png)
+![8. Pirámide poblacional](<03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_04_piramide_poblacional.png>)
 
 
-![9. Indice envejecimiento](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_05_indice_envejecimiento.png)
+![9. Indice envejecimiento](<03_Outputs/Agua_Bosques_Turismo/02_Demografia/figuras/fig_05_indice_envejecimiento.png>)
 
 
 ### Ordenamiento del Territorio
+
+| **En resumen — Ordenamiento del Territorio** |
+|:---|
+| Mayor déficit cuantitativo de vivienda: San Vicente Ferrer (7,6 %) |
+| Mayor déficit cualitativo de vivienda: Concepción (27,4 %) |
+
 
 El ordenamiento del territorio reúne aquí cuatro asuntos que en la práctica se condicionan entre sí: los instrumentos con que cada municipio ordena su suelo, la conectividad que determina qué tan lejos queda cada cabecera del resto, las capacidades de ciencia y tecnología, y las condiciones de la vivienda y los servicios domiciliarios. En una Provincia de equilibrio urbano-rural como Agua, Bosques y Turismo, los cuatro se resuelven sobre el mismo obstáculo: la dispersión.
 
@@ -135,7 +153,7 @@ El ordenamiento del territorio reúne aquí cuatro asuntos que en la práctica s
 
 El uso adecuado del suelo rural, medido por el POTA, alcanza sus valores más altos en San Francisco (68,1 %) y San Carlos (50,3 %) y los más bajos en Concepción (24,7 %) y Guatapé (27,3 %). La diferencia mide cuánta de la actividad que hoy ocurre sobre el suelo corresponde a su vocación: donde el porcentaje es bajo, el conflicto de uso ya está instalado y el ordenamiento tiene que corregir, no solo orientar. La fuente no cubre 5 de los 12 municipios de la Provincia; esas celdas quedan vacías y no deben leerse como ceros.
 
-El catastro es la base sobre la que descansan el impuesto predial y cualquier política de suelo. En la Provincia, el avalúo rural representa en promedio el 63,7 % del avalúo catastral total de cada municipio, lo que confirma por la vía fiscal la ruralidad descrita en la sección demográfica. El estado más frecuente del catastro rural es «Rezagado», en 5 municipios.
+El catastro es la base sobre la que descansan el impuesto predial y cualquier política de suelo. En la Provincia, el avalúo rural representa el 69,5 % del avalúo catastral total, lo que confirma por la vía fiscal la ruralidad descrita en la sección demográfica. El estado más frecuente del catastro rural es «Rezagado», en 5 municipios.
 
 > **Verificar con el equipo** — el estado de adopción y vigencia de los POT, PBOT y EOT de cada municipio, que no está en las fuentes de este flujo y determina si el Plan puede apoyarse en los instrumentos existentes o debe promover su actualización. Conviene añadir la vigencia de la formación catastral: un avalúo desactualizado subestima el recaudo potencial.
 
@@ -149,7 +167,7 @@ Leída por habitante en vez de por área, la misma red cambia de orden: San Fran
 
 #### Ciencia, Tecnología e Innovación
 
-El acceso a internet fijo describe la brecha digital interna de la Provincia. Medido en líneas por cada mil habitantes, es mayor en Peñol (1.045,7) y Guatapé (942,7) y menor en Concepción (91,2) y San Vicente Ferrer (234,0). La fibra óptica, que es la tecnología que sostiene un uso intensivo, representa en promedio el 56,5 % de las líneas de la Provincia.
+El acceso a internet fijo describe la brecha digital interna de la Provincia. Medido en líneas por cada mil habitantes, es mayor en Marinilla (297,0) y Guatapé (261,2) y menor en Concepción (25,6) y San Francisco (50,5). La fibra óptica, que es la tecnología que sostiene un uso intensivo, representa el 72,0 % de las líneas de la Provincia.
 
 En capacidad institucional digital, el Índice de Gobierno Digital sitúa a Marinilla (86,3) y Cocorná (69,9) en la parte alta de la Provincia. El promedio provincial ponderado por población es de 65,2 sobre 100, por debajo de la subregión (70,0), con una diferencia de 7 %. Conectividad y capacidad institucional se necesitan mutuamente: la primera sin la segunda deja el trámite en papel, y la segunda sin la primera no llega al ciudadano rural.
 
@@ -165,7 +183,7 @@ El déficit habitacional se mide en dos dimensiones que piden políticas distint
 
 Frente a su entorno, la Provincia está por debajo del departamento (17,7 %), con una diferencia de 3,5 puntos porcentuales en déficit cualitativo. En el mapa, los 3 municipios con los valores más altos forman un patrón parcialmente contiguo.
 
-En servicios domiciliarios, el promedio municipal de la Provincia es de 91,8 % en acueducto, 66,0 % en alcantarillado y 99,2 % en energía. La distancia entre la cobertura de energía y la de alcantarillado es el indicador más elocuente de la ruralidad: la red eléctrica llegó, la de saneamiento no, y esa diferencia explica buena parte del déficit cualitativo descrito arriba.
+En servicios domiciliarios, la cobertura de la Provincia es de 95,3 % en acueducto, 69,0 % en alcantarillado y 99,5 % en energía. La distancia entre la cobertura de energía y la de alcantarillado es el indicador más elocuente de la ruralidad: la red eléctrica llegó, la de saneamiento no, y esa diferencia explica buena parte del déficit cualitativo descrito arriba.
 
 > **Verificar con el equipo** — si existen programas de mejoramiento de vivienda en curso en la Provincia y con qué cobertura, para dimensionar la brecha que el Plan tendría que cubrir.
 
@@ -191,52 +209,58 @@ En servicios domiciliarios, el promedio municipal de la Provincia es de 91,8 % e
 
 *Fuente: DANE, déficit habitacional 2023. Cálculos propios.*
 
-![10. Déficit vivienda](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/mapa_03_deficit_vivienda.png)
+![10. Déficit vivienda](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/mapa_03_deficit_vivienda.png>)
 
 
-![11. Uso suelo rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_01_uso_suelo_rural.png)
+![11. Uso suelo rural](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_01_uso_suelo_rural.png>)
 
 
-![12. Catastro avalúo rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_02_catastro_avaluo_rural.png)
+![12. Catastro avalúo rural](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_02_catastro_avaluo_rural.png>)
 
 
-![13. Vías área](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_03_vias_area.png)
+![13. Vías área](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_03_vias_area.png>)
 
 
-![14. Vías habitantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_04_vias_habitantes.png)
+![14. Vías habitantes](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_04_vias_habitantes.png>)
 
 
-![15. Déficit cuantitativo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_05_deficit_cuantitativo.png)
+![15. Déficit cuantitativo](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_05_deficit_cuantitativo.png>)
 
 
-![16. Déficit cualitativo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_06_deficit_cualitativo.png)
+![16. Déficit cualitativo](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_06_deficit_cualitativo.png>)
 
 
-![17. Servicios públicos](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_07_servicios_publicos.png)
+![17. Servicios públicos](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_07_servicios_publicos.png>)
 
 
-![18. IMCA dimensiones](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_08_imca_dimensiones.png)
+![18. IMCA dimensiones](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_08_imca_dimensiones.png>)
 
 
-![19. IMCA adopcion tic](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_09_imca_adopcion_tic.png)
+![19. IMCA adopcion tic](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_09_imca_adopcion_tic.png>)
 
 
-![20. Gobierno digital](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_10_gobierno_digital.png)
+![20. Gobierno digital](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_10_gobierno_digital.png>)
 
 
-![21. Gobierno digital componentes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_11_gobierno_digital_componentes.png)
+![21. Gobierno digital componentes](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_11_gobierno_digital_componentes.png>)
 
 
-![22. Tti edsup](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_12_tti_edsup.png)
+![22. Tti edsup](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_12_tti_edsup.png>)
 
 
-![23. Internet 1000hab](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_13_internet_1000hab.png)
+![23. Internet 1000hab](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_13_internet_1000hab.png>)
 
 
-![24. Internet fibra](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_14_internet_fibra.png)
+![24. Internet fibra](<03_Outputs/Agua_Bosques_Turismo/03_Ordenamiento/figuras/fig_14_internet_fibra.png>)
 
 
 ### Gobernabilidad y capacidades territoriales
+
+| **En resumen — Gobernabilidad y capacidades territoriales** |
+|:---|
+| Mayor ICM: Marinilla (58,8) |
+| Ingresos de inversión 2026 (PGN+SGP+SGR+propios+otros): 584.619.409.456 |
+
 
 #### Gobernabilidad
 
@@ -262,22 +286,31 @@ Desagregado por dimensiones, el punto más fuerte de la Provincia es equidad e i
 
 > **Verificar con el equipo** — la evolución del ICM en la serie disponible: si la Provincia converge o diverge respecto del departamento, que es una lectura de tendencia y no de nivel.
 
-![25. Mdm](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_01_mdm.png)
+![25. Mdm](<03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_01_mdm.png>)
 
 
-![26. Idf](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_02_idf.png)
+![26. Idf](<03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_02_idf.png>)
 
 
-![27. Ley617](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_03_ley617.png)
+![27. Ley617](<03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_03_ley617.png>)
 
 
-![28. Icm](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_04_icm.png)
+![28. Icm](<03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_04_icm.png>)
 
 
-![29. Icm dimensiones](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_05_icm_dimensiones.png)
+![29. Icm dimensiones](<03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_05_icm_dimensiones.png>)
+
+
+![30. Icm tendencia](<03_Outputs/Agua_Bosques_Turismo/04_Gobernabilidad/figuras/fig_06_icm_tendencia.png>)
 
 
 ### Economía y desarrollo
+
+| **En resumen — Economía y desarrollo** |
+|:---|
+| Mayor valor agregado per cápita: San Carlos (55.244.378) |
+| Valor agregado per cápita provincial: 19.441.288 |
+
 
 Esta sección describe de qué vive la Provincia Agua, Bosques y Turismo y en qué condiciones lo hace. Ordena cuatro asuntos: las condiciones de vida y el mercado laboral, la productividad medida por el valor agregado, la actividad minero-energética y el turismo. El hilo que los une es la pregunta de cuánta de la riqueza que se genera en el territorio se queda en él.
 
@@ -297,7 +330,7 @@ Entre la población joven, la proporción que no estudia ni trabaja es más alta
 
 #### Productividad y competitividad
 
-En 2024, la generación de valor agregado de la Provincia está concentrada: Marinilla y San Carlos reúnen el 54 % del total. El valor agregado por habitante es mayor en San Carlos (55.010.181) y Guatapé (50.289.819) y menor en San Rafael (7.758.524) y Granada (8.388.015), una brecha que describe territorios con capacidades productivas muy distintas dentro del mismo esquema asociativo.
+En 2024, la generación de valor agregado de la Provincia está concentrada: Marinilla y San Carlos reúnen el 54 % del total. El valor agregado por habitante es mayor en San Carlos (55.244.378) y Guatapé (47.658.559) y menor en San Rafael (7.485.971) y San Luis (8.461.114), una brecha que describe territorios con capacidades productivas muy distintas dentro del mismo esquema asociativo.
 
 Por composición sectorial, las actividades primarias aportan el 14,4 % del valor agregado provincial, las secundarias el 15,2 % y las terciarias el 60,1 %. Los tres agregados no suman el total: la serie a precios constantes deja un remanente sin distribuir, de modo que las participaciones se calculan siempre sobre el valor agregado total y no sobre la suma de los tres.
 
@@ -325,55 +358,64 @@ En instrumentos de planificación turística, 7 de los 12 municipios cuentan con
 
 > **Verificar con el equipo** — qué atractivos concretos tiene la Provincia y en qué estado están sus inventarios turísticos, y si el turismo aparece como Hecho Provincial en la versión preliminar del Plan.
 
-![30. Va per cápita](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/mapa_05_va_percapita.png)
+![31. Va per cápita](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/mapa_05_va_percapita.png>)
 
 
-![31. Pobreza NBI](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_01_pobreza_nbi.png)
+![32. Pobreza NBI](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_01_pobreza_nbi.png>)
 
 
-![32. Pobreza IPM](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_02_pobreza_ipm.png)
+![33. Pobreza IPM](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_02_pobreza_ipm.png>)
 
 
-![33. Gini hogar laboral](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_03_gini_hogar_laboral.png)
+![34. Gini hogar laboral](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_03_gini_hogar_laboral.png>)
 
 
-![34. Ocupación informalidad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_04_ocupacion_informalidad.png)
+![35. Ocupación informalidad](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_04_ocupacion_informalidad.png>)
 
 
-![35. Desocupación total jovenes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_05_desocupacion_total_jovenes.png)
+![36. Desocupación total jovenes](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_05_desocupacion_total_jovenes.png>)
 
 
-![36. Jovenes NiNi](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_06_jovenes_nini.png)
+![37. Jovenes NiNi](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_06_jovenes_nini.png>)
 
 
-![37. Dependencia económica](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_07_dependencia_economica.png)
+![38. Dependencia económica](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_07_dependencia_economica.png>)
 
 
-![38. Densidad empresarial](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_08_densidad_empresarial.png)
+![39. Densidad empresarial](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_08_densidad_empresarial.png>)
 
 
-![39. Valor agregado per capita](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_09_valor_agregado_per_capita.png)
+![40. Valor agregado per capita](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_09_valor_agregado_per_capita.png>)
 
 
-![40. Peso relativo valor agregado](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_10_peso_relativo_valor_agregado.png)
+![41. Peso relativo valor agregado](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_10_peso_relativo_valor_agregado.png>)
 
 
-![41. Composicion valor agregado](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_11_composicion_valor_agregado.png)
+![42. Composicion valor agregado](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_11_composicion_valor_agregado.png>)
 
 
-![42. Valor agregado actividades](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_12_valor_agregado_actividades.png)
+![43. Valor agregado actividades](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_12_valor_agregado_actividades.png>)
 
 
-![43. Títulos mineros](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_13_titulos_mineros.png)
+![44. Títulos mineros](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_13_titulos_mineros.png>)
 
 
-![44. Visitantes extranjeros](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_14_visitantes_extranjeros.png)
+![45. Visitantes extranjeros](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_14_visitantes_extranjeros.png>)
 
 
-![45. Participación visitantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_15_participacion_visitantes.png)
+![46. Participación visitantes](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_15_participacion_visitantes.png>)
+
+
+![47. Capacidad instalada](<03_Outputs/Agua_Bosques_Turismo/05_Economia/figuras/fig_16_capacidad_instalada.png>)
 
 
 ### Desarrollo Rural
+
+| **En resumen — Desarrollo Rural** |
+|:---|
+| Total especies pecuarias: 267.203 |
+| Cultivos permanentes: 39,6 % del área agrícola |
+
 
 En una Provincia donde el 44,0 % de la población vive en zona rural, el desarrollo rural no es una sección sectorial más: es la descripción de la base económica de la mayoría de sus habitantes.
 
@@ -387,22 +429,28 @@ El rendimiento agregado —producción total sobre área cosechada— es mayor e
 
 > **Verificar con el equipo** — el régimen de tenencia de la tierra, el acceso a asistencia técnica y los canales de comercialización de los principales productos. El inventario dice qué se produce y cuánto; no dice quién lo produce ni en qué condiciones lo vende.
 
-![46. Participación pecuaria](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_01_participacion_pecuaria.png)
+![48. Participación pecuaria](<03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_01_participacion_pecuaria.png>)
 
 
-![47. Composicion especies](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_02_composicion_especies.png)
+![49. Composicion especies](<03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_02_composicion_especies.png>)
 
 
-![48. Composicion agrícola](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_03_composicion_agricola.png)
+![50. Composicion agrícola](<03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_03_composicion_agricola.png>)
 
 
-![49. Participación producción](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_04_participacion_produccion.png)
+![51. Participación producción](<03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_04_participacion_produccion.png>)
 
 
-![50. Rendimiento agrícola](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_05_rendimiento_agricola.png)
+![52. Rendimiento agrícola](<03_Outputs/Agua_Bosques_Turismo/06_Desarrollo_Rural/figuras/fig_05_rendimiento_agricola.png>)
 
 
 ### Ambiental
+
+| **En resumen — Ambiental** |
+|:---|
+| Peor calidad de agua (IRCA más alto): Cocorná (17,70) |
+| Mayor riesgo por exceso de lluvias: Cocorná (55,86) |
+
 
 La dimensión ambiental de la Provincia Agua, Bosques y Turismo se lee en dos registros: los activos naturales que conserva —áreas protegidas, cobertura arbórea, agua— y las presiones que los amenazan, desde la deforestación hasta el riesgo de desastres. Ambos son, además, condicionantes del ordenamiento y de la actividad productiva descrita en las secciones anteriores.
 
@@ -426,31 +474,37 @@ El registro de emergencias muestra la exposición efectiva, no solo la potencial
 
 > **Verificar con el equipo** — qué explica la pérdida de cobertura en los municipios donde se concentra —frontera agropecuaria, minería, cultivos de uso ilícito, infraestructura— y si existen procesos de restauración en curso.
 
-![51. Pérdida cobertura](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/mapa_07_perdida_cobertura.png)
+![53. Pérdida cobertura](<03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/mapa_07_perdida_cobertura.png>)
 
 
-![52. Areas protegidas](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_01_areas_protegidas.png)
+![54. Areas protegidas](<03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_01_areas_protegidas.png>)
 
 
-![53. IRCA](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_02_irca.png)
+![55. IRCA](<03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_02_irca.png>)
 
 
-![54. IRCA evolucion](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_03_irca_evolucion.png)
+![56. IRCA evolucion](<03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_03_irca_evolucion.png>)
 
 
-![55. Pérdida cobertura](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_04_perdida_cobertura.png)
+![57. Pérdida cobertura](<03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_04_perdida_cobertura.png>)
 
 
-![56. Desastres tipo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_05_desastres_tipo.png)
+![58. Desastres tipo](<03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_05_desastres_tipo.png>)
 
 
-![57. Eventos anio](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_06_eventos_anio.png)
+![59. Eventos anio](<03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_06_eventos_anio.png>)
 
 
-![58. IMRC](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_07_imrc.png)
+![60. IMRC](<03_Outputs/Agua_Bosques_Turismo/07_Ambiental/figuras/fig_07_imrc.png>)
 
 
 ### Educación
+
+| **En resumen — Educación** |
+|:---|
+| Mayor cobertura neta: Guatapé (108,8 %) |
+| Mayor tasa de deserción: San Francisco (7,5 %) |
+
 
 La dimensión educativa permite comprender algunas de las condiciones más significativas de desarrollo humano, equidad territorial y competitividad de la Provincia Agua, Bosques y Turismo. En un territorio con alta ruralidad y dispersión poblacional, el acceso, la permanencia y el tránsito efectivo entre niveles son determinantes de las oportunidades de su población, y cada uno se enfrenta a un obstáculo distinto: llegar a la escuela, quedarse en ella y continuar después.
 
@@ -486,31 +540,37 @@ En el mapa, los 3 municipios con los valores más bajos forman una mancha contig
 
 *Fuente: Ministerio de Educación Nacional. Cálculos propios.*
 
-![59. Cobertura neta](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/08_Educacion/figuras/mapa_08_cobertura_neta.png)
+![61. Cobertura neta](<03_Outputs/Agua_Bosques_Turismo/08_Educacion/figuras/mapa_08_cobertura_neta.png>)
 
 
-![60. Cobertura neta](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/08_Educacion/figuras/fig_01_cobertura_neta.png)
+![62. Cobertura neta](<03_Outputs/Agua_Bosques_Turismo/08_Educacion/figuras/fig_01_cobertura_neta.png>)
 
 
-![61. Deserción escolar](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/08_Educacion/figuras/fig_02_desercion_escolar.png)
+![63. Deserción escolar](<03_Outputs/Agua_Bosques_Turismo/08_Educacion/figuras/fig_02_desercion_escolar.png>)
 
 
-![62. Repitencia escolar](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/08_Educacion/figuras/fig_03_repitencia_escolar.png)
+![64. Repitencia escolar](<03_Outputs/Agua_Bosques_Turismo/08_Educacion/figuras/fig_03_repitencia_escolar.png>)
 
 
 ### Salud
+
+| **En resumen — Salud** |
+|:---|
+| Mayor proporción de bajo peso al nacer: Guatapé (15,9 %) |
+| Afiliados al régimen subsidiado (provincial): 58,0 % |
+
 
 El aseguramiento en salud de la Provincia se apoya mayoritariamente en el régimen subsidiado, que concentra el 58,0 % de los afiliados frente al 39,4 % del contributivo. Esa composición no es un dato del sector salud sino un reflejo directo de la estructura del empleo descrita en la sección de economía: donde la informalidad es alta, el aseguramiento es subsidiado, y el sistema de salud local depende de transferencias antes que de cotizaciones. Corte: diciembre de 2025.
 
 En 2024, la mortalidad infantil registra sus valores más altos en San Francisco (37,74) y Granada (12,82), con una tasa provincial de 5,63 por cada mil nacidos vivos, por debajo del departamento (8,64), con una diferencia de 35 %. Conviene leer esta cifra con cuidado: en municipios con pocos nacimientos la tasa se mueve mucho con un solo caso, de modo que un valor alto en un año no constituye una tendencia.
 
-El bajo peso al nacer, que anticipa buena parte de la trayectoria de salud posterior, afecta al 11,3 % de los nacimientos de la Provincia y alcanza sus valores más altos en Concepción (18,8 %) y Peñol (14,2 %). Es un indicador de nutrición y de control prenatal, de modo que conecta la salud con las condiciones materiales descritas en la sección de economía.
+El bajo peso al nacer, que anticipa buena parte de la trayectoria de salud posterior, afecta al 11,6 % de los nacimientos de la Provincia y alcanza sus valores más altos en Guatapé (15,9 %) y Marinilla (14,2 %). Es un indicador de nutrición y de control prenatal, de modo que conecta la salud con las condiciones materiales descritas en la sección de economía.
 
-Entre las enfermedades transmitidas por vectores, el dengue registra una tasa provincial de 4,25 por cada cien mil habitantes, con sus valores más altos en San Francisco (22,73) y San Luis (22,07) y la malaria, de 2,14 sobre la misma base, encabezada por San Carlos (17,89) y San Luis (6,51). Son sensibles al clima y a las condiciones de la vivienda y el saneamiento, lo que las convierte en un indicador cruzado entre la sección ambiental y la de ordenamiento.
+Entre las enfermedades transmitidas por vectores, el dengue registra una tasa provincial de 4,15 por cada cien mil habitantes, con sus valores más altos en San Francisco (22,73) y San Luis (22,07) y la malaria, de 2,07 sobre la misma base, encabezada por San Carlos (17,89) y San Luis (6,51). Son sensibles al clima y a las condiciones de la vivienda y el saneamiento, lo que las convierte en un indicador cruzado entre la sección ambiental y la de ordenamiento.
 
-La leishmaniasis se mide sobre población **rural** y no sobre la total, de modo que su tasa no es comparable con las dos anteriores. En la Provincia alcanza 80,70 por cada cien mil habitantes rurales, con los valores más altos en San Luis (699,60) y San Carlos (232,03).
+La leishmaniasis se mide sobre población **rural** y no sobre la total, de modo que su tasa no es comparable con las dos anteriores. En la Provincia alcanza 81,72 por cada cien mil habitantes rurales, con los valores más altos en San Luis (699,60) y San Carlos (232,03).
 
-En salud mental, la tasa de intento de suicidio de la Provincia es de 71,18 por cada cien mil habitantes, con los valores más altos en Guatapé (184,22) y San Luis (105,68). Es el indicador con mayor subregistro de esta sección y conviene presentarlo como una cota inferior.
+En salud mental, la tasa de intento de suicidio de la Provincia es de 71,56 por cada cien mil habitantes, con los valores más altos en Guatapé (184,22) y San Luis (105,68). Es el indicador con mayor subregistro de esta sección y conviene presentarlo como una cota inferior.
 
 > **Verificar con el equipo** — la red de prestación de servicios disponible en la Provincia —nivel de complejidad de las IPS, tiempos de traslado al hospital de referencia— y el estado financiero de las ESE municipales. Los indicadores de resultado no dicen con qué capacidad instalada se obtuvieron.
 
@@ -536,22 +596,38 @@ En salud mental, la tasa de intento de suicidio de la Provincia es de 71,18 por 
 
 *Fuente: Gobernación de Antioquia, estadísticas vitales. Cálculos propios.*
 
-![63. Mortalidad infantil](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/mapa_09_mortalidad_infantil.png)
+![65. Mortalidad infantil](<03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/mapa_09_mortalidad_infantil.png>)
 
 
-![64. Aseguramiento SGSSS](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_01_aseguramiento_sgsss.png)
+![66. Aseguramiento SGSSS](<03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_01_aseguramiento_sgsss.png>)
 
 
-![65. Bajo peso](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_02_bajo_peso.png)
+![67. Bajo peso](<03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_02_bajo_peso.png>)
 
 
-![66. Enfermedades vectores](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_03_enfermedades_vectores.png)
+![68. Enfermedades vectores](<03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_03_enfermedades_vectores.png>)
 
 
-![67. Suicidios](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_04_suicidios.png)
+![69. Suicidios](<03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_04_suicidios.png>)
+
+
+![70. Enfermedades vectores 2024](<03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_05_enfermedades_vectores_2024.png>)
+
+
+![71. Mortalidad infantil](<03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_06_mortalidad_infantil.png>)
+
+
+![72. Suicidios 2022 2024](<03_Outputs/Agua_Bosques_Turismo/09_Salud/figuras/fig_07_suicidios_2022_2024.png>)
 
 
 ### Seguridad, Paz y Derechos Humanos
+
+| **En resumen — Seguridad, Paz y Derechos Humanos** |
+|:---|
+| Mayor tasa de homicidios: San Luis (62,3) |
+| Victimizaciones del conflicto armado: 256.993 |
+| Sujetos de reparación colectiva reconocidos: 9 |
+
 
 Esta sección reúne tres registros que en la Provincia Agua, Bosques y Turismo se solapan: la seguridad y convivencia del presente, la huella del conflicto armado y la situación de derechos humanos. Se presentan por separado porque responden a políticas distintas, pero se leen mejor juntos.
 
@@ -597,7 +673,9 @@ Las solicitudes de restitución de tierras por cada mil habitantes son más alta
 
 En economías ilegales, la Provincia registra 88,01 hectáreas de coca, concentradas en San Francisco (64,19) y San Luis (22,07). Solo aparecen los municipios donde la fuente detectó cultivo: la ausencia de un municipio significa cero, no falta de dato.
 
-> **Verificar con el equipo** — el estado de implementación de los instrumentos de paz en la Provincia —PDET, PNIS, planes de reparación colectiva— y qué sujetos de reparación colectiva están reconocidos.
+La UARIV reconoce 9 sujetos de reparación colectiva en la Provincia, concentrada: San Rafael y Alejandría reúnen el 33 % del total. De ellos, 1 ya completó la implementación de su Plan Integral de Reparación Colectiva (PIRC); el resto sigue en alguna de las fases previas —identificación, caracterización del daño, diagnóstico, diseño y formulación o alistamiento—, que es justamente el estado de avance que pedía verificar la revisión de este documento.
+
+> **Verificar con el equipo** — el estado de implementación de PNIS en la Provincia, y la cobertura PDET completa de todos sus municipios —lo que hay hoy sobre PDET es un subproducto del insumo de reparación colectiva y solo cubre los municipios con algún sujeto reconocido.
 
 #### Derechos Humanos
 
@@ -607,34 +685,37 @@ La encuesta de percepción de seguridad complementa este panorama con la mirada 
 
 > **Verificar con el equipo** — qué organizaciones sociales y de víctimas operan en la Provincia y qué mecanismos de protección existen para líderes sociales, que es información de campo y no estadística.
 
-![68. Homicidios departamento](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/mapa_10_homicidios_dpto.png)
+![73. Homicidios](<03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/mapa_10_homicidios.png>)
 
 
-![69. Homicidios](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/mapa_10_homicidios.png)
+![74. Homicidios departamento](<03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/mapa_10_homicidios_dpto.png>)
 
 
-![70. Percepción seguridad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_01_percepcion_seguridad.png)
+![75. Percepción seguridad](<03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_01_percepcion_seguridad.png>)
 
 
-![71. Restitución tierras](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_02_restitucion_tierras.png)
+![76. Restitución tierras](<03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_02_restitucion_tierras.png>)
 
 
-![72. Personas desaparecidas](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_03_personas_desaparecidas.png)
+![77. Personas desaparecidas](<03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_03_personas_desaparecidas.png>)
 
 
-![73. Víctimas ocurrencia](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_04_victimas_ocurrencia.png)
+![78. Víctimas ocurrencia](<03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_04_victimas_ocurrencia.png>)
 
 
-![74. Hechos victimizantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_05_hechos_victimizantes.png)
+![79. Hechos victimizantes](<03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_05_hechos_victimizantes.png>)
+
+
+![80. Reparacion colectiva](<03_Outputs/Agua_Bosques_Turismo/10_Seguridad/figuras/fig_06_reparacion_colectiva.png>)
 
 
 ## La Provincia en el sistema provincial
 
-La Provincia Agua, Bosques y Turismo es una de las once Provincias Administrativas y de Planificación de Antioquia. En conjunto, esas once agrupan 88 de los 125 municipios del departamento, el 78,9 % de su población y el 54,5 % de su territorio; los 37 municipios restantes no pertenecen a ningún esquema asociativo.
+La Provincia Agua, Bosques y Turismo es una de las once Provincias Administrativas y de Planificación de Antioquia. En conjunto, esas once agrupan 90 de los 125 municipios del departamento, el 79,7 % de su población y el 57,2 % de su territorio; los 35 municipios restantes no pertenecen a ningún esquema asociativo.
 
 Dentro de ese sistema, esta Provincia ocupa el puesto 2 de 11 en población y el 5 de 11 en extensión, con 12 municipios. Tomando su puesto mediano en los 26 indicadores comparables, se sitúa en el lugar 3 de 11 del conjunto.
 
-Su posición no es uniforme. Donde mejor se sitúa es en Mortalidad infantil (x 1.000 n.v.), puesto 1, Déficit cualitativo de vivienda, puesto 2 e Internet fijo por 1.000 hab., puesto 2. Donde peor, en Victimizaciones por ocurrencia, puesto 10, Personas dadas por desaparecidas, puesto 10 y Hurtos por 100.000 hab., puesto 9. Esa asimetría es lo que distingue a esta Provincia de sus pares y lo que el Plan Estratégico debería tener en cuenta al priorizar: hay dimensiones en las que puede aportar experiencia al sistema y otras en las que le conviene aprender de él.
+Su posición no es uniforme. Donde mejor se sitúa es en Mortalidad infantil (x 1.000 n.v.), puesto 1, Déficit cualitativo de vivienda, puesto 2 y Cobertura de acueducto, puesto 2. Donde peor, en Victimizaciones por ocurrencia, puesto 10, Personas dadas por desaparecidas, puesto 10 y Hurtos por 100.000 hab., puesto 9. Esa asimetría es lo que distingue a esta Provincia de sus pares y lo que el Plan Estratégico debería tener en cuenta al priorizar: hay dimensiones en las que puede aportar experiencia al sistema y otras en las que le conviene aprender de él.
 
 El documento comparativo del proyecto —«Las once provincias de Antioquia, comparadas»— desarrolla esta lectura para todo el sistema y recoge las figuras que la sostienen.
 

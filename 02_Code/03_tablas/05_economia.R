@@ -82,6 +82,33 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
     dplyr::transmute(ind_mpio = .data$ind_mpio, pob_peso = .data$poblacion)
 }
 
+#' Población municipal de la hoja "POBLACION" del propio insumo de valor
+#' agregado (proyecciones DANE 2015-2035 con las que ese insumo construye SU
+#' per cápita). Se usa SOLO para el per cápita del valor agregado, para que
+#' sea comparable con la cifra oficial: difiere de POBLACION_MUNICIPAL.xlsx
+#' (confirmado en 2022: Medellín 2.514.709 aquí vs. 2.572.350 en
+#' POBLACION_MUNICIPAL.xlsx — series de proyección distintas). El resto del
+#' pipeline sigue usando POBLACION_MUNICIPAL.xlsx sin cambios.
+.poblacion_dane_va <- function(anios) {
+  if (is.null(.cache_eco$poblacion_dane_va)) {
+    p <- leer_excel(
+      entrada("PIB-VA_Mpal_2015-2024pr_Publ_05-06-2026_v2.xlsm"),
+      hoja = "POBLACION", saltar = 2
+    )
+    c_cod <- col_req(p, "DPMP")
+    cols_anio <- names(p)[stringr::str_detect(names(p), "^\\d{4}$")]
+    .cache_eco$poblacion_dane_va <- p |>
+      dplyr::filter(stringr::str_detect(as.character(.data[[c_cod]]), "^\\d{5}$")) |>
+      dplyr::transmute(
+        ind_mpio = as.integer(.data[[c_cod]]),
+        dplyr::across(dplyr::all_of(cols_anio), a_numero)
+      ) |>
+      tidyr::pivot_longer(-"ind_mpio", names_to = "anio", values_to = "poblacion") |>
+      dplyr::mutate(anio = as.integer(.data$anio))
+  }
+  dplyr::filter(.cache_eco$poblacion_dane_va, .data$anio %in% anios)
+}
+
 #' Territorio de las filas agregadas, con la convención del .do: la fila de
 #' provincia lleva el nombre de la provincia, la de subregión el de la
 #' subregión y la de departamento "DEPARTAMENTO DE ANTIOQUIA".
@@ -458,6 +485,15 @@ ETIQUETAS_TERRITORIO <- c(
     dplyr::select("ind_mpio", "municipio", "subregion", "provincia", "ide", "tipo_fila")
 }
 
+# IDE según definición DANE:
+# (población 0-14 + población 65+) / población 15-64 × 100.
+#
+# NOTA DE MIGRACIÓN:
+# El pipeline Stata legacy utilizaba 0-14 + 60+ como dependientes
+# y 15-59 como población potencialmente activa. Esa definición no
+# corresponde a la utilizada por DANE. En esta versión se corrige
+# deliberadamente el indicador conforme a la metodología DANE.
+
 # =============================================================================
 # 4. Densidad empresarial (DATALAKE DEyC, 2023)
 # -----------------------------------------------------------------------------
@@ -516,6 +552,15 @@ INDICADOR_DENSIDAD <- "Densidad empresarial (número de empresas por cada mil ha
 # precios constantes. El derivado que usa el flujo solo trae la hoja de
 # constantes, así que las cifras de este pipeline y las del Anexo difieren por
 # el deflactor (2024: 134.481 vs 230.524 miles de millones en el departamento).
+# NOTA 3: el per cápita (va_pc) NO usa POBLACION_MUNICIPAL.xlsx como el resto
+# del pipeline: usa la hoja "POBLACION" del propio libro PIB-VA_Mpal_...xlsm,
+# que es la proyección DANE con la que ese libro ya calcula SU per cápita
+# (hoja "PIB-MPAL CONSTANTES ANUAL"). Confirmado cifra por cifra contra esa
+# hoja para 2022 (9 municipios, coincidencia exacta) — las dos series de
+# población difieren (Medellín 2022: 2.514.709 aquí vs. 2.572.360 en
+# POBLACION_MUNICIPAL.xlsx), así que dividir por la población "equivocada"
+# habría dado un per cápita que no cuadra con el de la fuente. Ver
+# .poblacion_dane_va().
 # =============================================================================
 
 # Columna del insumo (posición) -> nombre interno.
@@ -571,7 +616,7 @@ RAMAS_VA <- c(
     dplyr::group_by(.data$anio) |>
     dplyr::mutate(prov_va_total = sum(.data$va_total, na.rm = TRUE)) |>
     dplyr::ungroup() |>
-    dplyr::left_join(.poblacion(2015:2024), by = c("ind_mpio", "anio")) |>
+    dplyr::left_join(.poblacion_dane_va(2015:2024), by = c("ind_mpio", "anio")) |>
     dplyr::mutate(tipo_fila = "Municipio")
 
   sectores <- c("va_primario", "va_secundario", "va_terciario")

@@ -8,7 +8,7 @@
 #   01_Data/00_Inputs/MUNICIPIOS_SUBREG_PROV.xlsx   (125 municipios de Antioquia)
 #   01_Data/00_Inputs/códigos_municipios_clean.dta  (código DANE por municipio)
 # OUTPUTS:
-#   01_Data/01_Derived/codigos_provincias.dta  (88 municipios en las 11 provincias)
+#   01_Data/01_Derived/codigos_provincias.dta  (90 municipios en las 11 provincias)
 #   01_Data/01_Derived/subreg_completo.dta     (los 125, con su subregión DANE)
 #
 # ETAPA DEL PIPELINE: 1. homogeneización
@@ -105,13 +105,23 @@ crosswalk <- crosswalk |>
   dplyr::arrange(ind_mpio)
 
 # --- Verificaciones -----------------------------------------------------------
-esperado <- 88L
+# El universo lo define la fuente, no una constante escrita a mano: si el
+# listado incorpora o pierde un municipio, el esperado cambia con él, y una
+# pérdida en el cruce deja de ser invisible (con una constante fija, una
+# pérdida que por coincidencia cuadrara con el número esperado pasaría sin
+# avisar). Hallazgo de Pablo (F-4-003), adoptado también aquí.
+con_esquema <- !is.na(mpios$`Esquema asociativo`) &
+  stringr::str_squish(mpios$`Esquema asociativo`) != ""
+esperado <- sum(con_esquema)
 if (nrow(crosswalk) != esperado) {
-  perdidos <- setdiff(
-    normalizar_municipio(mpios$MPIO[stringr::str_squish(mpios$`Esquema asociativo`) != ""]),
-    crosswalk$nvl_label
-  )
-  stop("El crosswalk quedó con ", nrow(crosswalk), " municipios y se esperaban ", esperado, ".\n",
+  # Las mismas dos correcciones de nombre que se aplican arriba al cruzar
+  # (CAROLINA -> CAROLINA DEL PRINCIPE, SAN VICENTE -> SAN VICENTE FERRER):
+  # sin ellas, el diagnóstico acusa en falso a municipios que sí cruzaron bien.
+  claves <- normalizar_municipio(mpios$MPIO[con_esquema])
+  claves <- ifelse(claves == "CAROLINA", "CAROLINA DEL PRINCIPE", claves)
+  claves <- ifelse(claves == "SAN VICENTE", "SAN VICENTE FERRER", claves)
+  perdidos <- setdiff(claves, crosswalk$nvl_label)
+  stop("El crosswalk quedó con ", nrow(crosswalk), " municipios y la fuente asigna ", esperado, ".\n",
        "Municipios sin código DANE: ", paste(perdidos, collapse = ", "), call. = FALSE)
 }
 stopifnot(

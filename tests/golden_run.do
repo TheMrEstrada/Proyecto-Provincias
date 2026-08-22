@@ -19,13 +19,13 @@ set more off
 
 * --- 1. Provincia: del argumento de línea de comandos o del global ya definido
 if "`1'" != "" global id_provincia `1'
-if "$id_provincia" == "" global id_provincia 4
+if "$id_provincia" == "" global id_provincia 2
 
 * --- 2. Rutas derivadas del repositorio (cwd = raíz del repo) ---------------
 global path    "`c(pwd)'"
-global rawdata "$path/01_Data/00_Inputs"
-global data    "$path/01_Data/01_Derived"
-global scripts "$path/02_Code/Tablas_Diagnostico"
+global rawdata "$path/99_Legacy/01_Data/00_Inputs"
+global data    "$path/99_Legacy/01_Data/01_Derived"
+global scripts "$path/99_Legacy/02_Code/Tablas_Diagnostico"
 global output  "$path/tests/golden"
 
 capture confirm file "$scripts/00_master.do"

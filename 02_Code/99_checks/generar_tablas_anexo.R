@@ -41,6 +41,14 @@ dir.create(DIR_TABLAS, recursive = TRUE, showWarnings = FALSE)
   utils::read.csv(ruta, encoding = "UTF-8", stringsAsFactors = FALSE)
 }
 
+#' Las provincias que aparecen en un CSV de la auditoría.
+#' Hallazgo de Pablo (F-2-064), adoptado también aquí.
+.provincias_en <- function(d) {
+  if (!"provincia" %in% names(d)) return(character(0))
+  p <- d$provincia
+  unique(p[!is.na(p) & nzchar(p)])
+}
+
 # --- Escapado de LaTeX --------------------------------------------------------
 # Los nombres de archivo del proyecto traen guiones bajos, ampersands y signos
 # de porcentaje. Sin escapar, cualquiera de los tres rompe la compilación.
@@ -407,6 +415,33 @@ generar <- function() {
   macros <- list()
   proc <- .csv("A1_procedencia.csv")
 
+  # --- Cobertura real de la auditoría -----------------------------------------
+  # auditoria_end_to_end.R acepta ids de provincia por CLI, igual que
+  # run_all.R: correrla sobre un subconjunto es un modo de uso previsto, y
+  # antes nada en este script sabía si había pasado. Las macros que cuentan
+  # filas de estos tres CSV terminaban afirmando "las once provincias" sobre
+  # los datos de las que en realidad se hubieran corrido. Se leen aquí, al
+  # principio y no en cada tabla, para que la macro exista antes de escribir
+  # el primer fragmento y no haga falta releer los mismos CSV más abajo.
+  # Hallazgo de Pablo (F-2-064), adoptado también aquí.
+  agr <- .csv("D1_agregados.csv")
+  cob <- .csv("C1_cobertura_municipal.csv")
+  fig <- .csv("F1_figuras.csv")
+  provincias_auditadas <- sort(unique(unlist(
+    lapply(list(agr, cob, fig), .provincias_en))))
+  n_auditadas <- length(provincias_auditadas)
+  macros$cifraProvinciasCorridas <- .n(n_auditadas)
+  if (n_auditadas < nrow(PROVINCIAS)) {
+    warning("El anexo se está generando con ", n_auditadas, " de las ",
+            nrow(PROVINCIAS), " provincias. Faltan: ",
+            paste(setdiff(PROVINCIAS$etiqueta, provincias_auditadas),
+                  collapse = ", "),
+            ". Sus cifras son de esas ", n_auditadas,
+            " provincias, no del sistema completo.", call. = FALSE)
+  } else {
+    message("  cobertura: las ", n_auditadas, " provincias")
+  }
+
   # --- T1. Provincias y municipios -------------------------------------------
   cw <- crosswalk_provincias()
   t1 <- do.call(rbind, lapply(PROVINCIAS$id, function(i) {
@@ -470,7 +505,7 @@ generar <- function() {
   macros$cifraDerivados <- .n(sum(der$existe_en_disco == "TRUE" | der$existe_en_disco == TRUE))
 
   # --- T4. Reglas de agregación efectivamente usadas --------------------------
-  agr <- .csv("D1_agregados.csv")
+  # agr ya se leyó arriba, junto con la cobertura de la auditoría.
   prov_rows <- agr[agr$ambito == "provincia", ]
   tab <- as.data.frame(table(prov_rows$formula_que_lo_reproduce),
                        stringsAsFactors = FALSE)
@@ -490,11 +525,18 @@ generar <- function() {
     "T4_agregaciones.tex",
     c("Fórmula que reproduce el valor publicado", "Celdas", "% del total"),
     "X r r",
-    nota = paste("Verificación sobre las filas de total PROVINCIAL de todas las",
-                 "hojas de las once provincias. «Otro ponderador» reúne los casos",
-                 "en que el pipeline pondera por nacimientos, población escolar,",
-                 "área o matrícula, o recalcula una tasa agregada sobre la suma",
-                 "de numeradores y denominadores."))
+    # Deriva del número auditado, no de PROVINCIAS: si el anexo se genera
+    # desde una auditoría parcial, decir "las once provincias" mientras
+    # cifraAgregados trae las cifras de menos volvería a afirmar una
+    # cobertura que no es la real. Hallazgo de Pablo (F-2-064), adoptado
+    # también aquí.
+    nota = paste(
+      sprintf(paste("Verificación sobre las filas de total PROVINCIAL de todas",
+                    "las hojas de las %d provincias auditadas."), n_auditadas),
+      "«Otro ponderador» reúne los casos",
+      "en que el pipeline pondera por nacimientos, población escolar,",
+      "área o matrícula, o recalcula una tasa agregada sobre la suma",
+      "de numeradores y denominadores."))
   macros$cifraAgregados <- .n(nrow(prov_rows))
   rojas <- prov_rows[prov_rows$formula_que_lo_reproduce == "OTRA" &
                        (prov_rows$dentro_del_rango_municipal == "FALSE" |
@@ -532,7 +574,7 @@ generar <- function() {
   }
 
   # --- T7. Vacíos de cobertura municipal --------------------------------------
-  cob <- .csv("C1_cobertura_municipal.csv")
+  # cob ya se leyó arriba, junto con la cobertura de la auditoría.
   huecos <- cob[cob$n_faltantes > 0, ]
   if (nrow(huecos)) {
     resumen_huecos <- do.call(rbind, lapply(split(huecos, huecos$hoja), function(g) {
@@ -553,7 +595,7 @@ generar <- function() {
   }
 
   # --- T8. Figuras y mapas por sección ----------------------------------------
-  fig <- .csv("F1_figuras.csv")
+  # fig ya se leyó arriba, junto con la cobertura de la auditoría.
   fig$tipo <- ifelse(grepl("^mapa_", fig$figura), "Mapa", "Figura")
   por_seccion <- do.call(rbind, lapply(split(fig, fig$seccion), function(g) {
     data.frame(seccion = gsub("_", " ", g$seccion[1]),

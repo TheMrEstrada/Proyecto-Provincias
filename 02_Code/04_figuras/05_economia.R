@@ -17,6 +17,7 @@
 #   fig_13_titulos_mineros              — títulos mineros por tipo de mineral
 #   fig_14_visitantes_extranjeros       — evolución de visitantes por municipio
 #   fig_15_participacion_visitantes     — peso de la provincia en Antioquia
+#   fig_16_capacidad_instalada          — capacidad de generación por central
 #
 # El catálogo pedía la composición sectorial en barra apilada al 100 %, no en
 # torta, así que no hubo ninguna torta que sustituir (DISENO.md §5).
@@ -36,6 +37,7 @@ FUENTE_VA       <- "Gobernación de Antioquia, valor agregado municipal 2015-202
 FUENTE_DEYC     <- "Gobernación de Antioquia, DATALAKE Desarrollo Económico y Competitividad."
 FUENTE_ANM      <- "Agencia Nacional de Minería, catastro minero (títulos vigentes)."
 FUENTE_TURISMO  <- "Gobernación de Antioquia, registro de visitantes extranjeros no residentes."
+FUENTE_XM       <- "XM, listado de plantas de generación del Sistema Interconectado Nacional (SIN)."
 
 # =============================================================================
 # 0. Geoms que esta sección necesita y que no están en 02_Code/R/02_tema.R
@@ -572,6 +574,38 @@ figuras_economia <- function(prov, tabla) {
   escribir_datos_figura(
     comp_fig[, c("anio", "total_provincia", "total_antioquia", "participacion")],
     archivo, "fig_15")
+
+  # --- 2.11 Capacidad instalada de generación de energía --------------------
+  cen <- dplyr::filter(tabla$energia_centrales, .data$tipo_fila == "Central")
+  if (nrow(cen) > 0) {
+    part <- tabla$energia_participacion
+    prov_row <- part[stringr::str_detect(part$ambito, "^PROVINCIA"), ]
+    i <- which.max(cen$cap_mw)
+    p <- fig_barras(
+      cen, categoria = central, valor = cap_mw,
+      resaltar = cen$central[i], etiqueta = function(x) num_co(x, 1)
+    ) +
+      textos_fig(
+        titulo = sprintf(
+          "%s es la central con mayor capacidad instalada de la provincia: %s MW",
+          stringr::str_to_title(cen$central[i]), num_co(cen$cap_mw[i], 1)
+        ),
+        subtitulo = sprintf(
+          paste("Capacidad efectiva neta de generación por central, provincia %s.",
+                "Capacidad provincial total: %s MW (%s del SIN, %s de Antioquia)."),
+          prov$etiqueta, num_co(prov_row$cap_mw, 1),
+          pct_co(prov_row$part_sin * 100, 2), pct_co(prov_row$part_ant * 100, 2)
+        ),
+        fuente = FUENTE_XM, nota = "Cálculos propios."
+      )
+    guardar_fig(p, "fig_16_capacidad_instalada", destino, n_barras = nrow(cen))
+    escribir_datos_figura(
+      cen[, c("municipio", "central", "tecnologia", "estado", "cap_mw")],
+      archivo, "fig_16"
+    )
+  } else {
+    message("  [fig] fig_16_capacidad_instalada omitida: la provincia no tiene centrales de generación")
+  }
 
   invisible(destino)
 }

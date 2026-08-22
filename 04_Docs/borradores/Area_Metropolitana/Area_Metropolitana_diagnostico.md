@@ -2,7 +2,7 @@
 title: "Diagnóstico Integral Territorial — Provincia Área Metropolitana"
 subtitle: "Contexto departamental y provincial extendido"
 author: "Proyecto Provincias · Planes Estratégicos Provinciales de Antioquia"
-date: "10 de agosto de 2026"
+date: "21 de agosto de 2026"
 lang: es
 ---
 
@@ -27,6 +27,12 @@ La Provincia Administrativa y de Planificación Área Metropolitana está confor
 Los municipios que la integran son Barbosa, Bello, Caldas, Copacabana, Envigado, Girardota, Itagüí, La Estrella, Medellín y Sabaneta.
 
 ### Generalidades –contexto departamental y provincial-
+
+| **En resumen — Generalidades** |
+|:---|
+| 10 municipios · 1.167 km² |
+| Población 2025: 4.194.012 hab. (5,7 % rural) |
+
 
 La Provincia Área Metropolitana se extiende sobre 1.167 km² distribuidos entre sus 10 municipios. La superficie está concentrada: Medellín y Barbosa reúnen el 50 % del territorio provincial, mientras que Sabaneta (16 km²) e Itagüí (20 km²) registran las menores extensiones. La razón entre el municipio más extenso y el más pequeño es de 23,7 a 1, una brecha muy amplia en términos de la escala a la que cada administración municipal debe operar.
 
@@ -56,16 +62,22 @@ En el contexto departamental, la Provincia representa el 1,9 % de la superficie 
 
 *Fuente: Gobernación de Antioquia, Anuario Estadístico. Cálculos propios.*
 
-![1. Localización](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/01_Generalidades/figuras/mapa_00_localizacion.png)
+![1. Localización](<03_Outputs/Area_Metropolitana/01_Generalidades/figuras/mapa_00_localizacion.png>)
 
 
-![2. Área](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/01_Generalidades/figuras/mapa_01_area.png)
+![2. Área](<03_Outputs/Area_Metropolitana/01_Generalidades/figuras/mapa_01_area.png>)
 
 
-![3. Distribución territorial](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/01_Generalidades/figuras/fig_01_distribucion_territorial.png)
+![3. Distribución territorial](<03_Outputs/Area_Metropolitana/01_Generalidades/figuras/fig_01_distribucion_territorial.png>)
 
 
 ### Demografía
+
+| **En resumen — Demografía** |
+|:---|
+| Población total de la provincia: 4.194.012 hab. |
+| Mayor densidad poblacional: Itagüí (15.497,9) |
+
 
 La Provincia Área Metropolitana reúne una población proyectada de 4.194.012 habitantes para 2025, repartida de forma desigual entre sus 10 municipios. La distribución está muy concentrada: Medellín y Bello concentran el 75 % del total provincial, mientras que Girardota (61.439 hab.), Barbosa (63.455 hab.) y La Estrella (83.089 hab.) registran los menores tamaños. Solo 2 de los 10 municipios superan el promedio provincial de 419.401 habitantes, lo que indica que la media no describe al municipio típico de la Provincia.
 
@@ -77,7 +89,7 @@ La estructura por edad da la medida de esa transición. Los menores de veinte a�
 
 El Índice de Dependencia Económica resume las dos puntas de la pirámide: cuántas personas en edades dependientes —menores de quince y mayores de sesenta y cuatro— hay por cada cien en edad de trabajar. En la Provincia es de 40,0, y alcanza sus valores más altos en Barbosa (43,5) y Medellín (41,0), por debajo del departamento (44,7), con una diferencia de 10 %. Es la cifra que traduce la estructura demográfica en carga efectiva sobre la población productiva.
 
-La dinámica vital muestra una Provincia que envejece. Envigado (44,1), Sabaneta (36,8) y Caldas (36,8) presentan los índices de envejecimiento más altos —adultos mayores por cada cien menores de quince años—. La Provincia registra un índice de 35,4, en un nivel prácticamente igual al de la subregión (35,4), y por encima del departamento (32,1), con una diferencia de 10 %.
+La dinámica vital muestra una Provincia que envejece. Envigado (44,7), Sabaneta (40,5) y Caldas (36,7) presentan los índices de envejecimiento más altos —adultos mayores por cada cien menores de quince años—. La Provincia registra un índice de 35,9, en un nivel prácticamente igual al de la subregión (35,9), y por encima del departamento (31,7), con una diferencia de 13 %.
 
 La natalidad, de 7,36 nacimientos por cada mil habitantes, se sitúa por debajo del departamento (8,64), con una diferencia de 15 %. Un territorio que envejece y con natalidad contenida tiene una ventana de planificación distinta: la presión se desplaza de la infraestructura educativa hacia los servicios de salud y cuidado, y el relevo generacional de la actividad productiva rural deja de estar garantizado.
 
@@ -105,25 +117,31 @@ La tasa neta de migración de la ECV 2023 va de 0,09 a 3,54 entre los municipios
 
 *Fuente: DANE, proyecciones de población 2018-2042. Cálculos propios.*
 
-![4. Densidad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/02_Demografia/figuras/mapa_02_densidad.png)
+![4. Densidad](<03_Outputs/Area_Metropolitana/02_Demografia/figuras/mapa_02_densidad.png>)
 
 
-![5. Población municipio](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_01_poblacion_municipio.png)
+![5. Población municipio](<03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_01_poblacion_municipio.png>)
 
 
-![6. Composicion urbana rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_02_composicion_urbana_rural.png)
+![6. Composicion urbana rural](<03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_02_composicion_urbana_rural.png>)
 
 
-![7. Densidad poblacional](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_03_densidad_poblacional.png)
+![7. Densidad poblacional](<03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_03_densidad_poblacional.png>)
 
 
-![8. Pirámide poblacional](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_04_piramide_poblacional.png)
+![8. Pirámide poblacional](<03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_04_piramide_poblacional.png>)
 
 
-![9. Indice envejecimiento](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_05_indice_envejecimiento.png)
+![9. Indice envejecimiento](<03_Outputs/Area_Metropolitana/02_Demografia/figuras/fig_05_indice_envejecimiento.png>)
 
 
 ### Ordenamiento del Territorio
+
+| **En resumen — Ordenamiento del Territorio** |
+|:---|
+| Mayor déficit cuantitativo de vivienda: Bello (2,4 %) |
+| Mayor déficit cualitativo de vivienda: Barbosa (20,3 %) |
+
 
 El ordenamiento del territorio reúne aquí cuatro asuntos que en la práctica se condicionan entre sí: los instrumentos con que cada municipio ordena su suelo, la conectividad que determina qué tan lejos queda cada cabecera del resto, las capacidades de ciencia y tecnología, y las condiciones de la vivienda y los servicios domiciliarios. En una Provincia predominantemente urbana como Área Metropolitana, los cuatro se resuelven sobre el mismo obstáculo: la dispersión.
 
@@ -131,7 +149,7 @@ El ordenamiento del territorio reúne aquí cuatro asuntos que en la práctica s
 
 El uso adecuado del suelo rural, medido por el POTA, alcanza sus valores más altos en Caldas (31,9 %) y los más bajos en Caldas (31,9 %). La diferencia mide cuánta de la actividad que hoy ocurre sobre el suelo corresponde a su vocación: donde el porcentaje es bajo, el conflicto de uso ya está instalado y el ordenamiento tiene que corregir, no solo orientar. La fuente no cubre 9 de los 10 municipios de la Provincia; esas celdas quedan vacías y no deben leerse como ceros.
 
-El catastro es la base sobre la que descansan el impuesto predial y cualquier política de suelo. En la Provincia, el avalúo rural representa en promedio el 20,0 % del avalúo catastral total de cada municipio, lo que confirma por la vía fiscal la ruralidad descrita en la sección demográfica. El estado más frecuente del catastro rural es «Rezagado», en 2 municipios.
+El catastro es la base sobre la que descansan el impuesto predial y cualquier política de suelo. En la Provincia, el avalúo rural representa el 5,7 % del avalúo catastral total, lo que confirma por la vía fiscal la ruralidad descrita en la sección demográfica. El estado más frecuente del catastro rural es «Rezagado», en 2 municipios.
 
 > **Verificar con el equipo** — el estado de adopción y vigencia de los POT, PBOT y EOT de cada municipio, que no está en las fuentes de este flujo y determina si el Plan puede apoyarse en los instrumentos existentes o debe promover su actualización. Conviene añadir la vigencia de la formación catastral: un avalúo desactualizado subestima el recaudo potencial.
 
@@ -145,7 +163,7 @@ Leída por habitante en vez de por área, la misma red cambia de orden: Barbosa 
 
 #### Ciencia, Tecnología e Innovación
 
-El acceso a internet fijo describe la brecha digital interna de la Provincia. Medido en líneas por cada mil habitantes, es mayor en Sabaneta (622,2) y La Estrella (373,3) y menor en Barbosa (210,4) y Copacabana (230,7). La fibra óptica, que es la tecnología que sostiene un uso intensivo, representa en promedio el 54,5 % de las líneas de la Provincia.
+El acceso a internet fijo describe la brecha digital interna de la Provincia. Medido en líneas por cada mil habitantes, es mayor en Sabaneta (490,8) y Envigado (346,1) y menor en Barbosa (168,4) y Girardota (238,5). La fibra óptica, que es la tecnología que sostiene un uso intensivo, representa el 35,9 % de las líneas de la Provincia.
 
 En capacidad institucional digital, el Índice de Gobierno Digital sitúa a Envigado (93,3) y Sabaneta (92,2) en la parte alta de la Provincia. El promedio provincial ponderado por población es de 81,0 sobre 100, en un nivel prácticamente igual al de la subregión (81,0). Conectividad y capacidad institucional se necesitan mutuamente: la primera sin la segunda deja el trámite en papel, y la segunda sin la primera no llega al ciudadano rural.
 
@@ -161,7 +179,7 @@ El déficit habitacional se mide en dos dimensiones que piden políticas distint
 
 Frente a su entorno, la Provincia está por debajo del departamento (17,7 %), con una diferencia de 4,2 puntos porcentuales en déficit cualitativo. En el mapa, los 3 municipios con los valores más altos forman sin vecindad entre sí.
 
-En servicios domiciliarios, el promedio municipal de la Provincia es de 97,9 % en acueducto, 93,6 % en alcantarillado y 99,7 % en energía. La distancia entre la cobertura de energía y la de alcantarillado es el indicador más elocuente de la ruralidad: la red eléctrica llegó, la de saneamiento no, y esa diferencia explica buena parte del déficit cualitativo descrito arriba.
+En servicios domiciliarios, la cobertura de la Provincia es de 98,2 % en acueducto, 96,8 % en alcantarillado y 99,5 % en energía. La distancia entre la cobertura de energía y la de alcantarillado es el indicador más elocuente de la ruralidad: la red eléctrica llegó, la de saneamiento no, y esa diferencia explica buena parte del déficit cualitativo descrito arriba.
 
 > **Verificar con el equipo** — si existen programas de mejoramiento de vivienda en curso en la Provincia y con qué cobertura, para dimensionar la brecha que el Plan tendría que cubrir.
 
@@ -185,52 +203,58 @@ En servicios domiciliarios, el promedio municipal de la Provincia es de 97,9 % e
 
 *Fuente: DANE, déficit habitacional 2023. Cálculos propios.*
 
-![10. Déficit vivienda](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/mapa_03_deficit_vivienda.png)
+![10. Déficit vivienda](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/mapa_03_deficit_vivienda.png>)
 
 
-![11. Uso suelo rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_01_uso_suelo_rural.png)
+![11. Uso suelo rural](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_01_uso_suelo_rural.png>)
 
 
-![12. Catastro avalúo rural](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_02_catastro_avaluo_rural.png)
+![12. Catastro avalúo rural](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_02_catastro_avaluo_rural.png>)
 
 
-![13. Vías área](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_03_vias_area.png)
+![13. Vías área](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_03_vias_area.png>)
 
 
-![14. Vías habitantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_04_vias_habitantes.png)
+![14. Vías habitantes](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_04_vias_habitantes.png>)
 
 
-![15. Déficit cuantitativo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_05_deficit_cuantitativo.png)
+![15. Déficit cuantitativo](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_05_deficit_cuantitativo.png>)
 
 
-![16. Déficit cualitativo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_06_deficit_cualitativo.png)
+![16. Déficit cualitativo](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_06_deficit_cualitativo.png>)
 
 
-![17. Servicios públicos](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_07_servicios_publicos.png)
+![17. Servicios públicos](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_07_servicios_publicos.png>)
 
 
-![18. IMCA dimensiones](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_08_imca_dimensiones.png)
+![18. IMCA dimensiones](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_08_imca_dimensiones.png>)
 
 
-![19. IMCA adopcion tic](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_09_imca_adopcion_tic.png)
+![19. IMCA adopcion tic](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_09_imca_adopcion_tic.png>)
 
 
-![20. Gobierno digital](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_10_gobierno_digital.png)
+![20. Gobierno digital](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_10_gobierno_digital.png>)
 
 
-![21. Gobierno digital componentes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_11_gobierno_digital_componentes.png)
+![21. Gobierno digital componentes](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_11_gobierno_digital_componentes.png>)
 
 
-![22. Tti edsup](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_12_tti_edsup.png)
+![22. Tti edsup](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_12_tti_edsup.png>)
 
 
-![23. Internet 1000hab](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_13_internet_1000hab.png)
+![23. Internet 1000hab](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_13_internet_1000hab.png>)
 
 
-![24. Internet fibra](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_14_internet_fibra.png)
+![24. Internet fibra](<03_Outputs/Area_Metropolitana/03_Ordenamiento/figuras/fig_14_internet_fibra.png>)
 
 
 ### Gobernabilidad y capacidades territoriales
+
+| **En resumen — Gobernabilidad y capacidades territoriales** |
+|:---|
+| Mayor ICM: Envigado (70,5) |
+| Ingresos de inversión 2026 (PGN+SGP+SGR+propios+otros): 17.107.138.517.388 |
+
 
 #### Gobernabilidad
 
@@ -256,22 +280,31 @@ Desagregado por dimensiones, el punto más fuerte de la Provincia es equidad e i
 
 > **Verificar con el equipo** — la evolución del ICM en la serie disponible: si la Provincia converge o diverge respecto del departamento, que es una lectura de tendencia y no de nivel.
 
-![25. Mdm](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_01_mdm.png)
+![25. Mdm](<03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_01_mdm.png>)
 
 
-![26. Idf](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_02_idf.png)
+![26. Idf](<03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_02_idf.png>)
 
 
-![27. Ley617](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_03_ley617.png)
+![27. Ley617](<03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_03_ley617.png>)
 
 
-![28. Icm](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_04_icm.png)
+![28. Icm](<03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_04_icm.png>)
 
 
-![29. Icm dimensiones](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_05_icm_dimensiones.png)
+![29. Icm dimensiones](<03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_05_icm_dimensiones.png>)
+
+
+![30. Icm tendencia](<03_Outputs/Area_Metropolitana/04_Gobernabilidad/figuras/fig_06_icm_tendencia.png>)
 
 
 ### Economía y desarrollo
+
+| **En resumen — Economía y desarrollo** |
+|:---|
+| Mayor valor agregado per cápita: Girardota (37.641.872) |
+| Valor agregado per cápita provincial: 20.604.663 |
+
 
 Esta sección describe de qué vive la Provincia Área Metropolitana y en qué condiciones lo hace. Ordena cuatro asuntos: las condiciones de vida y el mercado laboral, la productividad medida por el valor agregado, la actividad minero-energética y el turismo. El hilo que los une es la pregunta de cuánta de la riqueza que se genera en el territorio se queda en él.
 
@@ -291,7 +324,7 @@ Entre la población joven, la proporción que no estudia ni trabaja es más alta
 
 #### Productividad y competitividad
 
-En 2024, la generación de valor agregado de la Provincia está muy concentrada: Medellín y Envigado reúnen el 72 % del total. El valor agregado por habitante es mayor en Girardota (40.807.986) y Sabaneta (31.784.846) y menor en Bello (10.125.030) y Caldas (13.383.483), una brecha que describe territorios con capacidades productivas muy distintas dentro del mismo esquema asociativo.
+En 2024, la generación de valor agregado de la Provincia está muy concentrada: Medellín y Envigado reúnen el 72 % del total. El valor agregado por habitante es mayor en Girardota (37.641.872) y Envigado (29.651.754) y menor en Bello (9.666.204) y Caldas (13.044.789), una brecha que describe territorios con capacidades productivas muy distintas dentro del mismo esquema asociativo.
 
 Por composición sectorial, las actividades primarias aportan el 0,5 % del valor agregado provincial, las secundarias el 24,7 % y las terciarias el 79,7 %. Los tres agregados no suman el total: la serie a precios constantes deja un remanente sin distribuir, de modo que las participaciones se calculan siempre sobre el valor agregado total y no sobre la suma de los tres.
 
@@ -319,55 +352,64 @@ En instrumentos de planificación turística, 7 de los 10 municipios cuentan con
 
 > **Verificar con el equipo** — qué atractivos concretos tiene la Provincia y en qué estado están sus inventarios turísticos, y si el turismo aparece como Hecho Provincial en la versión preliminar del Plan.
 
-![30. Va per cápita](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/mapa_05_va_percapita.png)
+![31. Va per cápita](<03_Outputs/Area_Metropolitana/05_Economia/figuras/mapa_05_va_percapita.png>)
 
 
-![31. Pobreza NBI](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_01_pobreza_nbi.png)
+![32. Pobreza NBI](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_01_pobreza_nbi.png>)
 
 
-![32. Pobreza IPM](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_02_pobreza_ipm.png)
+![33. Pobreza IPM](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_02_pobreza_ipm.png>)
 
 
-![33. Gini hogar laboral](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_03_gini_hogar_laboral.png)
+![34. Gini hogar laboral](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_03_gini_hogar_laboral.png>)
 
 
-![34. Ocupación informalidad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_04_ocupacion_informalidad.png)
+![35. Ocupación informalidad](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_04_ocupacion_informalidad.png>)
 
 
-![35. Desocupación total jovenes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_05_desocupacion_total_jovenes.png)
+![36. Desocupación total jovenes](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_05_desocupacion_total_jovenes.png>)
 
 
-![36. Jovenes NiNi](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_06_jovenes_nini.png)
+![37. Jovenes NiNi](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_06_jovenes_nini.png>)
 
 
-![37. Dependencia económica](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_07_dependencia_economica.png)
+![38. Dependencia económica](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_07_dependencia_economica.png>)
 
 
-![38. Densidad empresarial](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_08_densidad_empresarial.png)
+![39. Densidad empresarial](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_08_densidad_empresarial.png>)
 
 
-![39. Valor agregado per capita](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_09_valor_agregado_per_capita.png)
+![40. Valor agregado per capita](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_09_valor_agregado_per_capita.png>)
 
 
-![40. Peso relativo valor agregado](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_10_peso_relativo_valor_agregado.png)
+![41. Peso relativo valor agregado](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_10_peso_relativo_valor_agregado.png>)
 
 
-![41. Composicion valor agregado](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_11_composicion_valor_agregado.png)
+![42. Composicion valor agregado](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_11_composicion_valor_agregado.png>)
 
 
-![42. Valor agregado actividades](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_12_valor_agregado_actividades.png)
+![43. Valor agregado actividades](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_12_valor_agregado_actividades.png>)
 
 
-![43. Títulos mineros](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_13_titulos_mineros.png)
+![44. Títulos mineros](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_13_titulos_mineros.png>)
 
 
-![44. Visitantes extranjeros](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_14_visitantes_extranjeros.png)
+![45. Visitantes extranjeros](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_14_visitantes_extranjeros.png>)
 
 
-![45. Participación visitantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_15_participacion_visitantes.png)
+![46. Participación visitantes](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_15_participacion_visitantes.png>)
+
+
+![47. Capacidad instalada](<03_Outputs/Area_Metropolitana/05_Economia/figuras/fig_16_capacidad_instalada.png>)
 
 
 ### Desarrollo Rural
+
+| **En resumen — Desarrollo Rural** |
+|:---|
+| Total especies pecuarias: 1.014.181 |
+| Cultivos permanentes: 70,3 % del área agrícola |
+
 
 En una Provincia donde el 5,7 % de la población vive en zona rural, el desarrollo rural no es una sección sectorial más: es la descripción de la base económica de la mayoría de sus habitantes.
 
@@ -381,22 +423,28 @@ El rendimiento agregado —producción total sobre área cosechada— es mayor e
 
 > **Verificar con el equipo** — el régimen de tenencia de la tierra, el acceso a asistencia técnica y los canales de comercialización de los principales productos. El inventario dice qué se produce y cuánto; no dice quién lo produce ni en qué condiciones lo vende.
 
-![46. Participación pecuaria](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_01_participacion_pecuaria.png)
+![48. Participación pecuaria](<03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_01_participacion_pecuaria.png>)
 
 
-![47. Composicion especies](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_02_composicion_especies.png)
+![49. Composicion especies](<03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_02_composicion_especies.png>)
 
 
-![48. Composicion agrícola](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_03_composicion_agricola.png)
+![50. Composicion agrícola](<03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_03_composicion_agricola.png>)
 
 
-![49. Participación producción](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_04_participacion_produccion.png)
+![51. Participación producción](<03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_04_participacion_produccion.png>)
 
 
-![50. Rendimiento agrícola](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_05_rendimiento_agricola.png)
+![52. Rendimiento agrícola](<03_Outputs/Area_Metropolitana/06_Desarrollo_Rural/figuras/fig_05_rendimiento_agricola.png>)
 
 
 ### Ambiental
+
+| **En resumen — Ambiental** |
+|:---|
+| Peor calidad de agua (IRCA más alto): Girardota (19,40) |
+| Mayor riesgo por exceso de lluvias: Barbosa (40,35) |
+
 
 La dimensión ambiental de la Provincia Área Metropolitana se lee en dos registros: los activos naturales que conserva —áreas protegidas, cobertura arbórea, agua— y las presiones que los amenazan, desde la deforestación hasta el riesgo de desastres. Ambos son, además, condicionantes del ordenamiento y de la actividad productiva descrita en las secciones anteriores.
 
@@ -420,31 +468,37 @@ El registro de emergencias muestra la exposición efectiva, no solo la potencial
 
 > **Verificar con el equipo** — qué explica la pérdida de cobertura en los municipios donde se concentra —frontera agropecuaria, minería, cultivos de uso ilícito, infraestructura— y si existen procesos de restauración en curso.
 
-![51. Pérdida cobertura](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/07_Ambiental/figuras/mapa_07_perdida_cobertura.png)
+![53. Pérdida cobertura](<03_Outputs/Area_Metropolitana/07_Ambiental/figuras/mapa_07_perdida_cobertura.png>)
 
 
-![52. Areas protegidas](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_01_areas_protegidas.png)
+![54. Areas protegidas](<03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_01_areas_protegidas.png>)
 
 
-![53. IRCA](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_02_irca.png)
+![55. IRCA](<03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_02_irca.png>)
 
 
-![54. IRCA evolucion](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_03_irca_evolucion.png)
+![56. IRCA evolucion](<03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_03_irca_evolucion.png>)
 
 
-![55. Pérdida cobertura](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_04_perdida_cobertura.png)
+![57. Pérdida cobertura](<03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_04_perdida_cobertura.png>)
 
 
-![56. Desastres tipo](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_05_desastres_tipo.png)
+![58. Desastres tipo](<03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_05_desastres_tipo.png>)
 
 
-![57. Eventos anio](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_06_eventos_anio.png)
+![59. Eventos anio](<03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_06_eventos_anio.png>)
 
 
-![58. IMRC](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_07_imrc.png)
+![60. IMRC](<03_Outputs/Area_Metropolitana/07_Ambiental/figuras/fig_07_imrc.png>)
 
 
 ### Educación
+
+| **En resumen — Educación** |
+|:---|
+| Mayor cobertura neta: La Estrella (122,5 %) |
+| Mayor tasa de deserción: Caldas (5,0 %) |
+
 
 La dimensión educativa permite comprender algunas de las condiciones más significativas de desarrollo humano, equidad territorial y competitividad de la Provincia Área Metropolitana. En un territorio con alta ruralidad y dispersión poblacional, el acceso, la permanencia y el tránsito efectivo entre niveles son determinantes de las oportunidades de su población, y cada uno se enfrenta a un obstáculo distinto: llegar a la escuela, quedarse en ella y continuar después.
 
@@ -478,31 +532,37 @@ En el mapa, los 3 municipios con los valores más bajos forman sin vecindad entr
 
 *Fuente: Ministerio de Educación Nacional. Cálculos propios.*
 
-![59. Cobertura neta](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/08_Educacion/figuras/mapa_08_cobertura_neta.png)
+![61. Cobertura neta](<03_Outputs/Area_Metropolitana/08_Educacion/figuras/mapa_08_cobertura_neta.png>)
 
 
-![60. Cobertura neta](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/08_Educacion/figuras/fig_01_cobertura_neta.png)
+![62. Cobertura neta](<03_Outputs/Area_Metropolitana/08_Educacion/figuras/fig_01_cobertura_neta.png>)
 
 
-![61. Deserción escolar](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/08_Educacion/figuras/fig_02_desercion_escolar.png)
+![63. Deserción escolar](<03_Outputs/Area_Metropolitana/08_Educacion/figuras/fig_02_desercion_escolar.png>)
 
 
-![62. Repitencia escolar](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/08_Educacion/figuras/fig_03_repitencia_escolar.png)
+![64. Repitencia escolar](<03_Outputs/Area_Metropolitana/08_Educacion/figuras/fig_03_repitencia_escolar.png>)
 
 
 ### Salud
+
+| **En resumen — Salud** |
+|:---|
+| Mayor proporción de bajo peso al nacer: Barbosa (12,6 %) |
+| Afiliados al régimen subsidiado (provincial): 25,5 % |
+
 
 El aseguramiento en salud de la Provincia se apoya mayoritariamente en el régimen subsidiado, que concentra el 25,5 % de los afiliados frente al 71,2 % del contributivo. Esa composición no es un dato del sector salud sino un reflejo directo de la estructura del empleo descrita en la sección de economía: donde la informalidad es alta, el aseguramiento es subsidiado, y el sistema de salud local depende de transferencias antes que de cotizaciones. Corte: diciembre de 2025.
 
 En 2024, la mortalidad infantil registra sus valores más altos en Itagüí (7,91) y La Estrella (7,49), con una tasa provincial de 6,52 por cada mil nacidos vivos, por debajo del departamento (8,64), con una diferencia de 25 %. Conviene leer esta cifra con cuidado: en municipios con pocos nacimientos la tasa se mueve mucho con un solo caso, de modo que un valor alto en un año no constituye una tendencia.
 
-El bajo peso al nacer, que anticipa buena parte de la trayectoria de salud posterior, afecta al 11,9 % de los nacimientos de la Provincia y alcanza sus valores más altos en Caldas (13,6 %) y Medellín (12,4 %). Es un indicador de nutrición y de control prenatal, de modo que conecta la salud con las condiciones materiales descritas en la sección de economía.
+El bajo peso al nacer, que anticipa buena parte de la trayectoria de salud posterior, afecta al 12,0 % de los nacimientos de la Provincia y alcanza sus valores más altos en Barbosa (12,6 %) y Medellín (12,4 %). Es un indicador de nutrición y de control prenatal, de modo que conecta la salud con las condiciones materiales descritas en la sección de economía.
 
-Entre las enfermedades transmitidas por vectores, el dengue registra una tasa provincial de 10,09 por cada cien mil habitantes, con sus valores más altos en Medellín (12,31) y Caldas (10,56) y la malaria, de 16,48 sobre la misma base, encabezada por Medellín (22,14) y Bello (17,33). Son sensibles al clima y a las condiciones de la vivienda y el saneamiento, lo que las convierte en un indicador cruzado entre la sección ambiental y la de ordenamiento.
+Entre las enfermedades transmitidas por vectores, el dengue registra una tasa provincial de 9,94 por cada cien mil habitantes, con sus valores más altos en Medellín (12,31) y Caldas (10,56) y la malaria, de 16,12 sobre la misma base, encabezada por Medellín (22,14) y Bello (17,33). Son sensibles al clima y a las condiciones de la vivienda y el saneamiento, lo que las convierte en un indicador cruzado entre la sección ambiental y la de ordenamiento.
 
-La leishmaniasis se mide sobre población **rural** y no sobre la total, de modo que su tasa no es comparable con las dos anteriores. En la Provincia alcanza 15,88 por cada cien mil habitantes rurales, con los valores más altos en Medellín (21,41) y Sabaneta (13,27).
+La leishmaniasis se mide sobre población **rural** y no sobre la total, de modo que su tasa no es comparable con las dos anteriores. En la Provincia alcanza 7,59 por cada cien mil habitantes rurales, con los valores más altos en Medellín (21,41) y Sabaneta (13,27).
 
-En salud mental, la tasa de intento de suicidio de la Provincia es de 89,82 por cada cien mil habitantes, con los valores más altos en Envigado (102,12) y Medellín (98,23). Es el indicador con mayor subregistro de esta sección y conviene presentarlo como una cota inferior.
+En salud mental, la tasa de intento de suicidio de la Provincia es de 89,33 por cada cien mil habitantes, con los valores más altos en Envigado (102,12) y Medellín (98,23). Es el indicador con mayor subregistro de esta sección y conviene presentarlo como una cota inferior.
 
 > **Verificar con el equipo** — la red de prestación de servicios disponible en la Provincia —nivel de complejidad de las IPS, tiempos de traslado al hospital de referencia— y el estado financiero de las ESE municipales. Los indicadores de resultado no dicen con qué capacidad instalada se obtuvieron.
 
@@ -526,22 +586,38 @@ En salud mental, la tasa de intento de suicidio de la Provincia es de 89,82 por 
 
 *Fuente: Gobernación de Antioquia, estadísticas vitales. Cálculos propios.*
 
-![63. Mortalidad infantil](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/09_Salud/figuras/mapa_09_mortalidad_infantil.png)
+![65. Mortalidad infantil](<03_Outputs/Area_Metropolitana/09_Salud/figuras/mapa_09_mortalidad_infantil.png>)
 
 
-![64. Aseguramiento SGSSS](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_01_aseguramiento_sgsss.png)
+![66. Aseguramiento SGSSS](<03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_01_aseguramiento_sgsss.png>)
 
 
-![65. Bajo peso](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_02_bajo_peso.png)
+![67. Bajo peso](<03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_02_bajo_peso.png>)
 
 
-![66. Enfermedades vectores](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_03_enfermedades_vectores.png)
+![68. Enfermedades vectores](<03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_03_enfermedades_vectores.png>)
 
 
-![67. Suicidios](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_04_suicidios.png)
+![69. Suicidios](<03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_04_suicidios.png>)
+
+
+![70. Enfermedades vectores 2024](<03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_05_enfermedades_vectores_2024.png>)
+
+
+![71. Mortalidad infantil](<03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_06_mortalidad_infantil.png>)
+
+
+![72. Suicidios 2022 2024](<03_Outputs/Area_Metropolitana/09_Salud/figuras/fig_07_suicidios_2022_2024.png>)
 
 
 ### Seguridad, Paz y Derechos Humanos
+
+| **En resumen — Seguridad, Paz y Derechos Humanos** |
+|:---|
+| Mayor tasa de homicidios: Barbosa (17,3) |
+| Victimizaciones del conflicto armado: 357.466 |
+| Sujetos de reparación colectiva reconocidos: 3 |
+
 
 Esta sección reúne tres registros que en la Provincia Área Metropolitana se solapan: la seguridad y convivencia del presente, la huella del conflicto armado y la situación de derechos humanos. Se presentan por separado porque responden a políticas distintas, pero se leen mejor juntos.
 
@@ -585,7 +661,9 @@ Las solicitudes de restitución de tierras por cada mil habitantes son más alta
 
 La Provincia no registra hectáreas de cultivos de coca en la fuente disponible.
 
-> **Verificar con el equipo** — el estado de implementación de los instrumentos de paz en la Provincia —PDET, PNIS, planes de reparación colectiva— y qué sujetos de reparación colectiva están reconocidos.
+La UARIV reconoce 3 sujetos de reparación colectiva en la Provincia, concentrados por completo en Medellín. De ellos, 0 ya completaron la implementación de su Plan Integral de Reparación Colectiva (PIRC); el resto sigue en alguna de las fases previas —identificación, caracterización del daño, diagnóstico, diseño y formulación o alistamiento—, que es justamente el estado de avance que pedía verificar la revisión de este documento.
+
+> **Verificar con el equipo** — el estado de implementación de PNIS en la Provincia, y la cobertura PDET completa de todos sus municipios —lo que hay hoy sobre PDET es un subproducto del insumo de reparación colectiva y solo cubre los municipios con algún sujeto reconocido.
 
 #### Derechos Humanos
 
@@ -595,30 +673,33 @@ La encuesta de percepción de seguridad complementa este panorama con la mirada 
 
 > **Verificar con el equipo** — qué organizaciones sociales y de víctimas operan en la Provincia y qué mecanismos de protección existen para líderes sociales, que es información de campo y no estadística.
 
-![68. Homicidios departamento](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/10_Seguridad/figuras/mapa_10_homicidios_dpto.png)
+![73. Homicidios](<03_Outputs/Area_Metropolitana/10_Seguridad/figuras/mapa_10_homicidios.png>)
 
 
-![69. Homicidios](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/10_Seguridad/figuras/mapa_10_homicidios.png)
+![74. Homicidios departamento](<03_Outputs/Area_Metropolitana/10_Seguridad/figuras/mapa_10_homicidios_dpto.png>)
 
 
-![70. Percepción seguridad](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_01_percepcion_seguridad.png)
+![75. Percepción seguridad](<03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_01_percepcion_seguridad.png>)
 
 
-![71. Restitución tierras](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_02_restitucion_tierras.png)
+![76. Restitución tierras](<03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_02_restitucion_tierras.png>)
 
 
-![72. Personas desaparecidas](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_03_personas_desaparecidas.png)
+![77. Personas desaparecidas](<03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_03_personas_desaparecidas.png>)
 
 
-![73. Víctimas ocurrencia](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_04_victimas_ocurrencia.png)
+![78. Víctimas ocurrencia](<03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_04_victimas_ocurrencia.png>)
 
 
-![74. Hechos victimizantes](/Users/jcmunoz/github_repositories/Proyecto-Provincias/03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_05_hechos_victimizantes.png)
+![79. Hechos victimizantes](<03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_05_hechos_victimizantes.png>)
+
+
+![80. Reparacion colectiva](<03_Outputs/Area_Metropolitana/10_Seguridad/figuras/fig_06_reparacion_colectiva.png>)
 
 
 ## La Provincia en el sistema provincial
 
-La Provincia Área Metropolitana es una de las once Provincias Administrativas y de Planificación de Antioquia. En conjunto, esas once agrupan 88 de los 125 municipios del departamento, el 78,9 % de su población y el 54,5 % de su territorio; los 37 municipios restantes no pertenecen a ningún esquema asociativo.
+La Provincia Área Metropolitana es una de las once Provincias Administrativas y de Planificación de Antioquia. En conjunto, esas once agrupan 90 de los 125 municipios del departamento, el 79,7 % de su población y el 57,2 % de su territorio; los 35 municipios restantes no pertenecen a ningún esquema asociativo.
 
 Dentro de ese sistema, esta Provincia ocupa el puesto 1 de 11 en población y el 11 de 11 en extensión, con 10 municipios. Tomando su puesto mediano en los 26 indicadores comparables, se sitúa en el lugar 1 de 11 del conjunto.
 

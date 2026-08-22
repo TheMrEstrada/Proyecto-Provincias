@@ -109,7 +109,9 @@ ESPECIES_PECUARIAS <- c(
 }
 
 #' Inventario pecuario de TODOS los municipios de Antioquia (125), por año.
-#' Una especie sin registro en un municipio-año queda en 0, como en el .do.
+#' Una especie sin registro en un municipio-año queda en 0 — EXCEPTO cuando la
+#' ausencia es de la propia hoja, no del municipio (ver bloque de cobertura
+#' abajo): ese vacío se deja vacío, no se convierte en cero.
 .universo_pecuario <- function() {
   ruta <- entrada("curados", "PECUARIO_PROVINCIAS.xlsx")
   partes <- list(
@@ -124,9 +126,28 @@ ESPECIES_PECUARIAS <- c(
   faltantes <- setdiff(names(ESPECIES_PECUARIAS), names(d))
   for (v in faltantes) d[[v]] <- 0
 
+  # El porcino de 2019 trae registro de solo 24 de los 125 municipios (19 %),
+  # y los otros 101 no son municipios sin cerdos: en 2020 esa misma hoja
+  # declara hasta 118.604 cabezas para ellos. El búfalo, en cambio, cubre
+  # entre 61 y 82 municipios TODOS los años: ahí el cero sí es correcto,
+  # porque la hoja solo lista los municipios que tienen. Lo que distingue al
+  # porcino de 2019 no es que le falten municipios, sino que le faltan
+  # respecto de sí mismo (menos del 50 % de su propia cobertura máxima).
+  # Hallazgo de Pablo (F-2-028), adoptado también aquí.
+  COBERTURA_MIN <- 0.5
+  for (v in names(ESPECIES_PECUARIAS)) {
+    cobertura  <- tapply(!is.na(d[[v]]), d$anio, sum)
+    anios_bajos <- names(cobertura)[cobertura < COBERTURA_MIN * max(cobertura)]
+    ok <- !(as.character(d$anio) %in% anios_bajos)
+    d[[v]][ok] <- dplyr::coalesce(d[[v]][ok], 0)
+    if (length(anios_bajos)) {
+      message("  [pecuario] ", v, ": cobertura insuficiente en ",
+              paste(anios_bajos, collapse = ", "), " (", min(cobertura[anios_bajos]),
+              " de ", nrow(crosswalk_subregiones()), " municipios) — se deja vacío, no cero")
+    }
+  }
+
   d |>
-    dplyr::mutate(dplyr::across(dplyr::all_of(names(ESPECIES_PECUARIAS)),
-                                \(x) dplyr::coalesce(x, 0))) |>
     dplyr::mutate(
       total_especies = rowSums(dplyr::pick(dplyr::all_of(names(ESPECIES_PECUARIAS))))
     ) |>

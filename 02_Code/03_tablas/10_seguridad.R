@@ -11,6 +11,7 @@
 #                          P6_cambio_municipio
 #   riesgo de victimización irv
 #   desaparición forzada   desaparecidos
+#   reparación colectiva   reparacion_colectiva, reparacion_colectiva_sujetos
 #
 # INPUTS:
 #   01_Data/01_Derived/CULTILICITOS_PROVINCIAS.xlsx   (hoja "Coca")
@@ -31,6 +32,10 @@
 #   01_Data/00_Inputs/AREA_ORIGINAL.xlsx              (hoja "Area")
 #   01_Data/00_Inputs/IRV-2025.xlsx                   (hoja "Datos")
 #   01_Data/00_Inputs/UBPD_desaparecidos_Antioquia.xlsx (hoja "Por Municipio")
+#   01_Data/01_Derived/reparacion_colectiva.parquet (ver 01_homogeneizacion/
+#       reparacion_colectiva.R; el insumo original es UARIV_sujetos_
+#       reparacion_colectiva.xlsx, reconstruido de una captura del visor
+#       ArcGIS de la UARIV, no de un dataset abierto)
 #   crosswalks territoriales (01_Derived)
 #
 # OUTPUTS: 03_Outputs/<Provincia>/10_Seguridad/seguridad.xlsx
@@ -268,8 +273,15 @@ DELITOS <- c(
   n_sexuales   = "delitos_sexuales"
 )
 ANIO_DELITOS <- 2025
+COLUMNAS_DELITOS <- c(names(DELITOS), "pob")
 
-.hoja_delitos <- function(prov, archivo) {
+#' Los cuatro delitos y la población de TODOS los municipios del
+#' departamento, antes de filtrar por provincia. Extraída de .hoja_delitos()
+#' para que el mapa departamental de homicidios (04_figuras/00_mapas.R) la
+#' reutilice en vez de leer las once hojas .xlsx en disco — ver la NOTA en
+#' esa función sobre por qué leer de disco daba un mapa incompleto en diez de
+#' los once informes. Hallazgo de Pablo (F-2-035), adoptado también aquí.
+universo_delitos <- function() {
   policia <- leer_derivado("seguridad_policia")
   policia <- policia[policia$anio == ANIO_DELITOS, , drop = FALSE]
   col_total <- col_req(policia, paste0("total_", ANIO_DELITOS))
@@ -284,32 +296,44 @@ ANIO_DELITOS <- 2025
     if (is.null(acumulado)) d else dplyr::full_join(acumulado, d, by = "ind_mpio")
   }, .init = NULL)
 
-  columnas <- c(names(DELITOS), "pob")
-  universo <- conteos |>
+  conteos |>
     dplyr::inner_join(.poblacion_2025(), by = "ind_mpio") |>
     con_territorio() |>
     dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
-                  "id_provincia", "subregion_full", dplyr::all_of(columnas))
+                  "id_provincia", "subregion_full", dplyr::all_of(COLUMNAS_DELITOS))
+}
+
+#' La fórmula vive AQUÍ y en ningún otro sitio. La regla 1 del anexo dice que
+#' la figura no recalcula, y su razón es que dos implementaciones de la
+#' misma cuenta terminan discrepando. El mapa departamental usa esta misma
+#' función, de modo que no puede publicar una cifra distinta de la hoja.
+tasas_delitos <- function(d) {
+  dplyr::mutate(
+    d,
+    hurtos                  = .data$n_hurtos     / .data$pob * 1e5,
+    homicidios              = .data$n_homicidios / .data$pob * 1e5,
+    violencia_intrafamiliar = .data$n_violencia  / .data$pob * 1e5,
+    delitos_sexuales        = .data$n_sexuales   / .data$pob * 1e5
+  )
+}
+
+.hoja_delitos <- function(prov, archivo) {
+  universo <- universo_delitos()
 
   detalle <- universo |>
     filtrar_provincia(prov) |>
     dplyr::arrange(.data$municipio) |>
     dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
-                  dplyr::all_of(columnas))
+                  dplyr::all_of(COLUMNAS_DELITOS))
 
   subreg_dom <- subregion_dominante(prov)
 
   # Se agregan los CONTEOS y la población; la tasa se calcula después, así que
   # municipios y agregados usan la misma fórmula.
   tabla <- agregar_totales(detalle, universo = universo, prov = prov,
-                           columnas = columnas, como = "suma") |>
+                           columnas = COLUMNAS_DELITOS, como = "suma") |>
     .rotular_agregados(prov, subreg_dom) |>
-    dplyr::mutate(
-      hurtos                  = .data$n_hurtos     / .data$pob * 1e5,
-      homicidios              = .data$n_homicidios / .data$pob * 1e5,
-      violencia_intrafamiliar = .data$n_violencia  / .data$pob * 1e5,
-      delitos_sexuales        = .data$n_sexuales   / .data$pob * 1e5
-    ) |>
+    tasas_delitos() |>
     .ordenar_filas(.data$municipio) |>
     dplyr::select("ind_mpio", "municipio", "subregion", "hurtos", "homicidios",
                   "violencia_intrafamiliar", "delitos_sexuales", "pob", "tipo_fila")
@@ -706,6 +730,121 @@ ETIQUETAS_PERCEPCION <- c(
   tabla
 }
 
+# --- Bloque 9: sujetos de reparación colectiva (UARIV) ------------------------
+# Punto 8 de los "Verificar con el equipo" (revisión 21/08/2026): no había
+# ninguna fuente de instrumentos de paz (PDET/PNIS/reparación colectiva) en
+# el repositorio. UARIV no publica un dataset abierto; el insumo se
+# reconstruyó de una captura del visor ArcGIS de la UARIV (ver
+# 01_homogeneizacion/reparacion_colectiva.R). Dos hojas: una agregada por
+# municipio (para la prosa y el panel) y una de detalle (para nombrar a los
+# sujetos, que es literalmente lo que pide el comentario original).
+
+FASES_PIRC_ORDEN <- c("IDENTIFICACIÓN", "CARACTERIZACIÓN DEL DAÑO",
+                      "DIAGNÓSTICO DEL DAÑO", "DISEÑO Y FORMULACIÓN",
+                      "ALISTAMIENTO", "IMPLEMENTACIÓN", "IMPLEMENTADO")
+
+.hoja_reparacion_colectiva <- function(prov, archivo) {
+  # Solo 40 de los 125 municipios de Antioquia tienen algún sujeto reconocido:
+  # filtrar_provincia() aborta si una provincia entera queda sin filas (es la
+  # guarda correcta para la mayoría de hojas, donde eso sí sería un bug), pero
+  # aquí "cero sujetos" es un resultado real y esperable. Se arma primero el
+  # universo COMPLETO de municipios de la provincia (siempre tiene filas) y se
+  # le pega el conteo de sujetos, en vez de filtrar directamente el derivado
+  # de sujetos (que sí puede quedar vacío).
+  universo_municipios <- crosswalk_provincias() |> filtrar_provincia(prov)
+
+  sujetos_prov <- leer_derivado("reparacion_colectiva") |>
+    dplyr::mutate(ind_mpio = as.integer(.data$ind_mpio),
+                  porc_avance_pirc = a_numero(.data$porc_avance_pirc)) |>
+    dplyr::filter(.data$ind_mpio %in% universo_municipios$ind_mpio)
+
+  resumen <- sujetos_prov |>
+    dplyr::group_by(.data$ind_mpio) |>
+    dplyr::summarise(
+      n_sujetos            = dplyr::n(),
+      n_implementado       = sum(.data$estado_fase == "IMPLEMENTADO", na.rm = TRUE),
+      pct_avance_pirc_prom = mean(.data$porc_avance_pirc, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  detalle <- universo_municipios |>
+    dplyr::left_join(resumen, by = "ind_mpio") |>
+    dplyr::mutate(
+      n_sujetos      = tidyr::replace_na(.data$n_sujetos, 0L),
+      n_implementado = tidyr::replace_na(.data$n_implementado, 0L)
+    ) |>
+    dplyr::arrange(dplyr::desc(.data$n_sujetos), .data$municipio) |>
+    dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
+                  "n_sujetos", "n_implementado", "pct_avance_pirc_prom")
+
+  fila_total <- dplyr::tibble(
+    ind_mpio = NA_integer_,
+    municipio = paste0("TOTAL PROVINCIA ", toupper(prov$etiqueta)),
+    subregion = NA_character_, provincia = NA_character_,
+    n_sujetos = sum(detalle$n_sujetos),
+    n_implementado = sum(detalle$n_implementado),
+    pct_avance_pirc_prom = mean(sujetos_prov$porc_avance_pirc, na.rm = TRUE),
+    tipo_fila = "Total provincia"
+  )
+
+  tabla <- dplyr::bind_rows(dplyr::mutate(detalle, tipo_fila = "Municipio"), fila_total)
+
+  escribir_hoja(
+    dplyr::select(tabla, -"tipo_fila"), archivo, "reparacion_colectiva",
+    etiquetas = c(
+      ETIQUETAS_TERRITORIO,
+      n_sujetos            = "Sujetos de reparación colectiva reconocidos",
+      n_implementado       = "Sujetos con Plan Integral de Reparación Colectiva implementado",
+      pct_avance_pirc_prom = "% de avance del PIRC, promedio (solo sujetos con plan activo)"
+    ),
+    formatos = c(n_sujetos = "#,##0", n_implementado = "#,##0",
+                 pct_avance_pirc_prom = "0.0%")
+  )
+
+  tabla
+}
+
+.hoja_reparacion_colectiva_sujetos <- function(prov, archivo) {
+  # Mismo motivo que en .hoja_reparacion_colectiva(): una provincia sin
+  # ningún sujeto reconocido es un resultado real, no un bug, así que se
+  # filtra por ind_mpio %in% ... (0 filas posibles) en vez de
+  # filtrar_provincia() sobre el derivado de sujetos (que aborta si queda
+  # vacío). El territorio se pega por join, no por con_territorio(), para no
+  # depender de que el derivado tenga filas de esta provincia.
+  universo_municipios <- crosswalk_provincias() |> filtrar_provincia(prov)
+
+  tabla <- leer_derivado("reparacion_colectiva") |>
+    dplyr::mutate(ind_mpio = as.integer(.data$ind_mpio),
+                  porc_avance_pirc = a_numero(.data$porc_avance_pirc),
+                  estado_fase = factor(as.character(.data$estado_fase),
+                                       levels = FASES_PIRC_ORDEN)) |>
+    dplyr::filter(.data$ind_mpio %in% universo_municipios$ind_mpio) |>
+    dplyr::left_join(
+      dplyr::select(universo_municipios, "ind_mpio", "municipio", "subregion", "provincia"),
+      by = "ind_mpio"
+    ) |>
+    dplyr::arrange(.data$municipio, .data$estado_fase) |>
+    dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
+                  "nombre_sujeto", "tipo", "categoria", "estado_fase",
+                  "porc_avance_pirc", "pdet")
+
+  escribir_hoja(
+    tabla, archivo, "reparacion_colectiva_sujetos",
+    etiquetas = c(
+      ETIQUETAS_TERRITORIO,
+      nombre_sujeto    = "Sujeto de reparación colectiva",
+      tipo             = "Tipo",
+      categoria        = "Categoría",
+      estado_fase      = "Fase del Plan Integral de Reparación Colectiva",
+      porc_avance_pirc = "% de avance del PIRC",
+      pdet             = "Zona PDET"
+    ),
+    formatos = c(porc_avance_pirc = "0.0%")
+  )
+
+  tabla
+}
+
 # --- Orquestador de la sección ------------------------------------------------
 
 tabla_seguridad <- function(prov) {
@@ -725,6 +864,8 @@ tabla_seguridad <- function(prov) {
   if (!is.null(percepcion)) hojas <- c(hojas, percepcion)
   hojas$irv           <- .hoja_irv(prov, archivo)
   hojas$desaparecidos <- .hoja_desaparecidos(prov, archivo)
+  hojas$reparacion_colectiva         <- .hoja_reparacion_colectiva(prov, archivo)
+  hojas$reparacion_colectiva_sujetos <- .hoja_reparacion_colectiva_sujetos(prov, archivo)
 
   hojas$archivo <- archivo
   invisible(hojas)

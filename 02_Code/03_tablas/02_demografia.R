@@ -9,13 +9,17 @@
 #                         envejecimiento
 #   migracion             tasa neta de migración (total, cabecera, rural)
 #
-# INPUTS:  01_Data/00_Inputs/POBLACION MUNICIPAL.xlsx
-#            (hoja 1 "Total_Municipios" y hoja "Rangos_Quintenios")
+# INPUTS:  01_Data/01_Derived/poblacion_total_2025.dta      (hoja "poblacion")
+#          01_Data/01_Derived/poblacion_edad_2025.dta   (hoja "estructura_edad")
+#          01_Data/01_Derived/poblacion_municipal_total_2025.dta
+#            (índice de envejecimiento, hoja "natalidad_mortalidad")
+#          01_Data/00_Inputs/POBLACION MUNICIPAL.xlsx
+#            (solo si falta el derivado poblacion_total_2025 — ver la NOTA
+#            "FUENTE DE POBLACIÓN" más abajo)
 #          01_Data/00_Inputs/AREA_ORIGINAL.xlsx  (hoja "Area")
 #          01_Data/00_Inputs/INDICADORES ECV 2023 MUNICIPIOS.xlsx
 #            (hoja "DEMOGRAFÍA", indicador TNM)
 #          01_Data/01_Derived/20260504_SEGURIDAD_SALUD_DEFICT_VIVIENDA.dta
-#          01_Data/01_Derived/poblacion_municipal_total_2025_dicc.dta
 #          crosswalks territoriales (01_Derived)
 # OUTPUTS: 03_Outputs/<Provincia>/02_Demografia/demografia.xlsx
 #
@@ -102,6 +106,8 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
 
 #' Suma un conjunto de tramos quinquenales de la hoja Rangos_Quintenios.
 #' `prefijo` es "Hombre", "Mujeres" o "TOTAL"; `tramos` los rótulos "0-4", …
+#' Solo la usa el respaldo de .hoja_estructura_edad() cuando falta el
+#' derivado poblacion_edad_2025 (ver esa función).
 .suma_tramos <- function(d, prefijo, tramos) {
   columnas <- vapply(tramos, function(t) col_req(d, paste0(prefijo, " (", t, ")")),
                      character(1))
@@ -119,8 +125,12 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
   ))
 }
 
-# Tramos quinquenales tal como los nombra la hoja Rangos_Quintenios, y los
-# grupos decenales que arma el informe a partir de ellos.
+# Los grupos decenales que publica la sección, en el orden del informe.
+# Los índices son sobre .TRAMOS (los rótulos de POBLACION MUNICIPAL.xlsx,
+# hoja Rangos_Quintenios): los usa el respaldo de .hoja_estructura_edad()
+# cuando falta el derivado poblacion_edad_2025. El camino preferido lee
+# directamente las columnas del mismo nombre de ese derivado, para el que
+# solo hacen falta los nombres. Hallazgo de Pablo (F-2-018).
 .TRAMOS <- c("0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39",
              "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74",
              "75-79", "80-84", "85 y más")
@@ -217,22 +227,43 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
 # --- Hoja 2: estructura por sexo y grupos de edad ----------------------------
 
 .hoja_estructura_edad <- function(prov, archivo) {
-  d <- leer_excel(entrada("POBLACION MUNICIPAL.xlsx"), hoja = "Rangos_Quintenios")
-  c_cod  <- col_req(d, "DPMP")
-  c_ano  <- col_req(d, "AÑO")
-  c_area <- col_req(d, "ÁREA GEOGRÁFICA")
+  # POBLACION MUNICIPAL.xlsx es la serie descartada (ver nota de cabecera):
+  # esta hoja contradecía a la hoja "poblacion" del mismo libro (Yarumal
+  # 44.770 aquí vs. 41.884 allá). Se prefiere el derivado que arma la misma
+  # estructura decenal desde el PPED. Hallazgo de Pablo (F-2-018), adoptado
+  # también aquí.
+  #
+  # poblacion_edad_2025 se arma con el insumo PPED, que pesa 131 MB, no está
+  # versionado y no cabe en este entorno (ver poblacion_municipal.R). Si
+  # nadie lo ha generado todavía, se cae a POBLACION MUNICIPAL.xlsx —la
+  # serie vieja, con el mismo aviso que ya usa .poblacion_2025()— para que
+  # el pipeline pueda correr hoy. En cuanto alguien corra
+  # poblacion_municipal.R con el insumo disponible, esta hoja empieza a usar
+  # la serie correcta sin que haga falta tocar nada más.
+  if (existe_derivado("poblacion_edad_2025")) {
+    base <- leer_derivado("poblacion_edad_2025") |>
+      dplyr::mutate(ind_mpio = as.integer(.data$ind_mpio)) |>
+      dplyr::select(-dplyr::any_of("nvl_label"))
+  } else {
+    warning("No está el derivado poblacion_edad_2025; se usa ",
+            "POBLACION MUNICIPAL.xlsx, cuya serie NO reproduce el Anexo 1 ",
+            "(Yarumal 44.770 vs. 41.884 publicados).", call. = FALSE)
+    d <- leer_excel(entrada("POBLACION MUNICIPAL.xlsx"), hoja = "Rangos_Quintenios")
+    c_cod  <- col_req(d, "DPMP")
+    c_ano  <- col_req(d, "AÑO")
+    c_area <- col_req(d, "ÁREA GEOGRÁFICA")
+    d <- d |>
+      dplyr::filter(a_numero(.data[[c_ano]]) == 2025, .data[[c_area]] == "Total")
 
-  d <- d |>
-    dplyr::filter(a_numero(.data[[c_ano]]) == 2025, .data[[c_area]] == "Total")
-
-  base <- data.frame(ind_mpio = as.integer(a_numero(d[[c_cod]])))
-  base$pob_masc <- .suma_tramos(d, "Hombre", .TRAMOS)
-  base$pob_fem  <- .suma_tramos(d, "Mujeres", .TRAMOS)
-  for (g in names(.GRUPOS)) {
-    tramos <- .TRAMOS[.GRUPOS[[g]]]
-    base[[g]]                                  <- .suma_tramos(d, "TOTAL", tramos)
-    base[[stringr::str_replace(g, "^edad", "h_edad")]] <- .suma_tramos(d, "Hombre", tramos)
-    base[[stringr::str_replace(g, "^edad", "m_edad")]] <- .suma_tramos(d, "Mujeres", tramos)
+    base <- data.frame(ind_mpio = as.integer(a_numero(d[[c_cod]])))
+    base$pob_masc <- .suma_tramos(d, "Hombre", .TRAMOS)
+    base$pob_fem  <- .suma_tramos(d, "Mujeres", .TRAMOS)
+    for (g in names(.GRUPOS)) {
+      tramos <- .TRAMOS[.GRUPOS[[g]]]
+      base[[g]]                                  <- .suma_tramos(d, "TOTAL", tramos)
+      base[[stringr::str_replace(g, "^edad", "h_edad")]] <- .suma_tramos(d, "Hombre", tramos)
+      base[[stringr::str_replace(g, "^edad", "m_edad")]] <- .suma_tramos(d, "Mujeres", tramos)
+    }
   }
 
   columnas <- c("pob_masc", "pob_fem", names(.GRUPOS),
@@ -284,7 +315,14 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
       tasa_natalidad  = as.numeric(.data$tasa_natalidad),
       tasa_mortalidad = as.numeric(.data$tasa_mortalidad)
     )
-  envejecimiento <- haven::read_dta(entrada("curados", "poblacion_municipal_total_2025_dicc.dta")) |>
+  # El curado poblacion_municipal_total_2025_dicc.dta describe una estructura
+  # de edad más envejecida que el PPED con el que se publicó el informe (0 de
+  # 125 municipios coinciden con el derivado de abajo; promedio +1,4 puntos).
+  # La fórmula del índice es la misma en los dos; lo que cambia es la
+  # población de origen. Se usa el derivado propio del pipeline, que ya la
+  # calcula desde el PPED (poblacion_municipal.R). Hallazgo de Pablo
+  # (F-2-015), confirmado empíricamente y adoptado también aquí.
+  envejecimiento <- leer_derivado("poblacion_municipal_total_2025") |>
     dplyr::transmute(ind_mpio = as.integer(.data$ind_mpio),
                      I_enve_T = as.numeric(.data$I_enve_T))
 

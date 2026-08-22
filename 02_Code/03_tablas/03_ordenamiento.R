@@ -16,7 +16,7 @@
 # INPUTS (01_Data/00_Inputs — crudos):
 #   deficit cuantitativo por municipio 2023.xlsx
 #   deficit cualitativo por municipio 2023.xlsx
-#   POBLACION MUNICIPAL.xlsx        (pesos poblacionales 2022, 2024 y 2025)
+#   poblacion_anual.dta (01_Derived)  (pesos poblacionales 2022, 2024 y 2025)
 #   AREA_ORIGINAL.xlsx  (hoja "Area")
 #   CATASTRO.xlsx       (hoja "Consolidado Urb + Rural")
 # INPUTS (01_Data/01_Derived — derivados):
@@ -66,14 +66,38 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
 
 #' Población total municipal de un año, para todos los municipios del
 #' departamento. Es el peso de todos los promedios ponderados de la sección.
-#' La hoja se lee una sola vez por sesión (la usan cuatro bloques).
+#' El derivado se lee una sola vez por sesión (la usan cuatro bloques).
+#'
+#' Prefiere poblacion_anual (serie PPED) a POBLACION MUNICIPAL.xlsx: esa es
+#' la serie que 02_demografia.R declara descartada porque no reproduce el
+#' Anexo 1 (Yarumal 44.770 vs. 41.884 publicados). Hallazgo de Pablo
+#' (F-2-018-b), adoptado también aquí.
+#'
+#' poblacion_anual se arma con el insumo PPED, que pesa 131 MB, no está
+#' versionado y no cabe en este entorno (ver poblacion_municipal.R). Si
+#' nadie lo ha generado todavía, se cae a POBLACION MUNICIPAL.xlsx —con el
+#' mismo aviso que ya usa 02_demografia.R— para que el pipeline pueda
+#' correr hoy. En cuanto alguien corra poblacion_municipal.R con el insumo
+#' disponible, esta función empieza a usar la serie correcta sin que haga
+#' falta tocar nada más.
 .poblacion_peso <- function(anio_pedido) {
   if (is.null(.cache_ordenamiento$pob)) {
-    d <- leer_excel(entrada("POBLACION MUNICIPAL.xlsx"), hoja = 1)
-    c_cod  <- col_req(d, "DPMP")
-    c_ano  <- col_req(d, "AÑO")
-    c_area <- col_req(d, "ÁREA GEOGRÁFICA")
-    c_pob  <- col_req(d, "Total General")
+    if (existe_derivado("poblacion_anual")) {
+      d <- leer_derivado("poblacion_anual")
+      c_cod  <- col_req(d, "ind_mpio")
+      c_ano  <- col_req(d, "anio")
+      c_area <- col_req(d, "area_geo")
+      c_pob  <- col_req(d, "Total")
+    } else {
+      warning("No está el derivado poblacion_anual; se usa ",
+              "POBLACION MUNICIPAL.xlsx, cuya serie NO reproduce el Anexo 1 ",
+              "(Yarumal 44.770 vs. 41.884 publicados).", call. = FALSE)
+      d <- leer_excel(entrada("POBLACION MUNICIPAL.xlsx"), hoja = 1)
+      c_cod  <- col_req(d, "DPMP")
+      c_ano  <- col_req(d, "AÑO")
+      c_area <- col_req(d, "ÁREA GEOGRÁFICA")
+      c_pob  <- col_req(d, "Total General")
+    }
     .cache_ordenamiento$pob <- d |>
       dplyr::filter(.data[[c_area]] == "Total") |>
       dplyr::transmute(
@@ -83,9 +107,15 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
       ) |>
       dplyr::filter(!is.na(.data$ind_mpio))
   }
-  .cache_ordenamiento$pob |>
+  d <- .cache_ordenamiento$pob |>
     dplyr::filter(.data$anio == anio_pedido) |>
     dplyr::select("ind_mpio", "pob_peso")
+  if (nrow(d) == 0) {
+    anios <- sort(unique(.cache_ordenamiento$pob$anio))
+    stop("No hay población de ", anio_pedido, " en el derivado poblacion_anual; ",
+         "el PPED cubre ", min(anios), "-", max(anios), ".", call. = FALSE)
+  }
+  d
 }
 
 #' Sustituye las etiquetas genéricas que pone agregar_totales() por las del .do,
@@ -619,12 +649,52 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
 # Solo internet fijo activo. Las líneas de fibra se cuentan con una suma
 # condicional (no filtrando por fibra) para no perder los municipios que tienen
 # cero líneas de fibra, que son justamente los del mensaje.
-# El agregado provincial es promedio SIMPLE de los valores municipales, también
-# para los conteos: así lo define el .do y así se publicó el informe.
+# Los conteos se suman y las razones se recalculan sobre las sumas (un conteo
+# se suma; una razón entre dos conteos se recalcula sobre las sumas, no se
+# promedia). El .do original promediaba las cuatro columnas, también los
+# conteos: la fila provincial publicaba la suma dividida por el número de
+# municipios (comprobado: la razón entre lo publicado antes y la suma real
+# era exactamente 1/n). Hallazgo de Pablo (F-1-027), adoptado también aquí.
+#
+# El derivado trae los cuatro trimestres de 2025; cantidad_lineas_accesos es
+# un STOCK (accesos activos al cierre del trimestre), no un flujo, así que
+# sumar los cuatro cuenta cuatro veces el mismo acceso. Y "Internet fijo"
+# suelto es solo uno de cuatro paquetes que lo incluyen (el MinTIC cuenta los
+# empaquetados como un acceso: Triple Play, Duo Play 1 y 2 también traen
+# internet fijo). El filtro no sesgaba parejo: descartaba el 4 % de los
+# accesos de una provincia rural típica y el 69 % de los del Área
+# Metropolitana. Los dos defectos vienen del .do original (F-5-001,
+# F-5-002), adoptados también aquí junto con la corrección.
+PAQUETES_CON_INTERNET_FIJO <- c(
+  "Internet fijo",
+  "Triple Play (Telefonía fija + Internet fijo + TV por suscripción)",
+  "Duo Play 1 (Telefonía fija + Internet fijo)",
+  "Duo Play 2 (Internet fijo y TV por suscripción)"
+)
 
 .hoja_internet <- function(prov, archivo) {
-  crudo <- leer_derivado("infraestructura_internet_2025") |>
-    dplyr::filter(.data$servicio_paquete == "Internet fijo",
+  fuente <- leer_derivado("infraestructura_internet_2025")
+
+  # Si el MinTIC agrega un paquete nuevo con internet fijo (p. ej. un "Quad
+  # Play"), el pipeline se detiene en vez de contar de menos en silencio.
+  nuevos <- setdiff(
+    grep("Internet fijo", unique(fuente$servicio_paquete), value = TRUE),
+    PAQUETES_CON_INTERNET_FIJO)
+  if (length(nuevos)) {
+    stop("La fuente trae paquetes con internet fijo que no están en la lista:\n  ",
+         paste(nuevos, collapse = "\n  "),
+         "\nAgréguelos a PAQUETES_CON_INTERNET_FIJO o el conteo saldrá corto.",
+         call. = FALSE)
+  }
+
+  ultimo <- max(a_numero(fuente$trimestre), na.rm = TRUE)
+  anio   <- max(a_numero(fuente$anno), na.rm = TRUE)
+  message("  [internet] ", anio, " T", ultimo, ", ",
+          length(PAQUETES_CON_INTERNET_FIJO), " paquetes con internet fijo")
+
+  crudo <- fuente |>
+    dplyr::filter(a_numero(.data$trimestre) == ultimo,
+                  .data$servicio_paquete %in% PAQUETES_CON_INTERNET_FIJO,
                   .data$estado == "Activo en funcionamiento") |>
     dplyr::mutate(
       fibra = stringr::str_detect(.data$tecnologia, stringr::fixed("Fiber to the")) |
@@ -647,20 +717,27 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
                      poblacion = as.numeric(.data$Total))
 
   columnas <- c("lineas_totales", "lineas_fibra", "prop_fibra", "internet_1000hab")
+  sumables <- c("lineas_totales", "lineas_fibra", "poblacion")
 
   municipios <- lineas |>
     dplyr::inner_join(poblacion, by = "ind_mpio") |>
-    dplyr::mutate(internet_1000hab = .data$lineas_totales / .data$poblacion * 1000) |>
     con_territorio() |>
     filtrar_provincia(prov) |>
     dplyr::arrange(.data$nvl_label) |>
     dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
-                  dplyr::all_of(columnas))
+                  dplyr::all_of(sumables))
 
+  # Se suman los conteos y las razones se recalculan al final: así la fila de
+  # municipio y la de agregado salen de la misma fórmula.
   tabla <- agregar_totales(municipios, universo = NULL, prov = prov,
-                           columnas = columnas, como = "promedio") |>
+                           columnas = sumables, como = "suma") |>
+    dplyr::mutate(
+      prop_fibra       = .data$lineas_fibra / .data$lineas_totales,
+      internet_1000hab = .data$lineas_totales / .data$poblacion * 1000
+    ) |>
     .etiquetar_agregados(stats::setNames(
-      paste0("PROMEDIO SIMPLE PROVINCIA ", toupper(prov$etiqueta)), "Total provincia")) |>
+      paste0("PROVINCIA ", toupper(prov$etiqueta),
+             " (suma de líneas; razones recalculadas sobre las sumas)"), "Total provincia")) |>
     dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
                   dplyr::all_of(columnas), "tipo_fila")
 
@@ -674,6 +751,12 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
     formatos = c(lineas_totales = "#,##0", lineas_fibra = "#,##0",
                  prop_fibra = "0.0%", internet_1000hab = "#,##0.0")
   )
+
+  # El periodo viaja con la tabla para que las figuras (04_figuras/
+  # 03_ordenamiento.R) no tengan que adivinarlo ni dejarlo fijo en "2025":
+  # el dato es de un trimestre, no del año completo. Hallazgo de Pablo
+  # (F-2-049), adoptado también aquí.
+  attr(tabla, "periodo") <- sprintf("último trimestre de %d", anio)
 
   tabla
 }

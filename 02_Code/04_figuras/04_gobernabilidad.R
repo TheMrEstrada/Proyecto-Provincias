@@ -8,6 +8,11 @@
 #   fig_04_icm              — Índice de Ciudades Modernas por municipio
 #   fig_05_icm_dimensiones  — las seis dimensiones del ICM: provincia frente a
 #                             subregión y departamento
+#   fig_06_icm_tendencia    — evolución 2010-2024 del ICM, provincia frente al
+#                             departamento: si la brecha se cierra o se abre
+#                             (lectura de TENDENCIA, no de nivel; fig_04 ya
+#                             cubre el nivel del último año). La hoja "icm" ya
+#                             traía la serie completa sin usar.
 #
 # INPUTS:  la lista que devuelve 02_Code/03_tablas/04_gobernabilidad.R
 # OUTPUTS: 03_Outputs/<Provincia>/04_Gobernabilidad/figuras/*.{png,pdf}
@@ -259,6 +264,87 @@ figuras_gobernabilidad <- function(prov, tabla) {
   escribir_datos_figura(
     dplyr::select(d_dim, ambito, dimension, valor), archivo, "fig_05"
   )
+
+  # --- fig 06: tendencia del ICM, provincia frente al departamento ----------
+  # Lectura de TENDENCIA (¿la brecha con el departamento se cierra o se abre?),
+  # no de nivel: el nivel del último año ya lo cubre fig_04. La hoja "icm" ya
+  # trae la serie 2010-2024 completa (tabla$icm sin filtrar por año); no hace
+  # falta ningún insumo nuevo, solo estaba sin usar. No se reutiliza
+  # .fig_serie() de 07_ambiental.R: esa sección se carga DESPUÉS de esta en el
+  # orden de SECCIONES (run_provincia.R) y no se puede dar por sourced.
+  # Etiqueta corta ("Provincia") en vez del nombre completo: con nombres largos
+  # (p. ej. "Bioenergética del Norte de Antioquia") la etiqueta directa se salía
+  # del margen derecho. El nombre completo ya queda en título y subtítulo.
+  ambitos_serie <- c("Total provincia" = "Provincia", "Total departamento" = "Antioquia")
+  d_tend <- tabla$icm |>
+    dplyr::filter(.data$tipo_fila %in% names(ambitos_serie), !is.na(.data$icm)) |>
+    dplyr::transmute(
+      anio  = .data$anio, valor = .data$icm,
+      serie = factor(unname(ambitos_serie[.data$tipo_fila]), levels = unname(ambitos_serie))
+    )
+
+  rango_anios <- range(d_tend$anio)
+  .valor_en <- function(a, s) d_tend$valor[d_tend$anio == a & d_tend$serie == s]
+  brecha_ini <- .valor_en(rango_anios[1], "Antioquia") - .valor_en(rango_anios[1], "Provincia")
+  brecha_fin <- .valor_en(rango_anios[2], "Antioquia") - .valor_en(rango_anios[2], "Provincia")
+  # Una provincia puede estar POR ENCIMA del departamento (brecha negativa: ver
+  # Área Metropolitana), así que el titular no puede asumir el signo. "Crece"
+  # o "se reduce" mira la DISTANCIA (valor absoluto), no la resta con signo.
+  posicion <- if (brecha_fin < 0) "por encima de" else "por debajo de"
+  cambio   <- if (abs(brecha_fin) < abs(brecha_ini) - 0.05) "una brecha que se redujo desde"
+              else if (abs(brecha_fin) > abs(brecha_ini) + 0.05) "una brecha que creció desde"
+              else "una brecha estable, cerca de"
+
+  colores_tend <- stats::setNames(c(COLOR$resalte, COLOR$contexto),
+                                  c("Provincia", "Antioquia"))
+  extremos <- dplyr::filter(d_tend, .data$anio %in% rango_anios)
+  final <- dplyr::filter(d_tend, .data$anio == rango_anios[2]) |>
+    dplyr::arrange(.data$valor)
+  # Con solo dos series, si terminan muy cerca una etiqueta tapa a la otra: se
+  # separan lo mínimo necesario en vez de traer el separador de 07_ambiental.R.
+  if (nrow(final) == 2 && diff(final$valor) < max(d_tend$valor) * 0.06) {
+    holgura <- max(d_tend$valor) * 0.06
+    final$y_etiqueta <- c(final$valor[1] - holgura / 2, final$valor[2] + holgura / 2)
+  } else {
+    final$y_etiqueta <- final$valor
+  }
+
+  p6 <- ggplot2::ggplot(d_tend, ggplot2::aes(x = .data$anio, y = .data$valor,
+                                             color = .data$serie, group = .data$serie)) +
+    ggplot2::geom_line(linewidth = 0.6) +
+    ggplot2::geom_point(data = extremos, size = 1.5) +
+    ggplot2::geom_text(
+      data = final,
+      ggplot2::aes(x = .data$anio, y = .data$y_etiqueta,
+                   label = paste0(.data$serie, ": ", num_co(.data$valor, 1))),
+      hjust = 0, nudge_x = diff(rango_anios) * 0.02,
+      size = PT$valor / .pt, family = FUENTE, color = COLOR$tinta_1
+    ) +
+    ggplot2::scale_color_manual(values = colores_tend, guide = "none") +
+    ggplot2::scale_x_continuous(
+      breaks = seq(rango_anios[1], rango_anios[2], by = 2),
+      expand = ggplot2::expansion(mult = c(0.02, 0.26))
+    ) +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0.05, 0.12))) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    theme_provincias(grilla = "y") +
+    textos_fig(
+      titulo = sprintf(
+        "La provincia está %s puntos %s Antioquia en el ICM: %s %s puntos en %d",
+        num_co(abs(brecha_fin), 1), posicion, cambio, num_co(abs(brecha_ini), 1),
+        rango_anios[1]
+      ),
+      subtitulo = sprintf(
+        "Índice de Ciudades Modernas (0 a 100), %d-%d · provincia %s y Antioquia",
+        rango_anios[1], rango_anios[2], prov$etiqueta
+      ),
+      fuente = "DNP, Índice de Ciudades Modernas. Cálculos propios.",
+      nota = paste("Es una lectura de tendencia, no de nivel: una brecha que se cierra",
+                   "puede seguir siendo grande. El dato provincial es el promedio",
+                   "ponderado por población de cada año; el departamental es el oficial del DNP.")
+    )
+  guardar_fig(p6, "fig_06_icm_tendencia", destino, alto = 8)
+  escribir_datos_figura(dplyr::select(d_tend, anio, serie, valor), archivo, "fig_06")
 
   invisible(destino)
 }

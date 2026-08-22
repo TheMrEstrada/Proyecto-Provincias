@@ -294,17 +294,22 @@ seccion_ordenamiento <- function(prov, ctx) {
                             "catastro")
       if (!is.null(cat)) {
         m <- solo_municipios(cat)
-        rural <- .num(m[["Proporción del avalúo catastral rural sobre el total"]])
         est <- table(as.character(m[["Estado del catastro rural"]]))
         est <- sort(est[!is.na(names(est)) & names(est) != ""], decreasing = TRUE)
         sin_dato <- sum(is.na(.num(m[["Avalúo catastral total ($)"]])))
+        # Se lee el agregado que ya publica la hoja (fila de provincia), no el
+        # promedio simple de los municipios: la media sobrepondera a los
+        # municipios pequeños. Hallazgo de Pablo (F-2-049), adoptado también
+        # aquí.
+        rural_prov <- valor_agregado(
+          cat, "Proporción del avalúo catastral rural sobre el total", "provincia")
         p <- .p(p, sprintf(paste(
           "El catastro es la base sobre la que descansan el impuesto predial y",
           "cualquier política de suelo. En la Provincia, el avalúo rural",
-          "representa en promedio el %s del avalúo catastral total de cada",
-          "municipio, lo que confirma por la vía fiscal la ruralidad descrita",
+          "representa el %s del avalúo catastral total,",
+          "lo que confirma por la vía fiscal la ruralidad descrita",
           "en la sección demográfica.%s%s"),
-          pct_co(mean(rural, na.rm = TRUE) * 100, dec = 1),
+          .fpct(rural_prov),
           if (length(est)) sprintf(
             " El estado más frecuente del catastro rural es «%s», en %d municipios.",
             names(est)[1], as.integer(est[1])) else "",
@@ -367,18 +372,20 @@ seccion_ordenamiento <- function(prov, ctx) {
         col <- "Líneas de acceso a internet fijo por cada 1.000 habitantes"
         alto <- extremos(d, col, 2, TRUE, .f1)
         bajo <- extremos(d, col, 2, FALSE, .f1)
-        m <- solo_municipios(d)
-        fib <- .num(m[["Proporción de líneas sobre fibra óptica"]])
+        # Se lee el agregado que ya publica la hoja, no el promedio simple de
+        # los municipios. Hallazgo de Pablo (F-2-049), adoptado también aquí.
+        fib_prov <- valor_agregado(d, "Proporción de líneas sobre fibra óptica",
+                                   "provincia")
         p <- .p(p, sprintf(paste(
           "El acceso a internet fijo describe la brecha digital interna de la",
           "Provincia. Medido en líneas por cada mil habitantes, es mayor en %s",
           "y menor en %s.%s"),
           alto$texto, bajo$texto,
-          if (any(!is.na(fib))) sprintf(paste(
+          if (!is.na(fib_prov)) sprintf(paste(
             " La fibra óptica, que es la tecnología que sostiene un uso",
-            "intensivo, representa en promedio el %s de las líneas de la",
+            "intensivo, representa el %s de las líneas de la",
             "Provincia."),
-            pct_co(mean(fib, na.rm = TRUE) * 100, dec = 1)) else ""))
+            .fpct(fib_prov)) else ""))
       }
       if (!is.null(g)) {
         pos_g <- posicion(g, "Índice de Gobierno Digital")
@@ -483,23 +490,32 @@ seccion_ordenamiento <- function(prov, ctx) {
             frase_contiguidad(prov, d, "Déficit cualitativo de vivienda", 3, TRUE)))
       }
       if (!is.null(s)) {
-        cobs <- c("Cobertura de acueducto (municipal)",
-                  "Cobertura de alcantarillado (municipal)",
-                  "Cobertura de energía (municipal)")
+        # Se lee el agregado que ya publica la hoja («… (agregado)»), no el
+        # promedio simple de las columnas municipales: la media sobrepondera
+        # a los municipios pequeños, que son los de peor cobertura (medido:
+        # +1,5 pp en acueducto, +0,5 pp en alcantarillado, +0,1 pp en energía
+        # para Del Río Grande). Hallazgo de Pablo (F-2-049), adoptado también
+        # aquí.
+        cobs <- c("Cobertura de acueducto (agregado)",
+                  "Cobertura de alcantarillado (agregado)",
+                  "Cobertura de energía (agregado)")
         cobs <- cobs[cobs %in% names(s)]
         if (length(cobs)) {
-          m <- solo_municipios(s)
-          medias <- vapply(cobs, function(cl) mean(.num(m[[cl]]), na.rm = TRUE),
-                           numeric(1))
-          etiqueta <- gsub(" \\(municipal\\)$", "", names(medias))
+          valores <- vapply(cobs, function(cl) valor_agregado(s, cl, "provincia"),
+                            numeric(1))
+          hay <- !is.na(valores)
+          valores <- valores[hay]
+          etiqueta <- gsub(" \\(agregado\\)$", "", names(valores))
           etiqueta <- tolower(gsub("^Cobertura de ", "", etiqueta))
-          p <- .p(p, sprintf(paste(
-            "En servicios domiciliarios, el promedio municipal de la Provincia",
-            "es de %s. La distancia entre la cobertura de energía y la de",
-            "alcantarillado es el indicador más elocuente de la ruralidad: la",
-            "red eléctrica llegó, la de saneamiento no, y esa diferencia",
-            "explica buena parte del déficit cualitativo descrito arriba."),
-            y_lista(sprintf("%s en %s", .fpct(medias), etiqueta))))
+          if (length(valores)) {
+            p <- .p(p, sprintf(paste(
+              "En servicios domiciliarios, la cobertura de la Provincia",
+              "es de %s. La distancia entre la cobertura de energía y la de",
+              "alcantarillado es el indicador más elocuente de la ruralidad: la",
+              "red eléctrica llegó, la de saneamiento no, y esa diferencia",
+              "explica buena parte del déficit cualitativo descrito arriba."),
+              y_lista(sprintf("%s en %s", .fpct(valores), etiqueta))))
+          }
         }
       }
       .p(p, verificar(
@@ -1177,7 +1193,7 @@ seccion_salud <- function(prov, ctx) {
   ase <- hoja_publicada(prov, "09_Salud", "salud.xlsx", "aseguramiento_sgsss")
   mi <- ultimo_anio(hoja_publicada(prov, "09_Salud", "salud.xlsx",
                                    "mortalidad_infantil"))
-  bp <- hoja_publicada(prov, "09_Salud", "salud.xlsx", "bajo_peso")
+  bp <- hoja_publicada(prov, "09_Salud", "salud.xlsx", "bajo_peso_2024")
   ev <- hoja_publicada(prov, "09_Salud", "salud.xlsx", "enfermedades_tropicales")
   su <- hoja_publicada(prov, "09_Salud", "salud.xlsx", "suicidios")
 
@@ -1213,8 +1229,8 @@ seccion_salud <- function(prov, ctx) {
   }
 
   if (!is.null(bp)) {
-    alto <- extremos(bp, "Nacidos con bajo peso al nacer (%)", 2, TRUE, .fpct)
-    pos_bp <- posicion(bp, "Nacidos con bajo peso al nacer (%)", en_puntos = TRUE)
+    alto <- extremos(bp, "Nacidos con bajo peso al nacer, 2024 (%)", 2, TRUE, .fpct)
+    pos_bp <- posicion(bp, "Nacidos con bajo peso al nacer, 2024 (%)", en_puntos = TRUE)
     out <- .p(out, sprintf(paste(
       "El bajo peso al nacer, que anticipa buena parte de la trayectoria de",
       "salud posterior, afecta al %s de los nacimientos de la Provincia y",
@@ -1424,10 +1440,74 @@ seccion_seguridad <- function(prov, ctx) {
               pct_co(ili / tot * 100, dec = 1)) else ""))
         }
       }
+      rc <- hoja_publicada(prov, "10_Seguridad", "seguridad.xlsx", "reparacion_colectiva")
+      if (!is.null(rc)) {
+        total_suj <- valor_agregado(rc, "Sujetos de reparación colectiva reconocidos", "provincia")
+        if (!is.na(total_suj) && total_suj > 0) {
+          # perfil_concentracion() exige al menos 2 municipios con valor
+          # positivo y devuelve NULL si no los hay; con conteos tan chicos
+          # como estos (Área Metropolitana: los 3 sujetos, todos en Medellín)
+          # es un caso real, no la excepción, así que hace falta un texto de
+          # respaldo para un solo municipio en vez de asumir que siempre hay
+          # al menos dos.
+          conc_rc <- perfil_concentracion(rc, "Sujetos de reparación colectiva reconocidos")
+          concentracion_txt <- if (!is.null(conc_rc)) {
+            sprintf("%s: %s reúnen el %s del total", conc_rc$clase,
+                    conc_rc$nombres_dos, pct_co(conc_rc$pct_dos * 100, dec = 0))
+          } else {
+            m_rc <- solo_municipios(rc)
+            v_rc <- .num(m_rc[["Sujetos de reparación colectiva reconocidos"]])
+            sprintf("%s por completo en %s",
+                    if (total_suj == 1) "concentrado" else "concentrados",
+                    m_rc[["Municipio"]][which.max(v_rc)])
+          }
+          total_impl <- valor_agregado(
+            rc, "Sujetos con Plan Integral de Reparación Colectiva implementado", "provincia")
+          p <- .p(p, sprintf(paste(
+            "La UARIV reconoce %s %s de reparación colectiva en la Provincia,",
+            "%s. De ellos, %s %s la",
+            "implementación de su Plan Integral de Reparación Colectiva (PIRC); el",
+            "resto sigue en alguna de las fases previas —identificación,",
+            "caracterización del daño, diagnóstico, diseño y formulación o",
+            "alistamiento—, que es justamente el estado de avance que pedía",
+            "verificar la revisión de este documento."),
+            .f0(total_suj), if (total_suj == 1) "sujeto" else "sujetos",
+            concentracion_txt, .f0(total_impl),
+            if (total_impl == 1) "ya completó" else "ya completaron"))
+        } else {
+          p <- .p(p, paste(
+            "La UARIV no reconoce sujetos de reparación colectiva en ningún",
+            "municipio de la Provincia."))
+        }
+      }
+      # Zona PDET: subproducto del mismo insumo de reparación colectiva (cada
+      # sujeto trae la zona PDET de su municipio). Cubre solo los municipios
+      # que tienen algún sujeto reconocido —40 de los 90 con provincia en
+      # Antioquia—, así que "sin PDET reconocido" NO equivale a "confirmado
+      # que no es zona PDET" para el resto: se nombra a los que sí se sabe
+      # que lo son y no se afirma nada de los demás.
+      rs <- hoja_publicada(prov, "10_Seguridad", "seguridad.xlsx",
+                           "reparacion_colectiva_sujetos")
+      if (!is.null(rs) && "Zona PDET" %in% names(rs)) {
+        pdet_mpios <- unique(rs[["Municipio"]][rs[["Zona PDET"]] != "No PDET" &
+                                                 !is.na(rs[["Zona PDET"]])])
+        pdet_zonas <- unique(rs[["Zona PDET"]][rs[["Zona PDET"]] != "No PDET" &
+                                                 !is.na(rs[["Zona PDET"]])])
+        if (length(pdet_mpios)) {
+          p <- .p(p, sprintf(paste(
+            "Al menos %s %s territorio PDET (%s), según la zona que trae",
+            "la misma fuente de reparación colectiva; esto solo cubre los",
+            "municipios con algún sujeto reconocido, así que no descarta que",
+            "otros municipios de la Provincia también lo sean."),
+            y_lista(pdet_mpios), if (length(pdet_mpios) == 1) "es" else "son",
+            y_lista(pdet_zonas)))
+        }
+      }
       .p(p, verificar(
-        "el estado de implementación de los instrumentos de paz en la ",
-        "Provincia —PDET, PNIS, planes de reparación colectiva— y qué ",
-        "sujetos de reparación colectiva están reconocidos."))
+        "el estado de implementación de PNIS en la Provincia, y la cobertura ",
+        "PDET completa de todos sus municipios —lo que hay hoy sobre PDET es ",
+        "un subproducto del insumo de reparación colectiva y solo cubre los ",
+        "municipios con algún sujeto reconocido."))
     },
 
     ddhh = {

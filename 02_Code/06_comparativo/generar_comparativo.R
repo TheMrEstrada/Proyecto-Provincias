@@ -361,19 +361,38 @@ generar_comparativo <- function() {
   md <- file.path(DIR_COMP, "Comparativo_provincias.md")
   writeLines(markdown_comparativo(panel), md, useBytes = TRUE)
 
-  if (!nzchar(Sys.which("pandoc"))) {
-    message("  [comparativo] solo Markdown (falta pandoc)")
+  # .hay_pandoc() (de generar_borrador.R, heredada por el source() de arriba)
+  # busca también en RSTUDIO_PANDOC, no solo en el PATH: RStudio trae su
+  # propia copia de pandoc sin publicarla ahí. Hallazgo de Pablo (F-5-004),
+  # adoptado también aquí.
+  if (!.hay_pandoc()) {
+    # warning(), no message(): que no salga el .docx es fácil de perder entre
+    # el resto del log. Hallazgo de Pablo (F-2-050), adoptado también aquí.
+    warning("pandoc no está instalado: el comparativo queda solo en Markdown, ",
+            "sin .docx.", call. = FALSE)
     return(invisible(md))
   }
   docx <- file.path(DIR_COMP, "Comparativo_provincias.docx")
   args <- c(shQuote(md), "-o", shQuote(docx),
             "--from", "markdown+pipe_tables+yaml_metadata_block",
             "--toc", "--toc-depth=2",
+            # Las rutas de las imágenes son relativas a la raíz (.ruta_relativa()
+            # en generar_borrador.R, que este archivo hereda por el source()
+            # de arriba), así que este --resource-path es lo que permite
+            # resolverlas desde donde sea. Hallazgo de Pablo (F-1-006),
+            # adoptado también aquí.
             "--resource-path", shQuote(RUTAS$raiz))
   if (file.exists(PLANTILLA)) args <- c(args, "--reference-doc", shQuote(PLANTILLA))
-  salida <- suppressWarnings(system2("pandoc", args, stdout = TRUE, stderr = TRUE))
-  if (!file.exists(docx)) {
-    message("  [comparativo] FALLÓ pandoc:\n    ",
+  # pandoc no escribe nada si falla: sin este unlink, el .docx de una corrida
+  # anterior pasaría la comprobación de abajo y se anunciaría como recién
+  # hecho aunque esta corrida no haya producido nada. Hallazgo de Pablo
+  # (F-2-050), adoptado también aquí.
+  unlink(docx)
+  salida <- suppressWarnings(system2(.ruta_pandoc(), args, stdout = TRUE, stderr = TRUE))
+  mal <- .falla_pandoc(salida, docx)
+  if (length(mal)) {
+    unlink(docx)   # que el disco no contradiga al log
+    message("  [comparativo] FALLÓ pandoc: ", mal, "\n    ",
             paste(utils::head(salida, 5), collapse = "\n    "))
     return(invisible(md))
   }

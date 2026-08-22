@@ -6,7 +6,8 @@
 #   fig_02_irca                IRCA del último año por municipio, con el
 #                              promedio provincial como referencia
 #   fig_03_irca_evolucion      serie del IRCA promedio: provincia vs. Antioquia
-#   fig_04_perdida_cobertura   pérdida de cobertura arbórea 2001-2023 (%)
+#   fig_04_perdida_cobertura   pérdida de cobertura arbórea 2001-2023, como
+#                              porcentaje de la cobertura de 2000
 #   fig_05_desastres_tipo      eventos de la provincia por tipo de emergencia
 #   fig_06_eventos_anio        serie anual de emergencias en la provincia
 #   fig_07_imrc                riesgo por déficit y por exceso de lluvias
@@ -295,10 +296,17 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
         mayor$municipio, pct_co(mayor$perdida_ca * 100, dec = 0)
       ),
       subtitulo = sprintf(
-        "Pérdida de cobertura arbórea acumulada 2001-2023, como porcentaje de la cobertura inicial. Provincia %s",
+        # "Cobertura inicial" no decía inicial DE QUÉ. Precisado al año base
+        # de Global Forest Watch. Hallazgo de Pablo (F-4-002), adoptado
+        # también aquí.
+        paste("Pérdida acumulada 2001-2023, como porcentaje de la cobertura",
+              "arbórea que el municipio tenía en 2000. Provincia %s"),
         prov$etiqueta
       ),
-      fuente = .FUENTE$cobertura
+      fuente = .FUENTE$cobertura,
+      nota = paste("Cobertura arbórea: superficie con más del 30 % de dosel en",
+                   "el año 2000, según Global Forest Watch. Incluye",
+                   "plantaciones y cultivos arbóreos.")
     )
 
   guardar_fig(p, "fig_04_perdida_cobertura", destino, n_barras = nrow(d))

@@ -71,7 +71,9 @@ normalizar_municipio <- function(x) {
     "SAN ANDRES"             = "SAN ANDRES DE CUERQUIA",
     "CIUDAD BOLIVAR"         = "CIUDAD BOLIVAR",
     "EL CARMEN DE VIBORAL"   = "CARMEN DE VIBORAL",
-    "SAN JOSE DE LA MONTANA" = "SAN JOSE DE LA MONTANA"
+    "SAN JOSE DE LA MONTANA" = "SAN JOSE DE LA MONTANA",
+    "EL PENOL"               = "PENOL",
+    "EL RETIRO"              = "RETIRO"
   )
   ifelse(y %in% names(correcciones), correcciones[y], y)
 }
@@ -90,7 +92,7 @@ etiqueta_municipio <- function(codigos) {
 
 .cache <- new.env(parent = emptyenv())
 
-#' Municipios con provincia y subregión (88 municipios en las 11 provincias).
+#' Municipios con provincia y subregión (90 municipios en las 11 provincias).
 crosswalk_provincias <- function() {
   if (is.null(.cache$prov)) {
     .cache$prov <- leer_derivado("codigos_provincias") |>
@@ -173,7 +175,11 @@ subregion_dominante <- function(prov) {
 #' @param columnas nombre de las columnas numéricas a agregar.
 #' @param como "suma" o una función de agregación por columna, p. ej.
 #'   list(area_km2 = "suma", tasa = "promedio_ponderado").
-#' @param pesos nombre de la columna de ponderación si alguna agregación la usa.
+#' @param pesos nombre de la columna de ponderación si alguna agregación la
+#'   usa, o una lista columna -> peso si distintas columnas necesitan
+#'   denominadores distintos (p. ej. una tasa rural ponderada por población
+#'   rural junto a otras ponderadas por población total). Simétrico con
+#'   `como`. Hallazgo de Pablo (F-2-027), adoptado también aquí.
 agregar_totales <- function(datos, universo = NULL, prov, columnas,
                             como = "suma", pesos = NULL) {
   agregacion <- if (is.character(como) && length(como) == 1) {
@@ -191,7 +197,10 @@ agregar_totales <- function(datos, universo = NULL, prov, columnas,
         promedio = mean(x, na.rm = TRUE),
         mediana = stats::median(x, na.rm = TRUE),
         promedio_ponderado = {
-          w <- suppressWarnings(as.numeric(d[[pesos]]))
+          # `pesos` admite un nombre de columna, o una lista columna -> peso,
+          # igual que `como` admite un método o una lista columna -> método.
+          col_peso <- if (is.list(pesos)) pesos[[cl]] else pesos
+          w <- suppressWarnings(as.numeric(d[[col_peso]]))
           ok <- !is.na(x) & !is.na(w)
           if (any(ok)) stats::weighted.mean(x[ok], w[ok]) else NA_real_
         },

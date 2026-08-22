@@ -38,6 +38,7 @@ if (!exists("RUTAS")) {
 source(file.path(RUTAS$codigo, "05_documento", "R", "frases.R"), encoding = "UTF-8")
 source(file.path(RUTAS$codigo, "05_documento", "R", "diagnosticos.R"), encoding = "UTF-8")
 source(file.path(RUTAS$codigo, "05_documento", "R", "secciones.R"), encoding = "UTF-8")
+source(file.path(RUTAS$codigo, "05_documento", "R", "resumenes.R"), encoding = "UTF-8")
 source(file.path(RUTAS$codigo, "06_comparativo", "figuras_comparativas.R"),
        encoding = "UTF-8")
 source(file.path(RUTAS$codigo, "05_documento", "R", "posicion_sistema.R"),
@@ -66,7 +67,7 @@ PLANTILLA <- file.path(RUTAS$codigo, "05_documento", "plantilla_estilos.docx")
 .completar_estilos <- function(ruta_styles) {
   ref <- tempfile(fileext = ".docx")
   ok <- tryCatch({
-    system2("pandoc", c("--print-default-data-file", "reference.docx"),
+    system2(.ruta_pandoc(), c("--print-default-data-file", "reference.docx"),
             stdout = ref)
     file.exists(ref) && file.size(ref) > 0
   }, error = function(e) FALSE)
@@ -113,7 +114,11 @@ PLANTILLA <- file.path(RUTAS$codigo, "05_documento", "plantilla_estilos.docx")
 construir_plantilla <- function(forzar = FALSE) {
   if (file.exists(PLANTILLA) && !forzar) return(invisible(PLANTILLA))
   if (!file.exists(ANEXO1)) {
-    message("  [plantilla] No está el Anexo 1: pandoc usará sus estilos por defecto.")
+    # warning(), no message(): que los .docx salgan sin el estilo del informe
+    # entregado es fácil de perder entre el resto del log. Hallazgo de Pablo
+    # (F-2-050), adoptado también aquí.
+    warning("No está el Anexo 1: los .docx saldrán con los estilos por ",
+            "defecto de pandoc, no con los del informe entregado.", call. = FALSE)
     return(invisible(NULL))
   }
 
@@ -173,10 +178,25 @@ construir_plantilla <- function(forzar = FALSE) {
 #' El número se lleva la cuenta por documento, como en el informe.
 .contador <- new.env(parent = emptyenv())
 
+#' La ruta de la imagen, relativa a la raíz del proyecto.
+#'
+#' Escrita en absoluto, la referencia solo funciona en la máquina que generó
+#' el documento: eran ~825 rutas /Users/... en los doce entregables. Y el
+#' --resource-path que ya se pasa no lo arreglaba, porque pandoc solo lo
+#' aplica a rutas RELATIVAS; con absolutas es inerte y pandoc aborta sin
+#' escribir nada (no avisa: aborta). Emitiéndolas relativas, ese
+#' --resource-path empieza a hacer su trabajo. Hallazgo de Pablo (F-1-006),
+#' adoptado también aquí.
+.ruta_relativa <- function(ruta) {
+  sub(paste0(RUTAS$raiz, "/"), "", ruta, fixed = TRUE)
+}
+
 .figura <- function(ruta, titulo, fuente_txt = NULL) {
   if (!file.exists(ruta)) return(character(0))
   .contador$fig <- (.contador$fig %||% 0) + 1
-  c(sprintf("![%s. %s](%s)", .contador$fig, titulo, ruta),
+  # Entre <> por si la ruta trae espacios: es la forma que CommonMark define
+  # para destinos de enlace y pandoc la entiende.
+  c(sprintf("![%s. %s](<%s>)", .contador$fig, titulo, .ruta_relativa(ruta)),
     "",
     if (!is.null(fuente_txt)) sprintf("*%s*", fuente(fuente_txt)) else NULL,
     "")
@@ -327,9 +347,19 @@ construir_plantilla <- function(forzar = FALSE) {
 
 # --- Documento ----------------------------------------------------------------
 
+#' El resumen de una dimensión como un solo "párrafo" (varias líneas de
+#' markdown ya unidas): así .bloque() lo trata como una unidad más y, si no
+#' hay bullets para esa dimensión, character(0) desaparece limpio al pegarlo
+#' con c() — sin ifs sueltos en cada uno de los 10 puntos de inserción.
+.resumen_linea <- function(titulo, bullets) {
+  x <- .resumen_box(titulo, bullets)
+  if (!length(x)) character(0) else paste(x, collapse = "\n")
+}
+
 markdown_provincia <- function(prov) {
   .contador$fig <- 0; .contador$tab <- 0
   ctx <- .contexto(prov)
+  resu <- resumen_dimensiones(prov, ctx)
   L <- character(0)
 
   # --- Portada y nota de uso --------------------------------------------------
@@ -380,7 +410,8 @@ markdown_provincia <- function(prov) {
 
   # --- 01 Generalidades -------------------------------------------------------
   L <- c(L, .bloque(3, "Generalidades –contexto departamental y provincial-",
-                    seccion_generalidades(prov, ctx),
+                    c(.resumen_linea("Generalidades", resu$generalidades),
+                      seccion_generalidades(prov, ctx)),
                     c(.tabla_md(prov, "01_Generalidades",
                                 "distribucion_territorial.xlsx",
                                 "distribucion_territorial",
@@ -393,7 +424,9 @@ markdown_provincia <- function(prov) {
                       .piezas_seccion(prov, "01_Generalidades"))))
 
   # --- 02 Demografía ----------------------------------------------------------
-  L <- c(L, .bloque(3, "Demografía", seccion_demografia(prov, ctx),
+  L <- c(L, .bloque(3, "Demografía",
+                    c(.resumen_linea("Demografía", resu$demografia),
+                      seccion_demografia(prov, ctx)),
                     c(.tabla_md(prov, "02_Demografia", "demografia.xlsx", "poblacion",
                                 c("Municipio", "Población total", "Población urbana",
                                   "Población rural", "Densidad poblacional (hab/km²)"),
@@ -404,7 +437,9 @@ markdown_provincia <- function(prov) {
 
   # --- 03 Ordenamiento --------------------------------------------------------
   ord <- seccion_ordenamiento(prov, ctx)
-  L <- c(L, .bloque(3, "Ordenamiento del Territorio", ord$intro))
+  L <- c(L, .bloque(3, "Ordenamiento del Territorio",
+                    c(.resumen_linea("Ordenamiento del Territorio", resu$ordenamiento),
+                      ord$intro)))
   L <- c(L, .bloque(4, "Planes de Ordenamiento Territorial", ord$pot))
   L <- c(L, .bloque(4, "Tránsito y trasporte", ord$vias))
   L <- c(L, .bloque(4, "Ciencia, Tecnología e Innovación", ord$cti))
@@ -422,7 +457,9 @@ markdown_provincia <- function(prov) {
 
   # --- 04 Gobernabilidad ------------------------------------------------------
   gob <- seccion_gobernabilidad(prov, ctx)
-  L <- c(L, .bloque(3, "Gobernabilidad y capacidades territoriales"))
+  L <- c(L, .bloque(3, "Gobernabilidad y capacidades territoriales",
+                    .resumen_linea("Gobernabilidad y capacidades territoriales",
+                                   resu$gobernabilidad)))
   L <- c(L, .bloque(4, "Gobernabilidad", gob$gob))
   L <- c(L, .bloque(4, "Finanzas territoriales", gob$finanzas))
   L <- c(L, .bloque(4, "Índice de Ciudades Modernas (ICM)", gob$icm,
@@ -430,7 +467,9 @@ markdown_provincia <- function(prov) {
 
   # --- 05 Economía ------------------------------------------------------------
   eco <- seccion_economia(prov, ctx)
-  L <- c(L, .bloque(3, "Economía y desarrollo", eco$intro))
+  L <- c(L, .bloque(3, "Economía y desarrollo",
+                    c(.resumen_linea("Economía y desarrollo", resu$economia),
+                      eco$intro)))
   L <- c(L, .bloque(4, "Pobreza y mercado laboral", eco$pobreza))
   L <- c(L, .bloque(4, "Productividad y competitividad", eco$productividad))
   L <- c(L, .bloque(4, "Mercado minero-energético", eco$minero))
@@ -438,18 +477,23 @@ markdown_provincia <- function(prov) {
                     .piezas_seccion(prov, "05_Economia")))
 
   # --- 06 Desarrollo Rural ----------------------------------------------------
-  L <- c(L, .bloque(3, "Desarrollo Rural", seccion_desarrollo_rural(prov, ctx),
+  L <- c(L, .bloque(3, "Desarrollo Rural",
+                    c(.resumen_linea("Desarrollo Rural", resu$desarrollo_rural),
+                      seccion_desarrollo_rural(prov, ctx)),
                     .piezas_seccion(prov, "06_Desarrollo_Rural")))
 
   # --- 07 Ambiental -----------------------------------------------------------
   amb <- seccion_ambiental(prov, ctx)
-  L <- c(L, .bloque(3, "Ambiental", amb$intro))
+  L <- c(L, .bloque(3, "Ambiental",
+                    c(.resumen_linea("Ambiental", resu$ambiental), amb$intro)))
   L <- c(L, .bloque(4, "Recursos naturales", amb$recursos))
   L <- c(L, .bloque(4, "Sostenibilidad ambiental y cambio climático",
                     amb$sostenibilidad, .piezas_seccion(prov, "07_Ambiental")))
 
   # --- 08 Educación -----------------------------------------------------------
-  L <- c(L, .bloque(3, "Educación", seccion_educacion(prov, ctx),
+  L <- c(L, .bloque(3, "Educación",
+                    c(.resumen_linea("Educación", resu$educacion),
+                      seccion_educacion(prov, ctx)),
                     c(.tabla_md(prov, "08_Educacion", "educacion.xlsx", "educacion",
                                 c("Municipio", "Cobertura neta", "Tasa de deserción",
                                   "Tasa de repitencia"),
@@ -461,7 +505,9 @@ markdown_provincia <- function(prov) {
                       .piezas_seccion(prov, "08_Educacion"))))
 
   # --- 09 Salud ---------------------------------------------------------------
-  L <- c(L, .bloque(3, "Salud", seccion_salud(prov, ctx),
+  L <- c(L, .bloque(3, "Salud",
+                    c(.resumen_linea("Salud", resu$salud),
+                      seccion_salud(prov, ctx)),
                     c(.tabla_md(prov, "09_Salud", "salud.xlsx", "mortalidad_infantil",
                                 c("Municipio", "Año",
                                   "Tasa de mortalidad infantil (x 1.000 nacidos vivos)"),
@@ -472,7 +518,9 @@ markdown_provincia <- function(prov) {
 
   # --- 10 Seguridad -----------------------------------------------------------
   seg <- seccion_seguridad(prov, ctx)
-  L <- c(L, .bloque(3, "Seguridad, Paz y Derechos Humanos", seg$intro))
+  L <- c(L, .bloque(3, "Seguridad, Paz y Derechos Humanos",
+                    c(.resumen_linea("Seguridad, Paz y Derechos Humanos", resu$seguridad),
+                      seg$intro)))
   L <- c(L, .bloque(4, "Seguridad y convivencia ciudadana", seg$convivencia,
                     .tabla_md(prov, "10_Seguridad", "seguridad.xlsx", "delitos",
                               c("Municipio", "Homicidios por 100.000 hab.",
@@ -507,7 +555,50 @@ markdown_provincia <- function(prov) {
 
 # --- Conversión a Word --------------------------------------------------------
 
-.hay_pandoc <- function() nzchar(Sys.which("pandoc"))
+#' Ruta al ejecutable de pandoc, o "" si no aparece por ningún lado.
+#'
+#' Se busca primero en el PATH y después en RSTUDIO_PANDOC. RStudio trae su
+#' propia copia de pandoc y NO la publica en el PATH, así que en una máquina
+#' con RStudio —el caso normal de este proyecto— Sys.which("pandoc") decía
+#' que no había pandoc cuando sí lo había, y los once informes salían solo
+#' en Markdown. Hallazgo de Pablo (F-5-004), adoptado también aquí.
+.ruta_pandoc <- function() {
+  p <- unname(Sys.which("pandoc"))
+  if (nzchar(p)) return(p)
+  dir <- Sys.getenv("RSTUDIO_PANDOC", unset = "")
+  if (nzchar(dir)) {
+    exe <- file.path(dir, if (.Platform$OS.type == "windows") "pandoc.exe" else "pandoc")
+    if (file.exists(exe)) return(exe)
+  }
+  ""
+}
+
+.hay_pandoc <- function() nzchar(.ruta_pandoc())
+
+#' Por qué NO sirve el .docx que pandoc acaba de intentar producir.
+#'
+#' Devuelve character(0) si está bien, o el motivo. Son tres cosas que
+#' file.exists() no ve:
+#'   - pandoc devolvió error;
+#'   - el archivo quedó vacío;
+#'   - pandoc terminó BIEN pero no encontró alguna imagen y la sustituyó por
+#'     su descripción. Ese caso sale con estado 0 y produce un .docx sin
+#'     ninguna figura; es el único modo de fallo que queda vivo al emitir
+#'     las rutas en relativo, y el estado de salida no lo delata.
+#'
+#' La usan este generador y el del comparativo, que comparten el bloque.
+#' Hallazgo de Pablo (F-2-050), adoptado también aquí.
+.falla_pandoc <- function(salida, docx) {
+  estado <- attr(salida, "status") %||% 0L
+  if (estado != 0L)         return(sprintf("pandoc devolvió %d", estado))
+  if (!file.exists(docx))   return("no se creó el archivo")
+  if (file.size(docx) == 0) return("el archivo quedó vacío")
+  perdidas <- grep("Could not fetch resource", salida, value = TRUE)
+  if (length(perdidas))
+    return(sprintf("%d imagen(es) no se encontraron: el .docx saldría sin ellas",
+                   length(perdidas)))
+  character(0)
+}
 
 generar_borrador <- function(id) {
   prov <- provincia(id)
@@ -526,17 +617,24 @@ generar_borrador <- function(id) {
   args <- c(shQuote(md), "-o", shQuote(docx),
             "--from", "markdown+pipe_tables+yaml_metadata_block",
             "--toc", "--toc-depth=3",
-            # Las rutas de las imágenes son absolutas, pero se declara la raíz
-            # por si el borrador se regenera desde otro directorio.
+            # Las rutas de las imágenes son relativas a la raíz, así que este
+            # --resource-path es lo que permite resolverlas desde donde sea.
             "--resource-path", shQuote(RUTAS$raiz))
   # El propio Anexo 1 hace de plantilla: así los once borradores heredan los
   # estilos del informe entregado en vez de los de Word por defecto.
   if (file.exists(PLANTILLA)) {
     args <- c(args, "--reference-doc", shQuote(PLANTILLA))
   }
-  salida <- suppressWarnings(system2("pandoc", args, stdout = TRUE, stderr = TRUE))
-  if (!file.exists(docx)) {
-    message("  [borrador] ", prov$etiqueta, " — FALLÓ pandoc:\n    ",
+  # pandoc no escribe nada si falla: sin este unlink, el .docx de una corrida
+  # anterior pasaría la comprobación de abajo y se anunciaría como recién
+  # hecho aunque esta corrida no haya producido nada. Hallazgo de Pablo
+  # (F-2-050), adoptado también aquí.
+  unlink(docx)
+  salida <- suppressWarnings(system2(.ruta_pandoc(), args, stdout = TRUE, stderr = TRUE))
+  mal <- .falla_pandoc(salida, docx)
+  if (length(mal)) {
+    unlink(docx)   # que el disco no contradiga al log
+    message("  [borrador] ", prov$etiqueta, " — FALLÓ pandoc: ", mal, "\n    ",
             paste(utils::head(salida, 5), collapse = "\n    "))
     return(invisible(md))
   }
@@ -550,8 +648,15 @@ generar_borradores <- function(ids = PROVINCIAS$id) {
   message("== Borradores provinciales ==")
   construir_plantilla()
   if (!.hay_pandoc()) {
-    message("  pandoc no está instalado: se generará solo el Markdown.\n",
-            "  Instálelo con  brew install pandoc")
+    # warning(), no message(): que no salga ningún .docx es fácil de perder
+    # entre el resto del log (F-2-050). El consejo ya no asume macOS, y
+    # nombra RSTUDIO_PANDOC porque es la causa más probable de que esto
+    # dispare en este proyecto: RStudio trae su propia copia de pandoc sin
+    # publicarla en el PATH (F-5-004). Las dos, adoptadas también aquí.
+    warning("no se encuentra pandoc: se generará solo el Markdown y ningún ",
+            ".docx. Instálelo desde https://pandoc.org/installing.html, o corra ",
+            "esto desde RStudio, que trae su propia copia (RSTUDIO_PANDOC).",
+            call. = FALSE)
   }
   invisible(lapply(ids, generar_borrador))
 }

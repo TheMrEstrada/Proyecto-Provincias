@@ -11,6 +11,18 @@
 #   01_Data/01_Derived/poblacion_municipal_total_2025.dta
 #     Una fila por municipio del país con estructura etaria, IDE e índice de
 #     envejecimiento, en total / rural / cabecera y como proporción del total.
+#   01_Data/01_Derived/poblacion_anual.dta
+#     Antioquia, TODOS los años del PPED, por área geográfica. Es el
+#     ponderador poblacional de las secciones que no ponderan con 2025 (la 03,
+#     con 2022 y 2024). poblacion_total_2025 no se toca: sigue siendo la
+#     serie con la que se publicó el informe.
+#   01_Data/01_Derived/poblacion_edad_2025.dta
+#     Antioquia 2025, área Total: población por sexo y por grupos decenales,
+#     que es lo que publica la hoja "estructura_edad" de la sección 02. Antes
+#     esa hoja leía POBLACION MUNICIPAL.xlsx —la serie que esta misma cabecera
+#     declara descartada— y por eso la pirámide contradecía a la hoja
+#     "poblacion" del mismo libro (Yarumal 44.770 vs. 41.884 publicados).
+#     Hallazgo de Pablo (F-2-018 / F-2-018-b).
 #
 # ETAPA DEL PIPELINE: 1. homogeneización
 # Migrado de 00_Homogeneizacion_Inputs/poblacion_municipal_2025.do
@@ -111,6 +123,24 @@ if (nrow(poblacion_total_2025) == 0) {
   stop("Ningún municipio con cod_dpto = \"05\" (Antioquia) en ", basename(ruta),
        ".", call. = FALSE)
 }
+
+# --- 1b. poblacion_anual.dta (Antioquia, todos los años del PPED) -------------
+# Lo mismo que poblacion_total_2025 pero SIN filtrar el año. Existe porque los
+# ponderadores de la sección 03 no son todos de 2025: pondera con 2022 y 2024
+# además. Hasta ahora esa sección leía POBLACION MUNICIPAL.xlsx —la serie
+# descartada, ver nota de cabecera— para esos dos años. Hallazgo de Pablo
+# (F-2-018-b), adoptado también aquí.
+poblacion_anual <- pped |>
+  dplyr::filter(.data$cod_dpto == "05") |>
+  dplyr::transmute(
+    ind_mpio  = a_numero(.data$ind_mpio),
+    nvl_label = .data$nvl_label,
+    anio      = as.integer(.data$año),
+    area_geo  = .data$area_geo,
+    Total     = a_numero(.data[[c_total]]),
+    Hombres   = a_numero(.data[[c_hombres]]),
+    Mujeres   = a_numero(.data[[c_mujeres]])
+  )
 
 # --- 2. Grupos etarios --------------------------------------------------------
 # Los encabezados de la fuente son "Hombres 0 años", "Hombres 1 año", ...,
@@ -258,6 +288,49 @@ names(datos_cabecera)[names(datos_cabecera) == "I_enve_T_c"] <- "I_enve_c_T"
 datos_p_rural  <- .peso_sobre_total(AREA_RURAL,    "PR")
 datos_p_urbano <- .peso_sobre_total(AREA_CABECERA, "PU")
 
+# --- Estructura por sexo y grupos decenales (Antioquia, área Total) ----------
+# Lo que publica la hoja "estructura_edad" de la sección 02: población por
+# sexo y por décadas. Hasta ahora esa hoja la tomaba de POBLACION
+# MUNICIPAL.xlsx, la serie descartada (ver nota de cabecera) — Yarumal
+# aparecía con 44.770 habitantes en esa hoja y con 41.884 en la de
+# "poblacion" del mismo libro, ambas del mismo informe. Se construye aquí
+# desde el PPED sumando las edades simples que la fuente ya trae; los grupos
+# decenales son sumas exactas, no aproximación. Hallazgo de Pablo (F-2-018),
+# adoptado también aquí.
+DECENIOS <- list(
+  edad_0_9    = list(edades =  0:9,  cien = FALSE),
+  edad_10_19  = list(edades = 10:19, cien = FALSE),
+  edad_20_29  = list(edades = 20:29, cien = FALSE),
+  edad_30_39  = list(edades = 30:39, cien = FALSE),
+  edad_40_49  = list(edades = 40:49, cien = FALSE),
+  edad_50_59  = list(edades = 50:59, cien = FALSE),
+  edad_60_69  = list(edades = 60:69, cien = FALSE),
+  edad_70_79  = list(edades = 70:79, cien = FALSE),
+  edad_80_mas = list(edades = 80:99, cien = TRUE)
+)
+
+poblacion_edad_2025 <- pob_2025 |>
+  dplyr::transmute(
+    ind_mpio  = a_numero(.data$ind_mpio),
+    nvl_label = .data$nvl_label,
+    cod_dpto  = .data$cod_dpto,
+    area_geo  = .data$area_geo,
+    pob_masc  = a_numero(.data[[c_hombres]]),
+    pob_fem   = a_numero(.data[[c_mujeres]])
+  )
+
+for (g in names(DECENIOS)) {
+  edades <- DECENIOS[[g]]$edades
+  cien   <- DECENIOS[[g]]$cien
+  poblacion_edad_2025[[g]] <- .total_grupo("T", edades, cien)
+  poblacion_edad_2025[[sub("^edad", "h_edad", g)]] <- .total_grupo("H", edades, cien)
+  poblacion_edad_2025[[sub("^edad", "m_edad", g)]] <- .total_grupo("M", edades, cien)
+}
+
+poblacion_edad_2025 <- poblacion_edad_2025 |>
+  dplyr::filter(.data$cod_dpto == "05", .data$area_geo == AREA_TOTAL) |>
+  dplyr::select(-"cod_dpto", -"area_geo")
+
 # --- 5. Unir y guardar --------------------------------------------------------
 poblacion_municipal <- datos_general |>
   dplyr::left_join(datos_rural,    by = "ind_mpio") |>
@@ -268,10 +341,16 @@ poblacion_municipal <- datos_general |>
   dplyr::mutate(ind_mpio = a_numero(.data$ind_mpio))
 
 escribir_derivado(poblacion_total_2025, "poblacion_total_2025")
+escribir_derivado(poblacion_anual, "poblacion_anual")
+escribir_derivado(poblacion_edad_2025, "poblacion_edad_2025")
 escribir_derivado(poblacion_municipal, "poblacion_municipal_total_2025")
 
 message("  poblacion_total_2025.dta: ", nrow(poblacion_total_2025),
         " filas (", dplyr::n_distinct(poblacion_total_2025$ind_mpio),
         " municipios de Antioquia × área geográfica)")
+message("  poblacion_anual.dta: ", dplyr::n_distinct(poblacion_anual$anio),
+        " años x ", dplyr::n_distinct(poblacion_anual$ind_mpio), " municipios")
+message("  poblacion_edad_2025.dta: ", nrow(poblacion_edad_2025), " municipios x ",
+        ncol(poblacion_edad_2025), " columnas")
 message("  poblacion_municipal_total_2025.dta: ", nrow(poblacion_municipal),
         " municipios × ", ncol(poblacion_municipal), " columnas")

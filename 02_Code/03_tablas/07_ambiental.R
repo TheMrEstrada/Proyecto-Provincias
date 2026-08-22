@@ -14,7 +14,8 @@
 #   imrc                Índice Municipal de Riesgo de Desastres ajustado por
 #                       capacidades (exceso y déficit de lluvias), con los
 #                       promedios provincial y departamental
-#   perdida_cobertura   pérdida de cobertura arbórea 2001-2023 por municipio
+#   perdida_cobertura   pérdida de cobertura arbórea 2001-2023 por municipio,
+#                       como porcentaje de la cobertura de 2000
 #
 # INPUTS:  01_Data/01_Derived/AREAPROTEGIDA_PROVINCIAS.xlsx (hoja "Hoja1")
 #          01_Data/01_Derived/IRCA_PROVINCIAS.xlsx          (hoja "Data")
@@ -169,7 +170,18 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
     con_territorio()
 }
 
-#' Pérdida de cobertura arbórea 2001-2023 (fracción del área con cobertura).
+#' Pérdida de cobertura arbórea 2001-2023, como fracción de la cobertura que
+#' el municipio tenía en 2000 (Global Forest Watch, dosel > 30 %). NO es una
+#' fracción del área del municipio: recalcularla así difiere del valor
+#' publicado en 119 de los 124 municipios. Hallazgo de Pablo (F-4-002),
+#' adoptado también aquí.
+#'
+#' El rótulo de la columna (más abajo) se deja como está: "... (%)" no
+#' afirma nada falso —dice «%», no «% del área»— y precisarlo rompería en
+#' SILENCIO a sus tres lectores, que la buscan por el nombre exacto: la
+#' prosa de la sección (05_documento/R/secciones.R), el panel comparativo
+#' (06_comparativo/panel_provincial.R, que devuelve NA sin avisar si no la
+#' encuentra) y 99_checks/comparar_referencia.R.
 .perdida_cobertura <- function() {
   d <- leer_excel(entrada("Pérdida de cobertura árborea.xlsx"),
                   hoja = "Pérdida cobertura árborea")

@@ -80,12 +80,15 @@ INDICADORES <- list(
   IND("deficit_cuali", "Déficit cualitativo de vivienda", "03_Ordenamiento",
       "ordenamiento.xlsx", "deficit_vivienda", "Déficit cualitativo de vivienda",
       "fila", -1, "pct", "Ordenamiento"),
+  # "fila": la hoja ya publica el agregado provincial. Antes leían el
+  # promedio simple de la columna "(municipal)", que sobrepondera a los
+  # municipios pequeños. Hallazgo de Pablo (F-2-049), adoptado también aquí.
   IND("acueducto", "Cobertura de acueducto", "03_Ordenamiento",
-      "ordenamiento.xlsx", "servicios_publicos", "Cobertura de acueducto (municipal)",
-      "promedio", 1, "pct", "Ordenamiento"),
+      "ordenamiento.xlsx", "servicios_publicos", "Cobertura de acueducto (agregado)",
+      "fila", 1, "pct", "Ordenamiento"),
   IND("alcantarillado", "Cobertura de alcantarillado", "03_Ordenamiento",
       "ordenamiento.xlsx", "servicios_publicos",
-      "Cobertura de alcantarillado (municipal)", "promedio", 1, "pct",
+      "Cobertura de alcantarillado (agregado)", "fila", 1, "pct",
       "Ordenamiento"),
   IND("internet", "Internet fijo por 1.000 hab.", "03_Ordenamiento",
       "ordenamiento.xlsx", "internet_2025",
@@ -109,8 +112,8 @@ INDICADORES <- list(
       "ecv_ipm", "Personas en pobreza IPM - total (agregado)", "fila", -1, "pct",
       "Economía"),
   IND("informalidad", "Informalidad laboral", "05_Economia", "economia.xlsx",
-      "ecv_ocupacion_informal", "Tasa de informalidad laboral - total (municipal)",
-      "promedio", -1, "pct", "Economía"),
+      "ecv_ocupacion_informal", "Tasa de informalidad laboral - total (agregado)",
+      "fila", -1, "pct", "Economía"),
   IND("va_pc", "Valor agregado per cápita ($ de 2015)", "05_Economia",
       "economia.xlsx", "valor_agregado",
       "Valor agregado per cápita (pesos constantes de 2015)", "fila", 1, "num",
@@ -146,8 +149,8 @@ INDICADORES <- list(
       "salud.xlsx", "mortalidad_infantil",
       "Tasa de mortalidad infantil (x 1.000 nacidos vivos)", "fila", -1, "num2",
       "Salud"),
-  IND("bajo_peso", "Bajo peso al nacer", "09_Salud", "salud.xlsx", "bajo_peso",
-      "Nacidos con bajo peso al nacer (%)", "fila", -1, "pct", "Salud"),
+  IND("bajo_peso", "Bajo peso al nacer", "09_Salud", "salud.xlsx", "bajo_peso_2024",
+      "Nacidos con bajo peso al nacer, 2024 (%)", "fila", -1, "pct", "Salud"),
   IND("subsidiado", "Afiliación al régimen subsidiado", "09_Salud",
       "salud.xlsx", "aseguramiento_sgsss", "% afiliados régimen subsidiado",
       "fila", 0, "pct", "Salud"),
@@ -219,6 +222,31 @@ construir_panel <- function() {
   panel$pct_protegida <- panel$area_protegida / panel$area_km2
   panel$victimas_pc <- panel$victimas / panel$poblacion * 1000
 
+  # El comparativo ES la comparación de las once: uno parcial no es una
+  # versión reducida, es otro documento que dice lo que no es (a diferencia
+  # del anexo metodológico, que sí puede describir una cobertura parcial —
+  # ver corrección 14). run_all.R no incluye esta etapa y declara el estado
+  # parcial como normal, así que nada garantizaba que las once hubieran
+  # corrido antes de llegar aquí. Una provincia AUSENTE (ningún indicador con
+  # dato) aborta; una provincia con huecos (algunos indicadores sin dato) solo
+  # avisa, porque eso es un caso legítimo que el ranking ya sabe manejar.
+  # Hallazgo de Pablo (F-2-054), adoptado también aquí.
+  cols_ind <- vapply(INDICADORES, function(i) i$id, character(1))
+  medidos <- rowSums(!is.na(panel[, cols_ind, drop = FALSE]))
+  vacias <- panel$provincia[medidos == 0]
+  if (length(vacias)) {
+    stop("El comparativo necesita las ", nrow(PROVINCIAS), " provincias y ",
+         length(vacias), " no tienen salidas en 03_Outputs: ",
+         paste(vacias, collapse = ", "), ".\n",
+         "  Corra antes:  Rscript 02_Code/run_all.R", call. = FALSE)
+  }
+
+  huecos <- panel$provincia[medidos < length(cols_ind)]
+  if (length(huecos)) {
+    warning("Faltan indicadores en: ", paste(huecos, collapse = ", "),
+            ". El ranking las ordena con los que sí tienen.", call. = FALSE)
+  }
+
   message("  ", nrow(panel), " provincias x ", length(INDICADORES), " indicadores")
   panel
 }
@@ -240,13 +268,18 @@ cobertura_sistema <- function(panel) {
   sub <- crosswalk_subregiones()
   cw <- crosswalk_provincias()
 
-  area_dep <- NA_real_
-  pob_dep <- NA_real_
-  d <- hoja_publicada(provincia(1), "01_Generalidades",
-                      "distribucion_territorial.xlsx", "distribucion_territorial")
-  if (!is.null(d)) area_dep <- valor_agregado(d, "Área municipal (km²)", "departamento")
-  p <- hoja_publicada(provincia(1), "02_Demografia", "demografia.xlsx", "poblacion")
-  if (!is.null(p)) pob_dep <- valor_agregado(p, "Población total", "departamento")
+  # El valor departamental es el mismo se entre por la provincia que se
+  # entre, pero solo lo publica la hoja de una provincia que exista. Buscarlo
+  # únicamente en provincia(1) hacía que un fallo en esa sola carpeta vaciara
+  # la cobertura del sistema entera. .valor_departamental() ya resuelve esto
+  # recorriendo las once hasta encontrar la hoja. Hallazgo de Pablo
+  # (F-2-054), adoptado también aquí.
+  area_dep <- .valor_departamental(list(
+    seccion = "01_Generalidades", archivo = "distribucion_territorial.xlsx",
+    hoja = "distribucion_territorial", columna = "Área municipal (km²)"))
+  pob_dep <- .valor_departamental(list(
+    seccion = "02_Demografia", archivo = "demografia.xlsx",
+    hoja = "poblacion", columna = "Población total"))
 
   list(
     municipios_provincia = nrow(cw),

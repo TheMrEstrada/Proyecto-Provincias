@@ -20,6 +20,7 @@ adaptarla al patrón del pipeline (`entrada()`, `derivado()`, sin `setwd()`).
 | `suicidios_e_intentos.R` | ídem, y no escribe nada: su `write.xlsx` está comentado |
 | `suicidios_e_intentos_medias.R` | ídem; el archivo termina en `# Base final ----`, sin instrucción de escritura |
 | `mortalidad_iam.R` | **este sí usa rutas del repositorio y sí corre**, pero su único consumidor era `00_BuildData.do`, que se retiró a `99_Legacy/` |
+| `reparacion_colectiva_har_a_xlsx.R` | no depende de rutas de otro computador ni está roto, pero su insumo (`vgv.unidadvictimas.gov.co.har`) es una captura de navegador de una sesión irrepetible — no algo que el pipeline pueda volver a descargar solo. Se conserva para documentar cómo se construyó `UARIV_sujetos_reparacion_colectiva.xlsx`, que sí es el insumo real que lee `01_homogeneizacion/reparacion_colectiva.R` |
 
 ## El paso manual que falta
 

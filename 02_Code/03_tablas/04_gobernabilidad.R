@@ -5,12 +5,27 @@
 #   mdm     — Medición de Desempeño Municipal (DNP), por municipio y año
 #   idf     — Índice de Desempeño Fiscal (DNP), por municipio y año
 #   ley617  — ICLD, gastos de funcionamiento e indicador de la Ley 617 (CGR)
+#   ingresos_inversion — presupuesto de inversión 2026 por fuente (PGN, SGP,
+#             SGR/regalías, recursos propios, transferencias, créditos),
+#             Mapa de Inversiones del DNP (ver NOTA — MARGEN FISCAL)
 #   icm     — Índice de Ciudades Modernas (DNP) y sus seis dimensiones, con los
 #             agregados de provincia, subregión y departamento
+#
+# NOTA — MARGEN FISCAL (punto 2 de los "Verificar con el equipo", revisión
+# 21/08/2026): "ingresos_inversion" y "ley617" son las dos mitades que hacían
+# falta (ingresos por fuente / funcionamiento), pero NO se combinan en un
+# margen neto todavía: ley617 llega hasta 2024 e ingresos_inversion es de la
+# vigencia 2026 (mezclar años sería el mismo error de vintage que se evitó
+# con la población este semestre), y sigue faltando la deuda pública (no
+# existe en Mapa de Inversiones, que es una herramienta de presupuesto de
+# INVERSIÓN, no de pasivos).
 #
 # INPUTS:  01_Data/01_Derived/MDM_PROVINCIAS.xlsx   (hoja "Base")
 #          01_Data/01_Derived/IDF_PROVINCIAS.xlsx   (hoja "IDF")
 #          01_Data/01_Derived/617_PROVINCIAS.xlsx   (hoja "617")
+#          01_Data/01_Derived/finanzas_mapainversiones.parquet (ver
+#            01_homogeneizacion/finanzas_mapainversiones.R — la única consulta
+#            en vivo a un API externo de todo el pipeline)
 #          01_Data/01_Derived/ICM_PROVINCIAS.xlsx   (hojas "BD_ICM_Municipal" y
 #                                                    "BD_ICM_Departamental")
 #          01_Data/00_Inputs/POBLACION MUNICIPAL.xlsx  (pesos del promedio ICM)
@@ -147,6 +162,63 @@ if (!exists("RUTAS")) stop("Cargue 02_Code/R/00_config.R antes de este script.",
                   icld, gastos_func, ind_617, observacion)
 }
 
+# --- 4.3b Ingresos de inversión por fuente (Mapa de Inversiones, DNP) --------
+# Ver la nota completa en tabla_gobernabilidad() (más abajo, donde se llama)
+# sobre por qué esto no se resta contra el funcionamiento de Ley 617 todavía.
+
+FUENTES_INVERSION <- c(pgn = 1L, sgp = 3L, sgr = 4L, propios = 6L,
+                       transferencias = 10L, creditos = 11L)
+
+.ingresos_inversion_provincia <- function(prov) {
+  crudo <- leer_derivado("finanzas_mapainversiones") |>
+    dplyr::mutate(ind_mpio = as.integer(.data$ind_mpio))
+
+  universo_municipios <- crosswalk_provincias() |> filtrar_provincia(prov)
+
+  ancho <- crudo |>
+    dplyr::filter(.data$ind_mpio %in% universo_municipios$ind_mpio,
+                  .data$id_grupo_recursos %in% FUENTES_INVERSION) |>
+    dplyr::mutate(fuente = names(FUENTES_INVERSION)[
+      match(.data$id_grupo_recursos, FUENTES_INVERSION)
+    ]) |>
+    dplyr::select("ind_mpio", "fuente", "presupuesto") |>
+    tidyr::pivot_wider(names_from = "fuente", values_from = "presupuesto",
+                       values_fill = 0)
+
+  # Un municipio de la provincia puede no tener NINGUNA fuente en la tabla
+  # (p. ej. si no le llegó ningún proyecto en 2026): pivot_wider() no crea
+  # esa fila, así que se completa aparte con ceros en vez de desaparecer.
+  faltantes <- setdiff(universo_municipios$ind_mpio, ancho$ind_mpio)
+  if (length(faltantes)) {
+    relleno <- as.data.frame(matrix(0, nrow = length(faltantes),
+                                    ncol = length(FUENTES_INVERSION),
+                                    dimnames = list(NULL, names(FUENTES_INVERSION))))
+    relleno$ind_mpio <- faltantes
+    ancho <- dplyr::bind_rows(ancho, relleno)
+  }
+  for (f in names(FUENTES_INVERSION)) {
+    if (!f %in% names(ancho)) ancho[[f]] <- 0
+  }
+
+  tabla <- universo_municipios |>
+    dplyr::left_join(ancho, by = "ind_mpio") |>
+    filtrar_provincia(prov) |>
+    dplyr::mutate(total = pgn + sgp + sgr + propios + transferencias + creditos) |>
+    dplyr::arrange(.data$municipio) |>
+    dplyr::select("ind_mpio", "municipio", "subregion", "provincia",
+                  dplyr::all_of(names(FUENTES_INVERSION)), "total")
+
+  fila_total <- dplyr::summarise(
+    tabla, dplyr::across(dplyr::all_of(c(names(FUENTES_INVERSION), "total")), sum)
+  )
+  fila_total$ind_mpio <- NA_integer_
+  fila_total$municipio <- paste0("TOTAL PROVINCIA ", toupper(prov$etiqueta))
+  fila_total$subregion <- NA_character_
+  fila_total$provincia <- NA_character_
+
+  dplyr::bind_rows(tabla, fila_total)
+}
+
 # --- 4.4 Índice de Ciudades Modernas (ICM) ------------------------------------
 #' Universo ICM: los 125 municipios de Antioquia, por año, con territorio y
 #' población (el ponderador de los promedios).
@@ -277,6 +349,40 @@ tabla_gobernabilidad <- function(prov) {
     etiquetas = c(territorio, icld = "ICLD", gastos_func = "Gastos de funcionamiento",
                   ind_617 = "Indicador Ley 617", observacion = "Observación"),
     formatos = c(icld = "#,##0", gastos_func = "#,##0", ind_617 = "0.0%")
+  )
+
+  # --- 4.3b Ingresos de inversión por fuente (Mapa de Inversiones, DNP) ------
+  # Punto 2 de los "Verificar con el equipo" de la revisión del 21/08/2026:
+  # margen real de inversión (funcionamiento, deuda, regalías, SGP,
+  # cofinanciación). Este es el lado de los INGRESOS por fuente —ver
+  # 01_homogeneizacion/finanzas_mapainversiones.R para cómo se consiguió sin
+  # depender de más capturas de navegador—; el de funcionamiento ya existe
+  # (4.3, Ley 617).
+  #
+  # DELIBERADAMENTE NO se resta funcionamiento aquí para dar un "margen neto":
+  # Ley 617 llega hasta 2024 y este insumo es de la vigencia 2026 —mezclar dos
+  # años en una sola resta habría sido el mismo error de vintage que se evitó
+  # con la población este semestre—, y además todavía falta la deuda pública
+  # (pendiente: Mapa de Inversiones es una herramienta de presupuesto de
+  # INVERSIÓN, no tiene ningún campo de pasivos). Se deja como dos hojas
+  # separadas, cada una con su año explícito, hasta que haya deuda con la que
+  # completar la resta.
+  #
+  # Ausencia de una fuente para un municipio (p. ej. "Créditos" solo aparece en
+  # 15 de 125) se lee como cero, no como dato faltante: REC_Presupuesto agrega
+  # por PROYECTO, así que un municipio sin proyectos de esa fuente no tiene
+  # fila que agregar, no es que el dato no se haya podido conseguir.
+
+  ingresos <- .ingresos_inversion_provincia(prov)
+  escribir_hoja(
+    ingresos, archivo, "ingresos_inversion",
+    etiquetas = c(territorio, pgn = "PGN", sgp = "SGP", sgr = "SGR (regalías)",
+                  propios = "Propios de las entidades territoriales",
+                  transferencias = "Transferencias", creditos = "Créditos",
+                  total = "Total ingresos de inversión"),
+    formatos = stats::setNames(rep("#,##0", 7),
+                               c("pgn", "sgp", "sgr", "propios",
+                                 "transferencias", "creditos", "total"))
   )
 
   # --- 4.4 ICM ---------------------------------------------------------------

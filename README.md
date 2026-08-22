@@ -1,7 +1,7 @@
 # Proyecto Provincias
 
 Datos, código y salidas del diagnóstico territorial para la formulación de los
-**Planes Estratégicos Provinciales** de Antioquia: 11 provincias, 88 municipios,
+**Planes Estratégicos Provinciales** de Antioquia: 11 provincias, 90 municipios,
 10 secciones temáticas por provincia.
 
 El pipeline produce, para cada provincia, un juego de tablas en Excel y de

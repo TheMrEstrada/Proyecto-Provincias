@@ -229,6 +229,11 @@ fig_dispersion <- function(panel, x, y, titulo, subtitulo, fuente_txt,
       segment.color = COLOR$tinta_3, box.padding = 0.3, max.overlaps = Inf,
       seed = 1)
   } else {
+    # Sin ggrepel las once etiquetas se montan unas sobre otras. Aquí no se
+    # omite la figura —no es un mapa—, pero tampoco se degrada en silencio.
+    # Hallazgo de Pablo (F-1-010), adoptado también aquí.
+    warning("Falta ggrepel: las etiquetas de '", titulo,
+            "' van en el punto y pueden superponerse.", call. = FALSE)
     ggplot2::geom_text(ggplot2::aes(label = provincia), size = PT$fuente / .pt,
                        family = FUENTE, color = COLOR$tinta_2, vjust = -1)
   }

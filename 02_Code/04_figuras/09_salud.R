@@ -2,17 +2,29 @@
 # 09_salud.R — Figuras de la Sección 9: Salud
 #
 # FIGURAS:
-#   fig_01_aseguramiento_sgsss  — composición de los afiliados al SGSSS por
-#                                 régimen (barras apiladas al 100 %)
-#   fig_02_bajo_peso            — % de nacidos con bajo peso al nacer
-#   fig_03_enfermedades_vectores— tasas de dengue, malaria y leishmaniasis
-#                                 (múltiplos pequeños: cada enfermedad tiene su
-#                                 propio denominador y su propia escala)
-#   fig_04_suicidios            — tasa de intento de suicidio y de suicidio
-#                                 consumado (barras agrupadas)
+#   fig_01_aseguramiento_sgsss     — composición de los afiliados al SGSSS por
+#                                    régimen (barras apiladas al 100 %)
+#   fig_02_bajo_peso               — % de nacidos con bajo peso al nacer, 2024
+#   fig_03_enfermedades_vectores   — tasas de dengue, malaria y leishmaniasis,
+#                                    media móvil 2021-2023 (múltiplos pequeños:
+#                                    cada enfermedad tiene su propio denominador
+#                                    y su propia escala)
+#   fig_04_suicidios               — tasa de intento de suicidio y de suicidio
+#                                    consumado (barras agrupadas)
+#   fig_05_enfermedades_vectores_2024 — lo mismo que fig_03, media móvil
+#                                    2022-2024 (ver NOTA — SALUD 2024 en
+#                                    03_tablas/09_salud.R); figura aparte para
+#                                    comparar ambas ventanas, fig_03 no cambia.
+#   fig_06_mortalidad_infantil     — tasa de mortalidad infantil, promedio
+#                                    2020-2024
+#   fig_07_suicidios_2022_2024     — lo mismo que fig_04, media móvil
+#                                    2022-2024 (ver NOTA — SALUD 2024 en
+#                                    03_tablas/09_salud.R); figura aparte para
+#                                    comparar ambas ventanas, fig_04 no cambia.
 #
-# La mortalidad infantil 2020-2024 va como TABLA en el informe (catálogo de
-# figuras, fig. 73), no como gráfico: queda en la hoja del .xlsx de la sección.
+# La mortalidad infantil por año (serie 2020-2024, catálogo de figuras fig. 73)
+# va como TABLA, no como gráfico: queda en la hoja "mortalidad_infantil" del
+# .xlsx de la sección. El promedio del período sí se grafica (fig_06).
 #
 # INPUTS:  las tablas que produce 02_Code/03_tablas/09_salud.R
 # OUTPUTS: 03_Outputs/<Provincia>/09_Salud/figuras/*.{png,pdf}
@@ -29,10 +41,54 @@ FUENTE_SALUD <- paste(
   "Gobernación de Antioquia (2023)."
 )
 FUENTE_SIVIGILA <- "SIVIGILA, Instituto Nacional de Salud (2021-2023)."
+FUENTE_SUICIDIOS_2024 <- paste(
+  "DANE, Estadísticas Vitales, defunciones por causas externas (2022-2024);",
+  "SIVIGILA, Instituto Nacional de Salud, intento de suicidio por municipio",
+  "de residencia (2022-2024)."
+)
 FUENTE_ASEGURAMIENTO <- paste(
   "Gobernación de Antioquia, población afiliada al SGSSS por régimen",
   "(corte diciembre de 2025)."
 )
+
+# El titular de las figuras de vectores (fig_03 y fig_05). Las tres
+# enfermedades no comparten denominador —dengue y malaria se miden sobre
+# población total, la leishmaniasis sobre población RURAL—, así que no se
+# suman ni se rankean entre sí (misma regla que ya aplica la prosa de esta
+# sección, 05_documento/R/secciones.R): se nombra al municipio que encabeza
+# cada una. Si el mismo los encabeza todos la frase se colapsa, y si la
+# provincia no registra casos no se nombra a nadie. Hallazgo de Pablo
+# (F-2-036), adoptado también aquí.
+VECTORES_CON_ARTICULO <- c(dengue = "el dengue", malaria = "la malaria",
+                           leishmaniasis = "la leishmaniasis")
+
+.unir_y <- function(x) {
+  if (length(x) < 2L) return(paste(x, collapse = ""))
+  paste(paste(x[-length(x)], collapse = ", "), "y", x[length(x)])
+}
+
+.titular_vectores <- function(lideres, provincia) {
+  n_total <- length(lideres)
+  lideres <- lideres[!is.na(lideres)]
+  if (length(lideres) == 0L) {
+    return(sprintf(
+      "La provincia %s no registra casos de enfermedades transmitidas por vectores",
+      provincia))
+  }
+  nombres <- VECTORES_CON_ARTICULO[names(lideres)]
+  ms <- unique(unname(lideres))
+  if (length(ms) == 1L) {
+    if (length(lideres) == n_total) {
+      return(sprintf(
+        "%s encabeza las tres enfermedades transmitidas por vectores de la provincia",
+        ms))
+    }
+    return(sprintf("%s encabeza %s en la provincia", ms, .unir_y(nombres)))
+  }
+  partes <- vapply(ms, function(m) .unir_y(nombres[lideres == m]), character(1))
+  paste(c(sprintf("%s encabeza %s", ms[1], partes[1]),
+          sprintf("%s, %s", ms[-1], partes[-1])), collapse = "; ")
+}
 
 figuras_salud <- function(prov, tabla) {
   message("== figuras 09 Salud — ", prov$etiqueta, " ==")
@@ -52,7 +108,7 @@ figuras_salud <- function(prov, tabla) {
   #' "1.167,9" — tasas con un decimal, en formato colombiano.
   tt <- function(x) num_co(x, 1)
 
-  n <- nrow(solo_municipios(tabla$bajo_peso))
+  n <- nrow(solo_municipios(tabla$bajo_peso_2024))
 
   # --- fig 01: composición de afiliados al SGSSS ----------------------------
   # Barras apiladas al 100 %: tres regímenes, el subsidiado primero porque es el
@@ -122,15 +178,15 @@ figuras_salud <- function(prov, tabla) {
     archivo, "fig_01"
   )
 
-  # --- fig 02: bajo peso al nacer -------------------------------------------
-  bp <- solo_municipios(tabla$bajo_peso)
-  peor <- bp[which.max(bp$bajo_peso), ]
-  bp_prov <- agregado(tabla$bajo_peso, "Total provincia", "bajo_peso")
-  bp_sub  <- agregado(tabla$bajo_peso, "Total subregión", "bajo_peso")
-  bp_dep  <- agregado(tabla$bajo_peso, "Total departamento", "bajo_peso")
+  # --- fig 02: bajo peso al nacer, 2024 -------------------------------------
+  bp <- solo_municipios(tabla$bajo_peso_2024)
+  peor <- bp[which.max(bp$bajo_peso_2024), ]
+  bp_prov <- agregado(tabla$bajo_peso_2024, "Total provincia", "bajo_peso_2024")
+  bp_sub  <- agregado(tabla$bajo_peso_2024, "Total subregión", "bajo_peso_2024")
+  bp_dep  <- agregado(tabla$bajo_peso_2024, "Total departamento", "bajo_peso_2024")
 
   p2 <- fig_barras(
-    bp, categoria = municipio, valor = bajo_peso,
+    bp, categoria = municipio, valor = bajo_peso_2024,
     resaltar = peor$municipio,
     etiqueta = function(x) pp(x),
     referencia = bp_prov,
@@ -139,10 +195,10 @@ figuras_salud <- function(prov, tabla) {
     textos_fig(
       titulo = sprintf(
         "%s tiene la mayor proporción de nacidos con bajo peso de la provincia: %s",
-        peor$municipio, pp(peor$bajo_peso)
+        peor$municipio, pp(peor$bajo_peso_2024)
       ),
       subtitulo = sprintf(
-        paste("Porcentaje de nacidos vivos con menos de 2.500 gramos, 2023.",
+        paste("Porcentaje de nacidos vivos con menos de 2.500 gramos, 2024.",
               "Municipios de la provincia %s.",
               "Promedio ponderado por nacimientos: provincia %s, subregión %s, Antioquia %s."),
         prov$etiqueta, pp(bp_prov), pp(bp_sub), pp(bp_dep)
@@ -152,7 +208,7 @@ figuras_salud <- function(prov, tabla) {
     )
 
   guardar_fig(p2, "fig_02_bajo_peso", destino, n_barras = n)
-  escribir_datos_figura(bp[, c("municipio", "bajo_peso")], archivo, "fig_02")
+  escribir_datos_figura(bp[, c("municipio", "bajo_peso_2024")], archivo, "fig_02")
 
   # --- fig 03: enfermedades transmitidas por vectores -----------------------
   # Múltiplos pequeños en vez de barras agrupadas: las tres enfermedades tienen
@@ -162,7 +218,29 @@ figuras_salud <- function(prov, tabla) {
   vec <- solo_municipios(tabla$enfermedades_tropicales)
   enfermedades <- c(dengue = "Dengue", malaria = "Malaria",
                     leishmaniasis = "Leishmaniasis")
-  carga <- rowSums(vec[, names(enfermedades)], na.rm = TRUE)
+
+  # Las tres tasas NO se suman: el dengue y la malaria se miden sobre
+  # población total y la leishmaniasis sobre población RURAL, de modo que el
+  # total sería un número sin significado en el que la leishmaniasis pesa de
+  # más por tener el denominador más pequeño. Es la misma regla que ya aplica
+  # la prosa de esta sección (05_documento/R/secciones.R): cada enfermedad se
+  # reporta con su denominador y no se rankean entre sí. En consecuencia:
+  #   - el titular nombra al municipio que encabeza CADA enfermedad;
+  #   - el orden vertical usa la posición promedio dentro de cada enfermedad,
+  #     que es adimensional, y se publica como columna (regla 11).
+  # Hallazgo de Pablo (F-2-036), adoptado también aquí.
+  tasas  <- vec[, names(enfermedades), drop = FALSE]
+  rangos <- sapply(tasas, rank, na.last = "keep")
+  dim(rangos) <- c(nrow(vec), ncol(tasas))
+  orden  <- rowMeans(rangos, na.rm = TRUE)
+  orden[is.na(orden)] <- 0
+  vec$posicion_promedio <- round(orden, 2)
+
+  lideres <- vapply(names(enfermedades), function(v) {
+    x <- tasas[[v]]
+    if (all(is.na(x)) || max(x, na.rm = TRUE) <= 0) NA_character_
+    else vec$municipio[which.max(x)]
+  }, character(1))
 
   d3 <- vec |>
     dplyr::select(municipio, dplyr::all_of(names(enfermedades))) |>
@@ -170,10 +248,8 @@ figuras_salud <- function(prov, tabla) {
     dplyr::mutate(
       enfermedad = factor(.data$enfermedad, levels = names(enfermedades),
                           labels = unname(enfermedades)),
-      municipio  = factor(.data$municipio, levels = vec$municipio[order(carga)])
+      municipio  = factor(.data$municipio, levels = vec$municipio[order(orden)])
     )
-
-  peor_vec <- vec[which.max(carga), ]
 
   p3 <- ggplot2::ggplot(d3, ggplot2::aes(x = .data$tasa, y = .data$municipio,
                                          fill = .data$enfermedad)) +
@@ -192,14 +268,12 @@ figuras_salud <- function(prov, tabla) {
       panel.spacing.x = grid::unit(0.35, "cm")
     ) +
     textos_fig(
-      titulo = sprintf(
-        "%s soporta la mayor carga de enfermedades transmitidas por vectores de la provincia",
-        peor_vec$municipio
-      ),
+      titulo = .titular_vectores(lideres, prov$etiqueta),
       subtitulo = sprintf(
         paste("Casos por cada 100.000 habitantes (leishmaniasis: por cada 100.000",
-              "habitantes rurales), 2023. Municipios de la provincia %s.",
-              "Cada panel tiene su propia escala."),
+              "habitantes rurales), media móvil 2021-2023. Municipios de la provincia %s.",
+              "Cada panel tiene su propia escala; los municipios se ordenan por",
+              "su posición promedio en las tres enfermedades."),
         prov$etiqueta
       ),
       fuente = FUENTE_SALUD,
@@ -208,7 +282,7 @@ figuras_salud <- function(prov, tabla) {
 
   guardar_fig(p3, "fig_03_enfermedades_vectores", destino, n_barras = n)
   escribir_datos_figura(
-    vec[, c("municipio", names(enfermedades))], archivo, "fig_03"
+    vec[, c("municipio", names(enfermedades), "posicion_promedio")], archivo, "fig_03"
   )
 
   # --- fig 04: intento de suicidio y suicidio consumado ---------------------
@@ -263,6 +337,160 @@ figuras_salud <- function(prov, tabla) {
 
   guardar_fig(p4, "fig_04_suicidios", destino, alto = 4 + 0.9 * n)
   escribir_datos_figura(su[, c("municipio", names(indicadores))], archivo, "fig_04")
+
+  # --- fig 05: enfermedades transmitidas por vectores, 2022-2024 ------------
+  # Misma figura que fig_03 (múltiplos pequeños, DISENO.md §2.1), pero con la
+  # media móvil 2022-2024 (ver NOTA — SALUD 2024 en 03_tablas/09_salud.R).
+  # fig_03 no se toca: quedan las dos ventanas para comparar.
+  vec24 <- solo_municipios(tabla$enfermedades_tropicales_2024)
+  cols_prom <- c(dengue_2022_2024 = "Dengue", malaria_2022_2024 = "Malaria",
+                 leishmaniasis_2022_2024 = "Leishmaniasis")
+
+  # Mismo criterio que fig_03: no se suman tasas con denominadores distintos.
+  # Hallazgo de Pablo (F-2-036), adoptado también aquí.
+  tasas24  <- vec24[, names(cols_prom), drop = FALSE]
+  rangos24 <- sapply(tasas24, rank, na.last = "keep")
+  dim(rangos24) <- c(nrow(vec24), ncol(tasas24))
+  orden24  <- rowMeans(rangos24, na.rm = TRUE)
+  orden24[is.na(orden24)] <- 0
+  vec24$posicion_promedio <- round(orden24, 2)
+
+  lideres24 <- vapply(names(cols_prom), function(v) {
+    x <- tasas24[[v]]
+    if (all(is.na(x)) || max(x, na.rm = TRUE) <= 0) NA_character_
+    else vec24$municipio[which.max(x)]
+  }, character(1))
+  names(lideres24) <- sub("_2022_2024$", "", names(lideres24))
+
+  d5 <- vec24 |>
+    dplyr::select(municipio, dplyr::all_of(names(cols_prom))) |>
+    tidyr::pivot_longer(-"municipio", names_to = "enfermedad", values_to = "tasa") |>
+    dplyr::mutate(
+      enfermedad = factor(.data$enfermedad, levels = names(cols_prom),
+                          labels = unname(cols_prom)),
+      municipio  = factor(.data$municipio, levels = vec24$municipio[order(orden24)])
+    )
+
+  p5 <- ggplot2::ggplot(d5, ggplot2::aes(x = .data$tasa, y = .data$municipio,
+                                         fill = .data$enfermedad)) +
+    ggplot2::geom_col(width = 0.68, show.legend = FALSE) +
+    ggplot2::geom_text(ggplot2::aes(label = tt(.data$tasa)), hjust = -0.15,
+                       size = PT$valor / .pt, family = FUENTE, color = COLOR$tinta_1) +
+    ggplot2::facet_wrap(~ .data$enfermedad, nrow = 1, scales = "free_x") +
+    ggplot2::scale_fill_manual(values = unname(PALETA_SERIES[1:3])) +
+    ggplot2::scale_x_continuous(expand = ggplot2::expansion(mult = c(0, 0.55))) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    theme_provincias(grilla = "ninguna", eje_x_visible = FALSE) +
+    ggplot2::theme(
+      strip.text = ggplot2::element_text(size = PT$categoria, face = "bold",
+                                         color = COLOR$tinta_1, hjust = 0,
+                                         margin = ggplot2::margin(b = 3)),
+      panel.spacing.x = grid::unit(0.35, "cm")
+    ) +
+    textos_fig(
+      titulo = .titular_vectores(lideres24, prov$etiqueta),
+      subtitulo = sprintf(
+        paste("Casos por cada 100.000 habitantes (leishmaniasis: por cada 100.000",
+              "habitantes rurales), media móvil 2022-2024. Municipios de la provincia %s.",
+              "Cada panel tiene su propia escala; los municipios se ordenan por",
+              "su posición promedio en las tres enfermedades."),
+        prov$etiqueta
+      ),
+      fuente = FUENTE_SALUD,
+      nota = "Cálculos propios."
+    )
+
+  guardar_fig(p5, "fig_05_enfermedades_vectores_2024", destino, n_barras = n)
+  escribir_datos_figura(
+    vec24[, c("municipio", names(cols_prom), "posicion_promedio")], archivo, "fig_05"
+  )
+
+  # --- fig 06: mortalidad infantil, promedio 2020-2024 ----------------------
+  mi <- solo_municipios(tabla$mortalidad_infantil_promedio)
+  peor_mi <- mi[which.max(mi$tasa_mort_infantil_prom), ]
+  mi_prov <- agregado(tabla$mortalidad_infantil_promedio, "Total provincia", "tasa_mort_infantil_prom")
+  mi_sub  <- agregado(tabla$mortalidad_infantil_promedio, "Total subregión", "tasa_mort_infantil_prom")
+  mi_dep  <- agregado(tabla$mortalidad_infantil_promedio, "Total departamento", "tasa_mort_infantil_prom")
+
+  p6 <- fig_barras(
+    mi, categoria = municipio, valor = tasa_mort_infantil_prom,
+    resaltar = peor_mi$municipio,
+    etiqueta = function(x) tt(x),
+    referencia = mi_prov,
+    etiqueta_referencia = paste0("Provincia: ", tt(mi_prov))
+  ) +
+    textos_fig(
+      titulo = sprintf(
+        "%s tiene la mayor tasa de mortalidad infantil de la provincia: %s por cada 1.000 nacidos vivos",
+        peor_mi$municipio, tt(peor_mi$tasa_mort_infantil_prom)
+      ),
+      subtitulo = sprintf(
+        paste("Tasa por cada 1.000 nacidos vivos, promedio 2020-2024.",
+              "Municipios de la provincia %s.",
+              "Promedio ponderado por nacidos vivos: provincia %s, subregión %s, Antioquia %s."),
+        prov$etiqueta, tt(mi_prov), tt(mi_sub), tt(mi_dep)
+      ),
+      fuente = FUENTE_SALUD,
+      nota = "Cálculos propios."
+    )
+
+  guardar_fig(p6, "fig_06_mortalidad_infantil", destino, n_barras = n)
+  escribir_datos_figura(mi[, c("municipio", "tasa_mort_infantil_prom")], archivo, "fig_06")
+
+  # --- fig 07: intento de suicidio y suicidio consumado, 2022-2024 ----------
+  # Misma figura que fig_04 (barras agrupadas, mismo denominador para las dos
+  # tasas), pero con la media móvil 2022-2024 (ver NOTA — SALUD 2024 en
+  # 03_tablas/09_salud.R). fig_04 no se toca: quedan las dos ventanas para
+  # comparar.
+  su24 <- solo_municipios(tabla$suicidios_2022_2024)
+  indicadores24 <- c(tis_total_2022_2024 = "Intento de suicidio",
+                     ts_total_2022_2024  = "Suicidio consumado")
+
+  d7 <- su24 |>
+    dplyr::select(municipio, dplyr::all_of(names(indicadores24))) |>
+    tidyr::pivot_longer(-"municipio", names_to = "indicador", values_to = "tasa") |>
+    dplyr::mutate(
+      indicador = factor(.data$indicador, levels = names(indicadores24),
+                         labels = unname(indicadores24)),
+      municipio = factor(.data$municipio,
+                         levels = su24$municipio[order(su24$tis_total_2022_2024)])
+    )
+
+  peor_su24  <- su24[which.max(su24$tis_total_2022_2024), ]
+  tis24_prov <- agregado(tabla$suicidios_2022_2024, "Total provincia", "tis_total_2022_2024")
+  ts24_prov  <- agregado(tabla$suicidios_2022_2024, "Total provincia", "ts_total_2022_2024")
+  tis24_dep  <- agregado(tabla$suicidios_2022_2024, "Total departamento", "tis_total_2022_2024")
+
+  dodge7 <- ggplot2::position_dodge(width = 0.78, reverse = TRUE)
+
+  p7 <- ggplot2::ggplot(d7, ggplot2::aes(x = .data$tasa, y = .data$municipio,
+                                         fill = .data$indicador)) +
+    ggplot2::geom_col(width = 0.7, position = dodge7) +
+    ggplot2::geom_text(ggplot2::aes(label = tt(.data$tasa)), position = dodge7,
+                       hjust = -0.15, size = PT$valor / .pt, family = FUENTE,
+                       color = COLOR$tinta_1) +
+    ggplot2::scale_fill_manual(values = unname(PALETA_SERIES[1:2])) +
+    ggplot2::scale_x_continuous(expand = ggplot2::expansion(mult = c(0, 0.16))) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    theme_provincias(grilla = "ninguna", eje_x_visible = FALSE) +
+    textos_fig(
+      titulo = sprintf(
+        "%s registra la mayor tasa de intento de suicidio de la provincia: %s por cada 100.000 habitantes",
+        peor_su24$municipio, tt(peor_su24$tis_total_2022_2024)
+      ),
+      subtitulo = sprintf(
+        paste("Casos por cada 100.000 habitantes, promedio anual 2022-2024.",
+              "Municipios de la provincia %s.",
+              "Promedio ponderado por población 2025 (misma base los tres años):",
+              "provincia %s (intento) y %s (consumado); Antioquia %s (intento)."),
+        prov$etiqueta, tt(tis24_prov), tt(ts24_prov), tt(tis24_dep)
+      ),
+      fuente = FUENTE_SUICIDIOS_2024,
+      nota = "Cálculos propios."
+    )
+
+  guardar_fig(p7, "fig_07_suicidios_2022_2024", destino, alto = 4 + 0.9 * n)
+  escribir_datos_figura(su24[, c("municipio", names(indicadores24))], archivo, "fig_07")
 
   invisible(destino)
 }
